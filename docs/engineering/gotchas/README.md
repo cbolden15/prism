@@ -124,6 +124,13 @@ are discovered.
 **Fix:** Run every real-Docker host-test file invocation with `--test-concurrency=1` and freeze the commands with compatibility coverage.
 **Discovered:** 2026-09-02.
 
+### TEST-007: Restrictive shell umask makes Docker plugin fixtures unreadable
+
+**Symptom:** Docker-backed host tests return `code: "protocol"` with plugin `exitCode: 1`; running the fixture image directly reports that `/pnh/node_modules/@useprism/sdk/dist/protocol.js` cannot be loaded.
+**Cause:** A shell umask of `077` makes TypeScript build directories and files owner-only. The fixture image copies those modes unchanged, so its non-root plugin user cannot traverse or read the SDK build.
+**Fix:** Build and run the Docker-backed tests with `umask 022`, or normalize the copied SDK artifact modes before building the fixture image.
+**Discovered:** 2026-09-03.
+
 <!--
 ### CATEGORY-NNN: Title
 

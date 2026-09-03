@@ -50,10 +50,11 @@ the same four package tarballs:
 - `@useprism/provider-ollama` 0.1.0
 - `@useprism/cli` 0.1.0
 
-It also includes the developer-preview and optional-assurance documentation,
-`LICENSE`, `NOTICE`, `THIRD_PARTY_NOTICES.md`, `candidate.json`, and
-`SHA256SUMS`. The Codex compatibility package is not part of the candidate and
-is not an installed first-run route.
+It also includes the documentation index, five architecture diagrams,
+developer-preview and optional-assurance guides, runnable examples, package
+READMEs, community files, `LICENSE`, `NOTICE`, `THIRD_PARTY_NOTICES.md`,
+`candidate.json`, and `SHA256SUMS`. The Codex compatibility package is not part
+of the candidate and is not an installed first-run route.
 
 `candidate.json` records the clean source commit, pinned Node and npm versions,
 package files, document files, and their SHA-256 digests. `SHA256SUMS` covers

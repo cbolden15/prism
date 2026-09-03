@@ -20,20 +20,58 @@ export const MODEL = "qwen2.5:14b";
 export const VERSION = "0.1.0";
 export const LIVE_EVIDENCE_PATH = "docs/releases/developer-preview/ollama-live-evidence.json";
 
-const DOCUMENTS = Object.freeze([
-  "LICENSE",
-  "NOTICE",
+const MARKDOWN_DOCUMENTS = Object.freeze([
   "README.md",
-  "THIRD_PARTY_NOTICES.md",
+  "CHANGELOG.md",
+  "CODE_OF_CONDUCT.md",
+  "CONTRIBUTING.md",
+  "GOVERNANCE.md",
+  "SECURITY.md",
+  "SUPPORT.md",
+  "docs/README.md",
+  "docs/architecture/README.md",
   "docs/assurance/README.md",
   "docs/developer-preview/command-reference.md",
+  "docs/developer-preview/compatibility.md",
   "docs/developer-preview/concepts.md",
   "docs/developer-preview/data-and-trust.md",
   "docs/developer-preview/diagnostics.md",
   "docs/developer-preview/getting-started.md",
   "docs/developer-preview/plugin-authoring.md",
   "docs/releases/developer-preview/README.md",
+  "examples/README.md",
+  "examples/deterministic/README.md",
+  "examples/failures/README.md",
+  "examples/ollama/README.md",
+  "examples/project-plugin/README.md",
+  "examples/project-plugin/release-slug/README.md",
+  "examples/runtime-api/README.md",
+  "packages/cli/README.md",
+  "packages/provider-ollama/README.md",
+  "packages/runtime/README.md",
+  "packages/sdk/README.md",
 ]);
+
+const CANDIDATE_ASSETS = Object.freeze([
+  "docs/architecture/diagrams/assurance-lanes.mmd",
+  "docs/architecture/diagrams/bounded-run.mmd",
+  "docs/architecture/diagrams/local-data-and-evidence.mmd",
+  "docs/architecture/diagrams/plugin-admission.mmd",
+  "docs/architecture/diagrams/system-and-packages.mmd",
+  "examples/failures/policy-denied.mjs",
+  "examples/project-plugin/release-slug/index.mjs",
+  "examples/project-plugin/release-slug/index.test.mjs",
+  "examples/project-plugin/release-slug/manifest.json",
+  "examples/runtime-api/run.mjs",
+]);
+
+const DOCUMENTS = Object.freeze([
+  "LICENSE",
+  "NOTICE",
+  ...MARKDOWN_DOCUMENTS,
+  ...CANDIDATE_ASSETS,
+  "THIRD_PARTY_NOTICES.md",
+].sort());
 
 const PACKAGES = Object.freeze([
   { name: "@useprism/cli", version: VERSION, file: "useprism-cli-0.1.0.tgz" },
@@ -499,6 +537,8 @@ export async function validateDeveloperPreviewCandidate(input) {
 }
 
 export const developerPreview = Object.freeze({
+  MARKDOWN_DOCUMENTS,
+  CANDIDATE_ASSETS,
   DOCUMENTS,
   PACKAGES,
   CANDIDATE_FILES,

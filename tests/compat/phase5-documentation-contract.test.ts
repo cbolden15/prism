@@ -17,7 +17,6 @@ import { RUN_USAGE } from "../../packages/cli/src/commands/run.ts";
 import {
   PHASE5_CANDIDATE_FILES,
   PHASE5_MARKDOWN_DOCUMENTS,
-  PHASE5_PUBLIC_CLAIM_SURFACES,
 } from "./support/phase5-release-contract.ts";
 
 const repositoryRoot = resolve(dirname(fileURLToPath(import.meta.url)), "..", "..");
@@ -78,16 +77,6 @@ function markdownSection(contents: string, heading: string): string {
   return nextHeading === -1 ? remainder : remainder.slice(0, nextHeading);
 }
 
-function shellHereDocument(contents: string, path: string): string {
-  const opening = `cat > ${path} <<'EOF'\n`;
-  const start = contents.indexOf(opening);
-  assert.notEqual(start, -1, `missing here-document: ${path}`);
-  const bodyStart = start + opening.length;
-  const end = contents.indexOf("\nEOF\n", bodyStart);
-  assert.notEqual(end, -1, `unterminated here-document: ${path}`);
-  return `${contents.slice(bodyStart, end)}\n`;
-}
-
 function normalizeProseWhitespace(contents: string): string {
   return contents.replace(/\s+/gu, " ").trim();
 }
@@ -146,6 +135,7 @@ test("Phase 5 has the closed mandatory Markdown map with optional historical liv
     readdirSync(resolve(repositoryRoot, "docs", "developer-preview")).sort(),
     [
       "command-reference.md",
+      "compatibility.md",
       "concepts.md",
       "data-and-trust.md",
       "diagnostics.md",
@@ -193,15 +183,22 @@ test("the public preview documents exactly four published packages with package 
   }
 });
 
-test("the public repository ships contribution, security, changelog, and ownership guidance", () => {
+test("the public repository ships contribution, conduct, governance, security, changelog, and ownership guidance", () => {
   const contributing = readFileSync(resolve(repositoryRoot, "CONTRIBUTING.md"), "utf8");
+  const conduct = readFileSync(resolve(repositoryRoot, "CODE_OF_CONDUCT.md"), "utf8");
+  const governance = readFileSync(resolve(repositoryRoot, "GOVERNANCE.md"), "utf8");
   const security = readFileSync(resolve(repositoryRoot, "SECURITY.md"), "utf8");
   const changelog = readFileSync(resolve(repositoryRoot, "CHANGELOG.md"), "utf8");
   const codeowners = readFileSync(resolve(repositoryRoot, ".github/CODEOWNERS"), "utf8");
 
-  for (const command of ["npm ci", "npm run test:compat:run", "npm run check:public-claims"]) {
+  for (const command of ["npm ci", "npm run docs:check", "npm run test:compat", "npm run check:public-claims"]) {
     assert.ok(contributing.includes(command), `CONTRIBUTING.md omits ${command}`);
   }
+  assert.equal(contributing.includes("npm run test:compat:run"), false);
+  assert.match(conduct, /## Reporting[\s\S]*private process/u);
+  assert.match(governance, /single-maintainer model/u);
+  assert.match(governance, /@cbolden15/u);
+  assert.equal(existsSync(resolve(repositoryRoot, ".github/ISSUE_TEMPLATE/documentation.yml")), true);
   assert.match(security, /GitHub private vulnerability reporting/u);
   assert.match(security, /Security tab[\s\S]*Report a vulnerability/u);
   assert.doesNotMatch(security, /mailto:|\b[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}\b/iu);
@@ -211,14 +208,10 @@ test("the public repository ships contribution, security, changelog, and ownersh
 
 test("active preview prose uses the Prism brand and public package scope", () => {
   const paths = [
-    ...PHASE5_PUBLIC_CLAIM_SURFACES,
-    "CHANGELOG.md",
-    "CONTRIBUTING.md",
-    "SECURITY.md",
+    ...PHASE5_MARKDOWN_DOCUMENTS,
     "NOTICE",
     "THIRD_PARTY_NOTICES.md",
     ".env.example",
-    ...publicPackages.map(([, directory]) => `${directory}/README.md`),
   ];
   const prose = paths.map((path) => readFileSync(resolve(repositoryRoot, path), "utf8")).join("\n");
   assert.doesNotMatch(prose, /Prism Harness|private-incubation|@prism-harness/iu);
@@ -360,54 +353,112 @@ test("onboarding makes the registry deterministic path primary and preserves tar
   assert.equal(/\bTBD\b|example\.com|npmjs\.com\/package\/@prism-harness/iu.test(all), false);
 });
 
-test("README and getting started document the deterministic project plugin workflow", (context) => {
+test("README and getting started route to one tested project-plugin example", (context) => {
   const documents = readDocuments(context);
   if (documents === undefined) return;
   const rootReadme = documents.get("README.md") as string;
-  const documentedSource = shellHereDocument(rootReadme, "prism-plugins/release-slug/index.mjs");
-  const documentedTest = shellHereDocument(rootReadme, "prism-plugins/release-slug/index.test.mjs");
+  const gettingStarted = documents.get("docs/developer-preview/getting-started.md") as string;
+  const guide = documents.get("examples/project-plugin/README.md") as string;
+  const source = readFileSync(
+    resolve(repositoryRoot, "examples/project-plugin/release-slug/index.mjs"),
+    "utf8",
+  );
+  const sourceTest = readFileSync(
+    resolve(repositoryRoot, "examples/project-plugin/release-slug/index.test.mjs"),
+    "utf8",
+  );
+  const manifest = JSON.parse(readFileSync(
+    resolve(repositoryRoot, "examples/project-plugin/release-slug/manifest.json"),
+    "utf8",
+  ));
 
   for (const [path, contents] of [
     ["README.md", rootReadme],
-    ["docs/developer-preview/getting-started.md", documents.get("docs/developer-preview/getting-started.md") as string],
+    ["docs/developer-preview/getting-started.md", gettingStarted],
   ] as const) {
-    assert.equal(
-      shellHereDocument(contents, "prism-plugins/release-slug/index.mjs"),
-      documentedSource,
-      `${path} source diverges from the packed workflow`,
-    );
-    assert.equal(
-      shellHereDocument(contents, "prism-plugins/release-slug/index.test.mjs"),
-      documentedTest,
-      `${path} test diverges from the packed workflow`,
-    );
     assertInOrder(contents, [
-      "npm install --offline --ignore-scripts --no-audit --no-fund --package-lock=false ../packages/*.tgz",
-      "./node_modules/.bin/prism init --provider deterministic --scope project --yes",
       "./node_modules/.bin/prism plugin create release-slug",
-      "export function slugify(title)",
+      "cp ../examples/project-plugin/release-slug/index.mjs prism-plugins/release-slug/index.mjs",
       "node --test prism-plugins/release-slug/index.test.mjs",
       "./node_modules/.bin/prism plugin check prism-plugins/release-slug",
       "./node_modules/.bin/prism plugin declare prism-plugins/release-slug --operation slugify",
       "./node_modules/.bin/prism plugin approval --json > approval.json",
-      "APPROVAL_DIGEST=",
-      "./node_modules/.bin/prism plugin approve --digest \"$APPROVAL_DIGEST\"",
-      "./node_modules/.bin/prism run 'Create a slug for release title: Preview First'",
-      "preview-first",
-      "./node_modules/.bin/prism inspect --json \"$RUN_ID\"",
     ], `${path} project plugin workflow`);
-    for (const phrase of [
-      '"version": "prism-project-plugin-approval-proposal-v1"',
-      '"declaredPath": "prism-plugins/release-slug"',
-      '"operation": "slugify"',
-      '"id": "release-slug"',
-      'return { kind: "tool", operations: ["slugify"], pluginId: "release-slug" };',
-      "async function runToolLoop()",
-      "approvalDigest",
-      '["sand" + "boxed"] !== false',
-      "prism-run-record-v3",
-    ]) assert.ok(contents.includes(phrase), `${path} does not assert ${phrase}`);
     assert.equal(/plugin approval --json\s*\|/u.test(contents), false, `${path} must not teach blind approval piping`);
+  }
+
+  assertInOrder(guide, [
+    "./node_modules/.bin/prism plugin create release-slug",
+    "cp ../examples/project-plugin/release-slug/index.mjs prism-plugins/release-slug/index.mjs",
+    "node --test prism-plugins/release-slug/index.test.mjs",
+    "./node_modules/.bin/prism plugin check prism-plugins/release-slug",
+    "./node_modules/.bin/prism plugin declare prism-plugins/release-slug --operation slugify",
+    "./node_modules/.bin/prism plugin approval --json > approval.json",
+    "proposal.version",
+    "APPROVAL_DIGEST=",
+    "./node_modules/.bin/prism plugin approve --digest \"$APPROVAL_DIGEST\"",
+    "./node_modules/.bin/prism run 'Create a slug for release title: Preview First'",
+    "preview-first",
+    "./node_modules/.bin/prism inspect --json \"$RUN_ID\"",
+  ], "complete project plugin example");
+  for (const phrase of [
+    "ambient host authority",
+    "does not prove safety",
+    "prism-project-plugin-approval-proposal-v1",
+    "approvalDigest",
+    '["sand" + "boxed"] !== false',
+    "prism-run-record-v3",
+  ]) assert.ok(guide.includes(phrase), `project-plugin guide omits ${phrase}`);
+  assert.match(source, /export function slugify\(title\)/u);
+  assert.match(source, /async function runToolLoop\(\)/u);
+  assert.match(source, /operations: \["slugify"\], pluginId: "release-slug"/u);
+  assert.match(sourceTest, /slugify handles the release title/u);
+  assert.deepEqual({ id: manifest.id, entrypoint: manifest.entrypoint, files: manifest.files }, {
+    id: "release-slug",
+    entrypoint: "index.mjs",
+    files: ["index.mjs"],
+  });
+  assert.equal(/plugin approval --json\s*\|/u.test(guide), false);
+});
+
+test("architecture, compatibility, and examples form a complete public navigation layer", (context) => {
+  const documents = readDocuments(context);
+  if (documents === undefined) return;
+  const architecture = documents.get("docs/architecture/README.md") as string;
+  const compatibility = documents.get("docs/developer-preview/compatibility.md") as string;
+  const examples = documents.get("examples/README.md") as string;
+  const diagramFiles = readdirSync(resolve(repositoryRoot, "docs/architecture/diagrams")).sort();
+
+  assert.deepEqual(diagramFiles, [
+    "assurance-lanes.mmd",
+    "bounded-run.mmd",
+    "local-data-and-evidence.mmd",
+    "plugin-admission.mmd",
+    "system-and-packages.mmd",
+  ]);
+  assert.equal((architecture.match(/```mermaid/gu) ?? []).length, 5);
+  assert.equal((architecture.match(/Text equivalent:/gu) ?? []).length, 5);
+  for (const file of diagramFiles) {
+    const source = readFileSync(resolve(repositoryRoot, "docs/architecture/diagrams", file), "utf8");
+    assert.ok(architecture.includes(source.trim()), `${file} is not rendered in the architecture guide`);
+  }
+  for (const phrase of [
+    "Node.js",
+    "npm",
+    "macOS arm64",
+    "Linux x64, glibc",
+    "Native Windows",
+    "WSL",
+    "Deterministic CLI",
+    "Ollama",
+    "Codex CLI adapter",
+    "Docker assurance",
+    "KVM and QEMU",
+    "Firecracker",
+    "Physical X1",
+  ]) assert.ok(compatibility.includes(phrase), `compatibility guide omits ${phrase}`);
+  for (const path of ["deterministic", "runtime-api", "project-plugin", "ollama", "failures"]) {
+    assert.ok(examples.includes(`](${path}/README.md)`), `examples index omits ${path}`);
   }
 });
 

@@ -1,0 +1,18 @@
+flowchart TD
+  goal["Goal"] --> accepted["1. goal.accepted"]
+  accepted --> providerOne["Provider turn 1"]
+  providerOne --> requested["2. provider.tool-requested"]
+  requested --> policy["Policy reviews the exact tool request"]
+  policy --> allowed["3. policy.allowed"]
+  allowed --> tool["One bounded tool call"]
+  tool --> completed["4. tool.completed"]
+  completed --> cleanup["Subprocess cleanup receipt<br/>when the selected adapter owns a child"]
+  cleanup --> providerTwo["Provider turn 2<br/>with the tool result"]
+  providerTwo --> finalized["5. provider.finalized"]
+  finalized --> terminal["Completed terminal result"]
+  terminal --> runCompleted["6. run.completed"]
+
+  limits["Fixed limits<br/>turns, calls, bytes, deadline"] -. bound .-> providerOne
+  limits -. bound .-> policy
+  limits -. bound .-> tool
+  limits -. bound .-> providerTwo

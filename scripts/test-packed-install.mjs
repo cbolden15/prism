@@ -74,16 +74,6 @@ function digest(value) {
   return createHash("sha256").update(value).digest("hex");
 }
 
-function documentedHereDocument(contents, path) {
-  const opening = `cat > ${path} <<'EOF'\n`;
-  const start = contents.indexOf(opening);
-  assert.notEqual(start, -1, `README omits ${path} here-document`);
-  const bodyStart = start + opening.length;
-  const end = contents.indexOf("\nEOF\n", bodyStart);
-  assert.notEqual(end, -1, `README does not terminate ${path} here-document`);
-  return `${contents.slice(bodyStart, end)}\n`;
-}
-
 function snapshotTree(root) {
   const entries = [];
   const visit = (path) => {
@@ -561,14 +551,17 @@ process.dlopen = function(module, filename, flags) {
   for (const file of pluginFiles) {
     assert.equal(lstatSync(resolve(pluginRoot, file)).mode & 0o777, 0o644);
   }
-  const workflowDocumentation = readFileSync(resolve(candidateRoot ?? repositoryRoot, "README.md"), "utf8");
-  const slugPluginSource = documentedHereDocument(
-    workflowDocumentation,
-    "prism-plugins/release-slug/index.mjs",
+  const pluginExampleRoot = resolve(
+    candidateRoot ?? repositoryRoot,
+    "examples",
+    "project-plugin",
+    "release-slug",
   );
-  const slugPluginTest = documentedHereDocument(
-    workflowDocumentation,
-    "prism-plugins/release-slug/index.test.mjs",
+  const slugPluginSource = readFileSync(resolve(pluginExampleRoot, "index.mjs"), "utf8");
+  const slugPluginTest = readFileSync(resolve(pluginExampleRoot, "index.test.mjs"), "utf8");
+  assert.deepEqual(
+    JSON.parse(readFileSync(resolve(pluginRoot, "manifest.json"), "utf8")),
+    JSON.parse(readFileSync(resolve(pluginExampleRoot, "manifest.json"), "utf8")),
   );
   writeFileSync(resolve(pluginRoot, "index.mjs"), slugPluginSource, "utf8");
   writeFileSync(resolve(pluginRoot, "index.test.mjs"), slugPluginTest, "utf8");

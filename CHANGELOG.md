@@ -13,3 +13,6 @@ This file records public Prism releases.
 - Kept `packages/provider-codex` source-visible and unpublished.
 - Documented local data handling, ambient subprocess authority, incomplete
   assurance evidence, and developer-preview compatibility limits.
+- Added current architecture diagrams, runnable Runtime and project-plugin
+  examples, a documentation index, community governance, and automated docs
+  checks.

@@ -3,6 +3,10 @@
 The CLI owns local configuration, approval records, artifacts, and run records.
 Configuration stores no provider credentials.
 
+Use the [project-plugin admission diagram](../architecture/README.md#project-plugin-admission-and-execution)
+to follow declaration through cleanup, and the [local data diagram](../architecture/README.md#local-data-and-evidence)
+to see what each store keeps or omits.
+
 <!-- pnh:limitation:PNH-CLAIM-18:begin -->
 | Data | Location |
 | --- | --- |

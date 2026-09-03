@@ -4,6 +4,11 @@ Prism is a four-package public developer preview. The SDK defines public
 contracts, Runtime owns bounded execution, the Ollama provider implements the
 SDK provider contract, and the CLI owns local configuration and persistence.
 
+The [architecture guide](../architecture/README.md) maps the packages. Its
+[bounded run sequence](../architecture/README.md#bounded-run-sequence) shows
+the provider, policy, tool, cleanup, event, and terminal-result flow described
+below.
+
 ## Bounded local execution
 
 A run accepts one goal, obtains provider turns, applies policy admission, and

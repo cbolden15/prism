@@ -1,0 +1,16 @@
+flowchart LR
+  workspace["Workspace"] --> projectConfig[".prism/config.json"]
+  workspace --> declaration[".prism/tool-plugin.json"]
+
+  userConfig["XDG config root"] --> config["prism/config.json"]
+  userConfig --> trust["prism/trust.json"]
+  userConfig --> approvals["plugin-approvals/v1/<br/>workspace-sha256.json"]
+
+  userState["XDG state root"] --> artifacts["plugin-artifacts/v1/<br/>registry-digest/"]
+  userState --> records["runs/<run-id>.json"]
+
+  records --> retained["Retained in V3<br/>identities, commitments, limits,<br/>usage, events, terminal answer, cleanup"]
+  records --> omitted["Omitted from V3 evidence<br/>raw plugin input and output,<br/>raw errors, raw paths, raw goal"]
+
+  warning["Goals and final answers can contain<br/>sensitive local operator data"] -. applies to .-> records
+  execution["Prompt and repository content<br/>used by the run"] -. sent when configured .-> provider["Selected provider"]

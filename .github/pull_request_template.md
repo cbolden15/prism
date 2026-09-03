@@ -10,7 +10,12 @@
 
 <!-- Note public API, trust-boundary, package, or release impact. -->
 
+## Documentation
+
+<!-- Link the user-facing docs or state why no documentation change is needed. -->
+
 - [ ] I kept unrelated cleanup out of this pull request.
 - [ ] I added or updated focused tests.
 - [ ] I did not add credentials, private run data, or provider output.
 - [ ] I preserved Prism's documented trust limitations.
+- [ ] I checked commands, local links, diagrams, and compatibility text affected by this change.

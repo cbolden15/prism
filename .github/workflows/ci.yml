@@ -34,5 +34,7 @@ jobs:
             --license-report "$RUNNER_TEMP/prism-full-licenses.json" \
             --created "$created" \
             --namespace "$SBOM_NAMESPACE"
+      - name: Render architecture diagrams
+        run: npm run docs:render
       - run: npm test
       - run: npm run pack:check

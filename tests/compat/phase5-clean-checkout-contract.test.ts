@@ -303,8 +303,7 @@ It is not copied into the candidate, and check:release does not consume it.
     "THIRD_PARTY_NOTICES.md": "# Fixture third-party notices\n",
   };
   const contents = documents[path];
-  assert.notEqual(contents, undefined, `missing release fixture document: ${path}`);
-  return contents as string;
+  return contents ?? `fixture:${path}\n`;
 }
 
 async function releaseGateFixture(

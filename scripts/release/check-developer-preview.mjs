@@ -3,7 +3,7 @@ import { existsSync, readFileSync, realpathSync, writeFileSync } from "node:fs";
 import { cp, mkdtemp, realpath, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
-import { validateDeveloperPreviewCandidate } from "./developer-preview-contract.mjs";
+import { developerPreview, validateDeveloperPreviewCandidate } from "./developer-preview-contract.mjs";
 
 function fail(reason) { throw new Error(reason); }
 function run(command, commandArguments, options) {
@@ -17,13 +17,7 @@ function parseArguments(arguments_) {
   return resolve(arguments_[1]);
 }
 async function assertDocumentation(root) {
-  const required = [
-    "README.md", "docs/assurance/README.md", "docs/developer-preview/command-reference.md",
-    "docs/developer-preview/concepts.md", "docs/developer-preview/data-and-trust.md",
-    "docs/developer-preview/diagnostics.md", "docs/developer-preview/getting-started.md",
-    "docs/developer-preview/plugin-authoring.md", "docs/releases/developer-preview/README.md",
-  ];
-  if (!required.every((file) => existsSync(resolve(root, file)))) fail("documentation-invalid");
+  if (!developerPreview.DOCUMENTS.every((file) => existsSync(resolve(root, file)))) fail("documentation-invalid");
   const text = await (await import("node:fs/promises")).readFile(resolve(root, "docs/developer-preview/command-reference.md"), "utf8");
   for (const command of ["prism init", "prism doctor", "prism run", "prism inspect", "prism plugin create", "prism plugin check"]) {
     if (!text.includes(command)) fail("documentation-invalid");

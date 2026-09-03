@@ -1,0 +1,17 @@
+flowchart TD
+  scaffold["Project-owned plugin source"] --> check["plugin check<br/>execution diagnostic"]
+  check --> warning["Runs with ambient host authority<br/>not a sandbox"]
+
+  scaffold --> declaration[".prism/tool-plugin.json<br/>project intent"]
+  declaration --> capture["Capture manifest and runtime closure"]
+  capture --> commitments["Component commitments<br/>and approval digest"]
+  commitments --> proposal["plugin approval --json<br/>non-executing proposal"]
+  proposal --> inspect["Operator inspects proposal"]
+  inspect --> approval["Per-user digest approval"]
+  approval --> boundary["Identity and owner approval<br/>not safety"]
+  approval --> artifact["Inert digest-addressed artifact"]
+  artifact --> ticket["Owner-approved admission ticket<br/>one sealed participant"]
+  ticket --> policy["Restrictive operation policy"]
+  policy --> execute["Ambient subprocess authority"]
+  execute --> receipt["Authoritative cleanup receipt"]
+  receipt --> record["prism-run-record-v3"]

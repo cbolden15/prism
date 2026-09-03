@@ -10,6 +10,10 @@ This page is the entrypoint for checks that add assurance evidence. They are
 not a substitute for the normal local path, and normal local success is not
 evidence for an assurance profile.
 
+The [assurance-lanes diagram](../architecture/README.md#optional-assurance-lanes)
+keeps normal local execution, Docker checks, B4, and physical X1 qualification
+visually separate.
+
 ## Optional Docker assurance
 
 The Docker-backed constitutional and plugin-executor checks are documented in

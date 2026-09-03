@@ -1,0 +1,94 @@
+{
+  "name": "prism",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "description": "Provider-neutral agent runtime with pluggable providers, tools, and policies. Subprocess plugins inherit ambient host authority unless an isolation adapter is used.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cbolden15/prism.git"
+  },
+  "homepage": "https://github.com/cbolden15/prism#readme",
+  "bugs": {
+    "url": "https://github.com/cbolden15/prism/issues"
+  },
+  "engines": {
+    "node": ">=26.8.1 <27",
+    "npm": ">=11.19.0"
+  },
+  "packageManager": "npm@11.19.0",
+  "files": [
+    "pnh/",
+    "docs/plans/provider-neutral-harness/",
+    "LICENSE",
+    "NOTICE",
+    "THIRD_PARTY_NOTICES.md"
+  ],
+  "scripts": {
+    "dev": "npm run prism:demo --",
+    "build:foundation": "npm run build -w @useprism/sdk && npm run build -w @useprism/runtime",
+    "build:packages": "npm run build:foundation && npm run build -w @useprism/provider-codex && npm run build -w @useprism/provider-ollama && npm run build -w @useprism/cli",
+    "build": "npm run build:packages && npm run typecheck:references && npm run typecheck",
+    "typecheck": "tsc -p tsconfig.pnh.json --noEmit",
+    "typecheck:references": "tsc -b tsconfig.json --pretty false",
+    "typecheck:pnh": "npm run typecheck",
+    "check:package-graph": "node scripts/check-package-graph.mjs",
+    "check:source-closure": "node scripts/check-phase-1b-source-closure.mjs --final",
+    "check:pnh-graph": "tsx packages/runtime/scripts/check-module-graph.ts packages/runtime/src/core",
+    "test:pnh:run": "npm run typecheck:pnh && npm run check:pnh-graph && node packages/runtime/test/sandbox/harness/run-sandbox.mjs",
+    "test:pnh": "npm run build:packages && npm run test:pnh:run",
+    "test:constitution:run": "tsx --test pnh/tests/constitution-registry.test.ts pnh/tests/constitution-coverage.test.ts pnh/tests/constitution-proof-report.test.ts pnh/tests/constitution-generator.test.ts pnh/tests/constitution-gate.test.ts pnh/tests/public-claims.test.ts pnh/tests/protocol-bounds.test.ts",
+    "test:constitution": "npm run build:packages && npm run test:constitution:run",
+    "test:host:run": "tsx --test --test-concurrency=1 pnh/host-tests/*.test.ts",
+    "test:host": "npm run build:packages && npm run test:host:run",
+    "test:compat:run": "tsx --test tests/compat/*.test.ts",
+    "test:compat": "npm run build:packages && npm run test:compat:run",
+    "test:sdk:run": "tsx --test packages/sdk/test/*.test.ts",
+    "test:sdk": "npm run build:packages && npm run test:sdk:run",
+    "test:runtime:run": "tsx --test packages/runtime/test/*.test.ts",
+    "test:runtime": "npm run build:packages && npm run test:runtime:run",
+    "test:provider-codex:run": "tsx --test packages/provider-codex/test/*.test.ts",
+    "test:provider-codex": "npm run build:packages && npm run test:provider-codex:run",
+    "test:provider-ollama:run": "tsx --test packages/provider-ollama/test/*.test.ts",
+    "test:provider-ollama": "npm run build:packages && npm run test:provider-ollama:run",
+    "test:ollama:live": "npm run build:packages && node scripts/test-live-ollama.mjs",
+    "test:cli:run": "tsx --test packages/cli/test/*.test.ts",
+    "test:cli": "npm run build:packages && npm run test:cli:run",
+    "test:native:authoring": "npm run native:verify -w @useprism/cli && npm run native:test -w @useprism/cli",
+    "test:phase4:red": "tsx --test packages/cli/test/plugin-create-command.test.ts packages/cli/test/native-authoring-contract.test.ts packages/cli/test/plugin-check-command.test.ts",
+    "test:phase5:red": "tsx --test tests/compat/phase5-documentation-contract.test.ts tests/compat/phase5-public-claims-contract.test.ts tests/compat/phase5-release-contract.test.ts tests/compat/phase5-candidate-contract.test.ts tests/compat/phase5-clean-checkout-contract.test.ts tests/compat/phase5-review-fixes.test.ts",
+    "test": "npm run build:packages && npm run typecheck:references && npm run check:source-closure && npm run check:package-graph && npm run test:native:authoring && npm run test:pnh:run && npm run test:constitution:run && npm run test:host:run && npm run test:compat:run && npm run test:sdk:run && npm run test:runtime:run && npm run test:provider-codex:run && npm run test:provider-ollama:run && npm run test:cli:run && npm run check:public-claims",
+    "test:packed": "npm run build:packages && npm run typecheck:references && npm run check:source-closure && npm run check:package-graph && node scripts/test-packed-install.mjs",
+    "pack:preview": "node scripts/release/pack-developer-preview.mjs",
+    "check:release": "node scripts/release/check-developer-preview.mjs",
+    "check:release:clean": "node scripts/release/check-clean-checkout.mjs",
+    "proof:constitution": "tsx assurance/constitution/scripts/generate-proof-report.ts",
+    "check:public-claims": "tsx assurance/constitution/scripts/check-public-claims.ts",
+    "prism:demo": "node packages/cli/dist/deterministic/run-prism-demo.js",
+    "prism:example": "node packages/cli/dist/deterministic/run-local-text-stats.js",
+    "prism:codex": "node packages/provider-codex/dist/run-example.js",
+    "b4:check": "bash pnh/x1-firecracker/b0/run-profile.sh check",
+    "b4:reproduce": "bash pnh/x1-firecracker/b0/run-profile.sh reproduce",
+    "b4:scan-public": "bash pnh/x1-firecracker/b0/run-profile.sh scan-public",
+    "b4:test:acceptance": "bash pnh/x1-firecracker/b0/run-profile.sh acceptance",
+    "b4:test:firecracker": "bash pnh/x1-firecracker/b0/run-profile.sh firecracker",
+    "b4:test:qemu": "bash pnh/x1-firecracker/b0/run-profile.sh qemu",
+    "b4:test:unit": "bash pnh/x1-firecracker/b0/run-profile.sh unit",
+    "b4:verify": "bash pnh/x1-firecracker/b0/run-profile.sh verify",
+    "pack:check": "npm run test:packed"
+  },
+  "dependencies": {
+    "ajv": "^8.17.1",
+    "yaml": "^2.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.4.0",
+    "c8": "12.0.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}

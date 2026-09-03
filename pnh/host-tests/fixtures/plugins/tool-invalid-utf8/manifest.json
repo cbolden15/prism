@@ -1,0 +1,28 @@
+{
+  "id": "tool-invalid-utf8",
+  "version": "1.0.0",
+  "apiVersion": 1,
+  "kind": "tool",
+  "compatibility": {
+    "kernelApiVersion": "pnh-kernel-v1"
+  },
+  "entrypoint": "index.mjs",
+  "files": [
+    "index.mjs"
+  ],
+  "dependencies": [],
+  "requestedCapabilities": [
+    {
+      "id": "tool-operation",
+      "limit": {
+        "schema": "boolean-gate",
+        "version": "pnh-capability-limit-v1",
+        "enabled": true
+      }
+    }
+  ],
+  "license": {
+    "spdxId": "MIT",
+    "holder": "PNH"
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "name": "@useprism/sdk",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Provider, tool, policy, manifest, registration, and protocol contracts for Prism plugins.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cbolden15/prism.git",
+    "directory": "packages/sdk"
+  },
+  "homepage": "https://github.com/cbolden15/prism#readme",
+  "bugs": {
+    "url": "https://github.com/cbolden15/prism/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true,
+    "registry": "https://registry.npmjs.org/"
+  },
+  "files": [
+    "dist/",
+    "README.md",
+    "LICENSE",
+    "NOTICE",
+    "THIRD_PARTY_NOTICES.md"
+  ],
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./authoring": {
+      "types": "./dist/authoring.d.ts",
+      "import": "./dist/authoring.js"
+    },
+    "./json": {
+      "types": "./dist/json-value.d.ts",
+      "import": "./dist/json-value.js"
+    },
+    "./manifest": {
+      "types": "./dist/manifest.d.ts",
+      "import": "./dist/manifest.js"
+    },
+    "./node/registry": {
+      "types": "./dist/node/generate-plugin-registry.d.ts",
+      "import": "./dist/node/generate-plugin-registry.js"
+    },
+    "./policy": {
+      "types": "./dist/policy.d.ts",
+      "import": "./dist/policy.js"
+    },
+    "./protocol": {
+      "types": "./dist/protocol.d.ts",
+      "import": "./dist/protocol.js"
+    },
+    "./protocol/resource-bounds": {
+      "types": "./dist/protocol/resource-bounds.d.ts",
+      "import": "./dist/protocol/resource-bounds.js"
+    },
+    "./provider": {
+      "types": "./dist/provider.d.ts",
+      "import": "./dist/provider.js"
+    },
+    "./provider-decision": {
+      "types": "./dist/provider-decision.d.ts",
+      "import": "./dist/provider-decision.js"
+    },
+    "./registration": {
+      "types": "./dist/registration.d.ts",
+      "import": "./dist/registration.js"
+    },
+    "./tool": {
+      "types": "./dist/tool.d.ts",
+      "import": "./dist/tool.js"
+    }
+  },
+  "scripts": {
+    "build": "node scripts/clean-dist.mjs && tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "engines": {
+    "node": ">=26.8.1 <27",
+    "npm": ">=11.19.0"
+  }
+}

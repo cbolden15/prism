@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "owner": "Vora Technologies, LLC",
+  "reviewers": [
+    {
+      "principal": "pnh:independent-reviewer",
+      "role": "independent-reviewer",
+      "key_id": "pnh-reviewer-2026-08-28",
+      "public_key_pem": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAAJgpB7AUQA6SUBzVCKS/Qc75/XeVS/tJdRbIU5mP0uU=\n-----END PUBLIC KEY-----\n"
+    },
+    {
+      "principal": "pnh:independent-reviewer",
+      "role": "independent-reviewer",
+      "key_id": "pnh-reviewer-2026-09-03-oss-release",
+      "public_key_pem": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEA3q292JesY1HjFCYSEkItYJ8MFmXGsv9+onFwea9qT7A=\n-----END PUBLIC KEY-----\n"
+    }
+  ]
+}

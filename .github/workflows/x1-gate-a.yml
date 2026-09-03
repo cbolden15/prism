@@ -1,0 +1,73 @@
+name: Prism X1 Firecracker B4
+
+on:
+  pull_request:
+    paths:
+      - pnh/x1-firecracker/**
+      - x1/tests/prism-b4-contract.test.ts
+      - x1/tests/run-prism-b4-b0.sh
+      - package.json
+      - package-lock.json
+      - .node-version
+      - .github/workflows/x1-gate-a.yml
+  push:
+    branches: [main]
+    paths:
+      - pnh/x1-firecracker/**
+      - x1/tests/prism-b4-contract.test.ts
+      - x1/tests/run-prism-b4-b0.sh
+      - package.json
+      - package-lock.json
+      - .node-version
+      - .github/workflows/x1-gate-a.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  milestone-0:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/setup-node@3d7870f6218881292d183093179901ae8dc2ef85
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: sudo apt-get update && sudo apt-get install --yes fuse-overlayfs podman ripgrep slirp4netns uidmap xz-utils
+      - run: npm ci
+      - name: Check B4 scripts
+        run: |
+          bash -n x1/tests/run-prism-b4-b0.sh pnh/x1-firecracker/b0/*.sh
+          for file in pnh/x1-firecracker/b0/*.mjs; do node --check "$file"; done
+      - name: Run Prism B4 Milestone 0 profiles inside qualified B0
+        run: x1/tests/run-prism-b4-b0.sh milestone0
+      - name: Retain sanitized Prism B4 evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: prism-b4-b0-${{ github.sha }}
+          path: ${{ runner.temp }}/prism-b4-b0-artifacts
+          if-no-files-found: error
+          retention-days: 14
+
+  qemu-rehearsal:
+    if: github.event_name != 'pull_request'
+    needs: milestone-0
+    runs-on: [self-hosted, linux, x64, x1-gate-a-kvm]
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/setup-node@3d7870f6218881292d183093179901ae8dc2ef85
+        with:
+          node-version-file: .node-version
+          cache: npm
+      - run: npm ci
+      - name: Confirm dedicated KVM access
+        run: |
+          test -c /dev/kvm
+          test -r /dev/kvm
+          test -w /dev/kvm
+      - name: Rehearse B4 Milestone 0 on the dedicated KVM runner
+        run: x1/tests/run-prism-b4-b0.sh milestone0

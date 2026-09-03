@@ -1,0 +1,25 @@
+name: Feature request
+description: Propose a focused Prism improvement.
+title: "feat: "
+labels:
+  - enhancement
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What concrete workflow is blocked or harder than necessary?
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired outcome
+      description: Describe observable behavior, not only an implementation.
+    validations:
+      required: true
+  - type: textarea
+    id: boundaries
+    attributes:
+      label: Trust or compatibility impact
+      description: Note any provider, plugin, policy, data, or public API impact.

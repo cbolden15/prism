@@ -1,0 +1,5 @@
+[toolchain]
+channel = "1.98.0-x86_64-unknown-linux-gnu"
+components = ["cargo", "rustc"]
+profile = "minimal"
+targets = ["x86_64-unknown-linux-musl"]

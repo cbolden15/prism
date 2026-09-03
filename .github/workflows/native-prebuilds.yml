@@ -1,0 +1,172 @@
+name: Native prebuild reproducibility
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  rebuild-darwin:
+    runs-on: macos-26
+    timeout-minutes: 30
+    env:
+      DEVELOPER_DIR: /Applications/Xcode_26.6.app/Contents/Developer
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version-file: .node-version
+      - name: Verify pinned runtime and committed prebuilds
+        shell: bash
+        run: |
+          test "$(node --version)" = "v26.8.1"
+          test "$(npm --version)" = "11.19.0"
+          node packages/cli/native/verify-prebuilds.mjs
+      - name: Rebuild Darwin prebuilds
+        shell: bash
+        run: node packages/cli/native/build-prebuilds.mjs --family darwin --output-root "${RUNNER_TEMP}/native-prebuilds"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: native-prebuilds-darwin-candidate
+          path: |
+            ${{ runner.temp }}/native-prebuilds/darwin-arm64/prism_authoring.node
+            ${{ runner.temp }}/native-prebuilds/darwin-x64/prism_authoring.node
+            ${{ runner.temp }}/native-prebuilds/provenance.json
+          if-no-files-found: error
+          retention-days: 7
+      - name: Compare Darwin prebuilds
+        shell: bash
+        run: node packages/cli/native/compare-prebuilds.mjs --family darwin --rebuilt-root "${RUNNER_TEMP}/native-prebuilds"
+
+  exercise-darwin-x64:
+    needs: rebuild-darwin
+    runs-on: macos-26-intel
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version-file: .node-version
+      - uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6
+        with:
+          name: native-prebuilds-darwin-candidate
+          path: ${{ runner.temp }}/native-prebuilds
+      - name: Compare and load-test the Darwin x64 prebuild
+        shell: bash
+        run: |
+          test "$(node --version)" = "v26.8.1"
+          test "$(npm --version)" = "11.19.0"
+          test "$(node -p process.arch)" = "x64"
+          node packages/cli/native/compare-prebuilds.mjs --family darwin --rebuilt-root "${RUNNER_TEMP}/native-prebuilds"
+          node packages/cli/native/exercise-addon.cjs "${RUNNER_TEMP}/native-prebuilds/darwin-x64/prism_authoring.node"
+
+  rebuild-linux:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version-file: .node-version
+      - uses: docker/setup-qemu-action@1f40c72289eff860ee54a304f1438e3cff362e0a # v4
+        with:
+          image: docker.io/tonistiigi/binfmt:qemu-v10.2.3@sha256:400a4873b838d1b89194d982c45e5fb3cda4593fbfd7e08a02e76b03b21166f0
+          platforms: arm64
+      - uses: docker/setup-buildx-action@37fe631027851001ddb9b187196cc803df7f5f0e # v4
+        with:
+          version: v0.36.1
+          driver-opts: image=docker.io/moby/buildkit:v0.30.0@sha256:0168606be2315b7c807a03b3d8aa79beefdb31c98740cebdffdfeebf31190c9f
+      - name: Verify pinned runtime and committed prebuilds
+        shell: bash
+        run: |
+          test "$(node --version)" = "v26.8.1"
+          test "$(npm --version)" = "11.19.0"
+          node packages/cli/native/verify-prebuilds.mjs
+      - name: Rebuild Linux prebuilds
+        shell: bash
+        run: node packages/cli/native/build-prebuilds.mjs --family linux --output-root "${RUNNER_TEMP}/native-prebuilds"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: native-prebuilds-linux-candidate
+          path: |
+            ${{ runner.temp }}/native-prebuilds/linux-arm64-gnu/prism_authoring.node
+            ${{ runner.temp }}/native-prebuilds/linux-arm64-musl/prism_authoring.node
+            ${{ runner.temp }}/native-prebuilds/linux-x64-gnu/prism_authoring.node
+            ${{ runner.temp }}/native-prebuilds/linux-x64-musl/prism_authoring.node
+            ${{ runner.temp }}/native-prebuilds/provenance.json
+          if-no-files-found: error
+          retention-days: 7
+      - name: Compare Linux prebuilds
+        shell: bash
+        run: node packages/cli/native/compare-prebuilds.mjs --family linux --rebuilt-root "${RUNNER_TEMP}/native-prebuilds"
+
+  verify-native-prebuilds:
+    needs: [exercise-darwin-x64, rebuild-linux]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version-file: .node-version
+      - uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6
+        with:
+          name: native-prebuilds-darwin-candidate
+          path: ${{ runner.temp }}/family-prebuilds/darwin
+      - uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6
+        with:
+          name: native-prebuilds-linux-candidate
+          path: ${{ runner.temp }}/family-prebuilds/linux
+      - name: Regenerate and compare the complete manifest
+        shell: bash
+        run: |
+          test "$(node --version)" = "v26.8.1"
+          test "$(npm --version)" = "11.19.0"
+          node packages/cli/native/assemble-prebuilds.mjs --darwin-root "${RUNNER_TEMP}/family-prebuilds/darwin" --linux-root "${RUNNER_TEMP}/family-prebuilds/linux" --output-root "${RUNNER_TEMP}/verified-prebuilds"
+          node packages/cli/native/write-prebuild-manifest.mjs --prebuilds-root "${RUNNER_TEMP}/verified-prebuilds"
+          node packages/cli/native/compare-prebuilds.mjs --family all --rebuilt-root "${RUNNER_TEMP}/verified-prebuilds"
+          node packages/cli/native/verify-prebuilds.mjs --prebuilds-root "${RUNNER_TEMP}/verified-prebuilds"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: native-prebuilds-verified
+          path: |
+            ${{ runner.temp }}/verified-prebuilds/darwin-arm64/prism_authoring.node
+            ${{ runner.temp }}/verified-prebuilds/darwin-x64/prism_authoring.node
+            ${{ runner.temp }}/verified-prebuilds/linux-arm64-gnu/prism_authoring.node
+            ${{ runner.temp }}/verified-prebuilds/linux-arm64-musl/prism_authoring.node
+            ${{ runner.temp }}/verified-prebuilds/linux-x64-gnu/prism_authoring.node
+            ${{ runner.temp }}/verified-prebuilds/linux-x64-musl/prism_authoring.node
+            ${{ runner.temp }}/verified-prebuilds/manifest.json
+            ${{ runner.temp }}/verified-prebuilds/provenance.json
+          if-no-files-found: error
+          retention-days: 7
+
+  attest:
+    if: github.ref == 'refs/heads/main' && github.event.repository.private == false && (github.event_name == 'workflow_dispatch' || github.event_name == 'push')
+    needs: verify-native-prebuilds
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      id-token: write
+      attestations: write
+      artifact-metadata: write
+    steps:
+      - uses: actions/download-artifact@018cc2cf5baa6db3ef3c5f8a56943fffe632ef53 # v6
+        with:
+          name: native-prebuilds-verified
+          path: ${{ runner.temp }}/verified-prebuilds
+      - uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4
+        with:
+          subject-path: |
+            ${{ runner.temp }}/verified-prebuilds/darwin-arm64/prism_authoring.node
+            ${{ runner.temp }}/verified-prebuilds/darwin-x64/prism_authoring.node
+            ${{ runner.temp }}/verified-prebuilds/linux-arm64-gnu/prism_authoring.node
+            ${{ runner.temp }}/verified-prebuilds/linux-arm64-musl/prism_authoring.node
+            ${{ runner.temp }}/verified-prebuilds/linux-x64-gnu/prism_authoring.node
+            ${{ runner.temp }}/verified-prebuilds/linux-x64-musl/prism_authoring.node

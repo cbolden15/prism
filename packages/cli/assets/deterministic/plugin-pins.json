@@ -1,0 +1,21 @@
+{
+  "version": "pnh-plugin-pins-v1",
+  "environment": "production",
+  "plugins": [
+    {
+      "id": "allow-text-stats",
+      "manifestDigest": "569084c3e667407a25ed821809830cba274b2cb8391bcaae7e24db26586cd746",
+      "sourceDigest": "370efce7260669d230d10a1103de278ada3b7f95472817f1530e3c4fd0f7b4bf"
+    },
+    {
+      "id": "local-scripted",
+      "manifestDigest": "c100d1a3e8c113af42c171ee2e1301c4282cef6eb7ecb0508f1cc4bb109ece35",
+      "sourceDigest": "b5c600ebc0dd2d3a350a4cfa4901b1452e87808529dc1e960a9111da4746f5b0"
+    },
+    {
+      "id": "text-stats",
+      "manifestDigest": "4bec75bc229bf8ea6ea538b3325d3b0f7ddc565729d51dd5a9999a30de33b0c3",
+      "sourceDigest": "b8c970e86598a674d8db957581c36adffc88114fc71456573011712045e8c751"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "version": "pnh-plugin-spawn-profile-v1",
+  "entrypointFrom": "manifest.entrypoint",
+  "cwd": "plugin-root",
+  "envAllowlist": ["HOME", "PATH"],
+  "environment": {
+    "NODE_OPTIONS": "--disable-proto=throw"
+  },
+  "uid": 10101,
+  "gid": 10101,
+  "uidGidEnforcement": "best-effort-typically-inert"
+}

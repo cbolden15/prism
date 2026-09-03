@@ -1,0 +1,224 @@
+{
+  "id": "2026-08-19-kernel-plan-1-notes",
+  "title": "Implementation notes — Provider-Neutral Harness Kernel Plan 1",
+  "subtitle": "Task 8 of 8 · complete · 2026-08-19 20:33",
+  "introTitle": "How to use",
+  "intro": "<p>Each item is a decision, deviation, or tradeoff made during implementation. <strong>Acknowledge</strong> if fine. <strong>Discuss</strong> to write what should change. <strong>Revert</strong> to flag for undo.</p>",
+  "actions": ["acknowledge", "discuss", "revert"],
+  "groups": [
+    {
+      "id": "task-4",
+      "label": "Task 4 — Capability grant validation",
+      "badge": "T4"
+    },
+    {
+      "id": "task-5",
+      "label": "Task 5 — At-most-once consume port",
+      "badge": "T5"
+    },
+    {
+      "id": "task-6",
+      "label": "Task 6 — Evidence hash chain",
+      "badge": "T6"
+    },
+    {
+      "id": "task-7",
+      "label": "Task 7 — Broker receipt validation",
+      "badge": "T7"
+    },
+    {
+      "id": "task-8",
+      "label": "Task 8 — Coverage gate and pipeline wiring",
+      "badge": "T8"
+    }
+  ],
+  "items": [
+    {
+      "id": "N1",
+      "group": "task-4",
+      "title": "Adapted grant tests to the Docker sandbox API",
+      "where": "pnh/tests/grant.test.ts",
+      "default": "acknowledge",
+      "body": {
+        "Spec said": "Load grant.ts through the superseded lockedCoreModule and lockedRealm helpers.",
+        "What I did": "Used sandboxCall and the worker-local SHA-256 port from the implemented Task 3 harness.",
+        "Why": "The committed harness is Docker-contained and has no locked-realm.ts compatibility layer.",
+        "Risk": "The public Task 4 core interfaces are unchanged; only the test transport differs."
+      }
+    },
+    {
+      "id": "N2",
+      "group": "task-4",
+      "title": "Made coverage aggregation incremental under the fixed memory ceiling",
+      "where": "pnh/harness/sandbox/container-entrypoint.mjs",
+      "default": "acknowledge",
+      "body": {
+        "Spec said": "Run every fresh-worker core test under c8 --all --100 inside a 256 MB container.",
+        "What I did": "Enabled c8's built-in --merge-async mode, then closed the four legitimate grant coverage gaps. The combined gate now passes at 100%.",
+        "Why": "Task 4 adds many fresh workers, each producing raw V8 coverage; the current single aggregation process no longer fits the accepted memory limit.",
+        "Risk": "The sandbox remains fixed at 256 MB and every core call still uses a fresh worker; only c8's raw-report merge strategy changed."
+      }
+    },
+    {
+      "id": "N3",
+      "group": "task-4",
+      "title": "Implementation complete",
+      "where": "Task 4 verification",
+      "default": "acknowledge",
+      "action": "acknowledge",
+      "body": {
+        "What I did": "Implemented capability-grant validation and verified the complete PNH and X1 suites.",
+        "Followup": "PNH: 21 tests with 100% statements, branches, functions, and lines. X1: 169 tests passed."
+      }
+    },
+    {
+      "id": "N4",
+      "group": "task-5",
+      "title": "Made consume failures consistently asynchronous",
+      "where": "pnh/adapters/memory-ledger.ts",
+      "default": "acknowledge",
+      "body": {
+        "Spec said": "Return a Promise from consume and reject ambiguous storage failures.",
+        "What I did": "Declared MemoryReplayLedger.consume async so an injected storage failure becomes a rejected Promise.",
+        "Why": "Calling the failure hook before constructing a Promise threw synchronously and broke the port's asynchronous contract.",
+        "Risk": "None for callers using await. The change makes failure behavior match ReplayLedger.consume."
+      }
+    },
+    {
+      "id": "N5",
+      "group": "task-5",
+      "title": "Tested the runtime protocol through the sandbox",
+      "where": "pnh/core/consume.ts and pnh/tests/consume.test.ts",
+      "default": "acknowledge",
+      "body": {
+        "What I did": "Kept the canonical decision constant in core and exposed a pure consumeDecisions function so the test can read it through sandboxCall.",
+        "Why": "The first implementation imported the constant directly. The authoritative harness rejected that runtime core import, as designed.",
+        "Risk": "The core gains one read-only helper. Tests retain the rule that every runtime core access runs in a fresh worker."
+      }
+    },
+    {
+      "id": "N6",
+      "group": "task-5",
+      "title": "Implementation complete",
+      "where": "Task 5 verification",
+      "default": "acknowledge",
+      "action": "acknowledge",
+      "body": {
+        "What I did": "Implemented the at-most-once consume port, in-memory reference adapter, and T22 conformance coverage.",
+        "Followup": "PNH: 27 tests with 100% statements, branches, functions, and lines. X1: 169 tests passed."
+      }
+    },
+    {
+      "id": "N7",
+      "group": "task-6",
+      "title": "Adapted evidence tests to the Docker sandbox API",
+      "where": "pnh/tests/evidence.test.ts",
+      "default": "acknowledge",
+      "body": {
+        "Spec said": "Load evidence.ts through the superseded lockedCoreModule and lockedRealm helpers.",
+        "What I did": "Used sandboxCall with the worker-local SHA-256 fixture, keeping every runtime core load in a fresh worker.",
+        "Why": "The implemented Task 3 harness replaced the locked-realm API with the Docker-contained worker boundary.",
+        "Risk": "The public evidence interfaces are unchanged; only the test transport differs."
+      }
+    },
+    {
+      "id": "N8",
+      "group": "task-6",
+      "title": "Moved raw coverage reports to an ephemeral volume",
+      "where": "pnh/harness/run-sandbox.mjs and pnh/harness/sandbox",
+      "default": "acknowledge",
+      "body": {
+        "What I did": "Mounted an anonymous Docker volume at /coverage and kept reports under /coverage/raw.",
+        "Why": "All 35 tests and 100% coverage completed, but accumulated V8 reports filled the 256 MB /tmp filesystem before c8 could write its summary.",
+        "Risk": "The volume is temporary and has no host-path binding. The container remains read-only, networkless, and capped at 256 MB of memory."
+      }
+    },
+    {
+      "id": "N9",
+      "group": "task-6",
+      "title": "Implementation complete",
+      "where": "Task 6 verification",
+      "default": "acknowledge",
+      "action": "acknowledge",
+      "body": {
+        "What I did": "Implemented the tamper-evident evidence hash chain with checkpoint, sequence, link, digest, and injected-hash validation.",
+        "Followup": "PNH: 35 tests with 100% statements, branches, functions, and lines. X1: 169 tests passed."
+      }
+    },
+    {
+      "id": "N10",
+      "group": "task-7",
+      "title": "Adapted broker tests to the Docker sandbox API",
+      "where": "pnh/tests/broker.test.ts",
+      "default": "acknowledge",
+      "body": {
+        "Spec said": "Load broker.ts through the superseded lockedCoreModule and lockedRealm helpers.",
+        "What I did": "Used sandboxCall and its local record fixtures, keeping each broker validation in a fresh worker.",
+        "Why": "The implemented Task 3 harness replaced the locked-realm API with the Docker-contained worker boundary.",
+        "Risk": "The public broker interfaces are unchanged; only the test transport differs."
+      }
+    },
+    {
+      "id": "N11",
+      "group": "task-7",
+      "title": "Non-finite telemetry fails at the JSON boundary",
+      "where": "pnh/tests/broker.test.ts",
+      "default": "acknowledge",
+      "body": {
+        "Spec said": "Reject non-finite duration values in broker receipt validation.",
+        "What I did": "Asserted that the sandbox rejects NaN before core execution and separately covered negative, fractional, string, missing, and null telemetry inside core.",
+        "Why": "The JSON-only worker boundary cannot serialize non-finite numbers. Core retains its Number.isFinite check for direct typed callers.",
+        "Risk": "None at the sandbox boundary; malformed non-finite values fail earlier than the receipt reject-code layer."
+      }
+    },
+    {
+      "id": "N12",
+      "group": "task-7",
+      "title": "Implementation complete",
+      "where": "Task 7 verification",
+      "default": "acknowledge",
+      "action": "acknowledge",
+      "body": {
+        "What I did": "Implemented exact broker receipt validation for identity, digests, telemetry, schema shape, and normalized-copy isolation.",
+        "Followup": "PNH: 46 tests with 100% statements, branches, functions, and lines. X1: 169 tests passed."
+      }
+    },
+    {
+      "id": "N13",
+      "group": "task-8",
+      "title": "Reused the authoritative coverage command",
+      "where": "package.json",
+      "default": "acknowledge",
+      "body": {
+        "Spec said": "Wire npm run test:pnh to the authoritative Docker-contained test and coverage gate.",
+        "What I did": "Confirmed the existing test:pnh script already invokes node pnh/harness/run-sandbox.mjs, so no package.json change was needed.",
+        "Why": "Tasks 3 and 4 established the final sandbox runner before Task 8.",
+        "Risk": "None. CI calls the same command verified locally."
+      }
+    },
+    {
+      "id": "N14",
+      "group": "task-8",
+      "title": "Proved the coverage gate fails closed",
+      "where": "Temporary probes in pnh/core",
+      "default": "acknowledge",
+      "body": {
+        "What I did": "Temporarily added one uncovered branch and one unimported TypeScript source file. The authoritative command failed on both, then returned to 100% after the probes were removed.",
+        "Why": "A passing baseline alone would not prove that --all includes untouched source files or that branch coverage is enforced.",
+        "Risk": "None. Both probes were removed before the final verification run."
+      }
+    },
+    {
+      "id": "N15",
+      "group": "task-8",
+      "title": "Implementation complete",
+      "where": "Task 8 verification",
+      "default": "acknowledge",
+      "action": "acknowledge",
+      "body": {
+        "What I did": "Added the PNH contributor guide and the isolated push and pull-request CI workflow, then verified its YAML structure and command wiring.",
+        "Followup": "PNH: 46 tests with 100% statements, branches, functions, and lines. X1: 169 tests passed. All 8 kernel-plan tasks are complete."
+      }
+    }
+  ]
+}

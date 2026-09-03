@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "owner": "Vora Technologies, LLC",
+  "runners": [
+    {
+      "principal": "pnh:constitution-runner",
+      "role": "proof-producer",
+      "key_id": "pnh-runner-2026-08-28",
+      "public_key_pem": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEAqAHcbVhwMoVrkUwpE2/xZlcR/VS14bC+HGuVoE/uLNU=\n-----END PUBLIC KEY-----\n"
+    },
+    {
+      "principal": "pnh:constitution-runner",
+      "role": "proof-producer",
+      "key_id": "pnh-runner-2026-09-03-oss-release",
+      "public_key_pem": "-----BEGIN PUBLIC KEY-----\nMCowBQYDK2VwAyEA7DzSVTJl7eVl7815e1weJREHxUH5/EBla6XYvmBBmYM=\n-----END PUBLIC KEY-----\n"
+    }
+  ]
+}

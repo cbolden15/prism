@@ -1,0 +1,55 @@
+{
+  "defaultAction": "SCMP_ACT_ALLOW",
+  "defaultErrnoRet": 1,
+  "archMap": [
+    {
+      "architecture": "SCMP_ARCH_X86_64",
+      "subArchitectures": ["SCMP_ARCH_X86", "SCMP_ARCH_X32"]
+    },
+    {
+      "architecture": "SCMP_ARCH_AARCH64",
+      "subArchitectures": ["SCMP_ARCH_ARM"]
+    }
+  ],
+  "syscalls": [
+    {
+      "names": [
+        "acct",
+        "bpf",
+        "delete_module",
+        "fanotify_init",
+        "finit_module",
+        "fsconfig",
+        "fsmount",
+        "fsopen",
+        "fspick",
+        "init_module",
+        "kexec_file_load",
+        "kexec_load",
+        "lookup_dcookie",
+        "mount",
+        "move_mount",
+        "open_by_handle_at",
+        "open_tree",
+        "perf_event_open",
+        "pivot_root",
+        "process_vm_readv",
+        "process_vm_writev",
+        "ptrace",
+        "quotactl",
+        "reboot",
+        "setdomainname",
+        "sethostname",
+        "setns",
+        "swapon",
+        "swapoff",
+        "syslog",
+        "umount",
+        "umount2",
+        "unshare",
+        "userfaultfd"
+      ],
+      "action": "SCMP_ACT_ERRNO"
+    }
+  ]
+}

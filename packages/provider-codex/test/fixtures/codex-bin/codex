@@ -1,0 +1,15 @@
+#!/usr/bin/env node
+import { writeFileSync } from "node:fs";
+
+const args = process.argv.slice(2);
+const outputIndex = args.indexOf("--output-last-message");
+const outputPath = args[outputIndex + 1];
+if (args[0] !== "exec" || outputIndex < 0 || outputPath === undefined || args.at(-1) !== "-") {
+  process.stderr.write("unexpected mocked codex invocation\n");
+  process.exit(2);
+}
+
+process.stdin.setEncoding("utf8");
+let prompt = "";
+for await (const chunk of process.stdin) prompt += chunk;
+writeFileSync(outputPath, `MOCK_CODEX:${prompt}`);

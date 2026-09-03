@@ -1,0 +1,10 @@
+{
+  "version": "prism-phase-5-live-attempt-v1",
+  "workstream": "20260830-prism-phase-5-onboarding-release-143e51",
+  "ordinal": 1,
+  "model": "qwen2.5:14b",
+  "startedAt": "2026-08-31T05:06:33.885Z",
+  "finishedAt": "2026-08-31T05:06:55.972Z",
+  "result": "passed",
+  "evidenceSha256": "c5a72cae926c5a7f3485f7cfb60ad395d9640bde3de8fbbc479ea3d29f942e53"
+}

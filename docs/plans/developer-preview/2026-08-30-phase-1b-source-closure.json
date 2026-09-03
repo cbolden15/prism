@@ -1,0 +1,242 @@
+{
+  "version": 1,
+  "sourceRoots": [
+    "pnh/adapters",
+    "pnh/contracts",
+    "pnh/core",
+    "pnh/registry",
+    "pnh/scripts"
+  ],
+  "entries": [
+    {
+      "source": "pnh/adapters/docker-broker-plugin-container.ts",
+      "destination": "packages/runtime/src/adapters/docker-broker-plugin-container.ts",
+      "owner": "@prism-harness/runtime",
+      "action": "move"
+    },
+    {
+      "source": "pnh/adapters/memory-ledger.ts",
+      "destination": "packages/runtime/test/support/memory-ledger.ts",
+      "owner": "@prism-harness/runtime-test",
+      "action": "move"
+    },
+    {
+      "source": "pnh/contracts/conforms-to.ts",
+      "destination": "assurance/constitution/contracts/conforms-to.ts",
+      "owner": "constitution-assurance",
+      "action": "move"
+    },
+    {
+      "source": "pnh/contracts/coverage.ts",
+      "destination": "assurance/constitution/contracts/coverage.ts",
+      "owner": "constitution-assurance",
+      "action": "move"
+    },
+    {
+      "source": "pnh/contracts/execution-runner-trust.json",
+      "destination": "assurance/constitution/contracts/execution-runner-trust.json",
+      "owner": "constitution-assurance",
+      "action": "move"
+    },
+    {
+      "source": "pnh/contracts/invariant-transition.ts",
+      "destination": "assurance/constitution/contracts/invariant-transition.ts",
+      "owner": "constitution-assurance",
+      "action": "move"
+    },
+    {
+      "source": "pnh/contracts/invariants.lock",
+      "destination": "assurance/constitution/contracts/invariants.lock",
+      "owner": "constitution-assurance",
+      "action": "move"
+    },
+    {
+      "source": "pnh/contracts/invariants.yaml",
+      "destination": "assurance/constitution/contracts/invariants.yaml",
+      "owner": "constitution-assurance",
+      "action": "move"
+    },
+    {
+      "source": "pnh/contracts/plugin-pins.json",
+      "destination": "packages/cli/assets/deterministic/plugin-pins.json",
+      "owner": "@prism-harness/cli",
+      "action": "move"
+    },
+    {
+      "source": "pnh/contracts/proof-report.ts",
+      "destination": "assurance/constitution/contracts/proof-report.ts",
+      "owner": "constitution-assurance",
+      "action": "move"
+    },
+    {
+      "source": "pnh/contracts/proof-targets.json",
+      "destination": "assurance/constitution/contracts/proof-targets.json",
+      "owner": "constitution-assurance",
+      "action": "move"
+    },
+    {
+      "source": "pnh/contracts/public-claims.ts",
+      "destination": "assurance/constitution/contracts/public-claims.ts",
+      "owner": "constitution-assurance",
+      "action": "move"
+    },
+    {
+      "source": "pnh/contracts/public-claims.yaml",
+      "destination": "assurance/constitution/contracts/public-claims.yaml",
+      "owner": "constitution-assurance",
+      "action": "move"
+    },
+    {
+      "source": "pnh/contracts/ratification-baselines/plan-a-v1.json",
+      "destination": "assurance/constitution/contracts/ratification-baselines/plan-a-v1.json",
+      "owner": "constitution-assurance",
+      "action": "move"
+    },
+    {
+      "source": "pnh/contracts/registry.ts",
+      "destination": "assurance/constitution/contracts/registry.ts",
+      "owner": "constitution-assurance",
+      "action": "move"
+    },
+    {
+      "source": "pnh/contracts/resource-bounds.d.mts",
+      "destination": "packages/sdk/src/protocol/resource-bounds.ts",
+      "owner": "@prism-harness/sdk",
+      "action": "merge",
+      "mergeGroup": "resource-bounds"
+    },
+    {
+      "source": "pnh/contracts/resource-bounds.mjs",
+      "destination": "packages/sdk/src/protocol/resource-bounds.ts",
+      "owner": "@prism-harness/sdk",
+      "action": "merge",
+      "mergeGroup": "resource-bounds"
+    },
+    {
+      "source": "pnh/contracts/reviewer-trust.json",
+      "destination": "assurance/constitution/contracts/reviewer-trust.json",
+      "owner": "constitution-assurance",
+      "action": "move"
+    },
+    {
+      "source": "pnh/contracts/transition-authority.ts",
+      "destination": "assurance/constitution/contracts/transition-authority.ts",
+      "owner": "constitution-assurance",
+      "action": "move"
+    },
+    {
+      "source": "pnh/core/broker.ts",
+      "destination": "packages/runtime/src/core/broker.ts",
+      "owner": "@prism-harness/runtime",
+      "action": "move"
+    },
+    {
+      "source": "pnh/core/capability-catalog.ts",
+      "destination": "packages/runtime/src/core/capability-catalog.ts",
+      "owner": "@prism-harness/runtime",
+      "action": "move"
+    },
+    {
+      "source": "pnh/core/consume.ts",
+      "destination": "packages/runtime/src/core/consume.ts",
+      "owner": "@prism-harness/runtime",
+      "action": "move"
+    },
+    {
+      "source": "pnh/core/evidence.ts",
+      "destination": "packages/runtime/src/core/evidence.ts",
+      "owner": "@prism-harness/runtime",
+      "action": "move"
+    },
+    {
+      "source": "pnh/core/grant.ts",
+      "destination": "packages/runtime/src/core/grant.ts",
+      "owner": "@prism-harness/runtime",
+      "action": "move"
+    },
+    {
+      "source": "pnh/core/plugin-grant.ts",
+      "destination": "packages/runtime/src/core/plugin-grant.ts",
+      "owner": "@prism-harness/runtime",
+      "action": "move"
+    },
+    {
+      "source": "pnh/core/plugin-set.ts",
+      "destination": "packages/runtime/src/core/plugin-set.ts",
+      "owner": "@prism-harness/runtime",
+      "action": "move"
+    },
+    {
+      "source": "pnh/core/result.ts",
+      "destination": "packages/runtime/src/core/result.ts",
+      "owner": "@prism-harness/runtime",
+      "action": "move"
+    },
+    {
+      "source": "pnh/core/runtime-event.ts",
+      "destination": "packages/runtime/src/core/runtime-event.ts",
+      "owner": "@prism-harness/runtime",
+      "action": "move"
+    },
+    {
+      "source": "pnh/core/task.ts",
+      "destination": "packages/runtime/src/core/task.ts",
+      "owner": "@prism-harness/runtime",
+      "action": "move"
+    },
+    {
+      "source": "pnh/core/timestamp.ts",
+      "destination": "packages/runtime/src/core/timestamp.ts",
+      "owner": "@prism-harness/runtime",
+      "action": "move"
+    },
+    {
+      "source": "pnh/registry/schema.ts",
+      "destination": "packages/sdk/src/manifest/registry.ts",
+      "owner": "@prism-harness/sdk",
+      "action": "move"
+    },
+    {
+      "source": "pnh/scripts/build-plugin-image.ts",
+      "destination": "packages/runtime/test/support/build-plugin-image.ts",
+      "owner": "@prism-harness/runtime-test",
+      "action": "move"
+    },
+    {
+      "source": "pnh/scripts/check-module-graph.ts",
+      "destination": "packages/runtime/scripts/check-module-graph.ts",
+      "owner": "@prism-harness/runtime",
+      "action": "move"
+    },
+    {
+      "source": "pnh/scripts/check-public-claims.ts",
+      "destination": "assurance/constitution/scripts/check-public-claims.ts",
+      "owner": "constitution-assurance",
+      "action": "move"
+    },
+    {
+      "source": "pnh/scripts/generate-constitution.ts",
+      "destination": "assurance/constitution/scripts/generate-constitution.ts",
+      "owner": "constitution-assurance",
+      "action": "move"
+    },
+    {
+      "source": "pnh/scripts/generate-plugin-registry.ts",
+      "destination": "packages/sdk/src/node/generate-plugin-registry.ts",
+      "owner": "@prism-harness/sdk",
+      "action": "move"
+    },
+    {
+      "source": "pnh/scripts/generate-proof-report.ts",
+      "destination": "assurance/constitution/scripts/generate-proof-report.ts",
+      "owner": "constitution-assurance",
+      "action": "move"
+    },
+    {
+      "source": "pnh/scripts/run-test-events.ts",
+      "destination": "assurance/constitution/scripts/run-test-events.ts",
+      "owner": "constitution-assurance",
+      "action": "move"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+version: 1
+surfaces:
+  - pnh/tests/fixtures/constitution/public-claim-surface.md
+claims:
+  - id: PNH-CLAIM-01
+    file: pnh/tests/fixtures/constitution/public-claim-surface.md
+    posture: supported
+    text_digest: sha256:2ddec46ca3ef5b78b4efe5f0bf75225e042c70de130d592332154b6973bc6d4d
+    invariants: [PNH-INV-02]
+    execution_classes: []
+    evidence_environments: [developer-macos]
+    release_scope: private-incubation
+  - id: PNH-CLAIM-02
+    file: pnh/tests/fixtures/constitution/public-claim-surface.md
+    posture: limitation
+    text_digest: sha256:aa72dfe3a05d9eafb05668d38d5d911b214712565ab0bc0b6df26cdcf7c3399d
+    invariants: [PNH-INV-25]
+    execution_classes: [trusted-subprocess-v1]
+    evidence_environments: [none]
+    release_scope: private-incubation

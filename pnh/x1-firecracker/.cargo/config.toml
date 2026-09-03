@@ -1,0 +1,22 @@
+[build]
+target = "x86_64-unknown-linux-musl"
+
+[net]
+offline = true
+
+[source.crates-io]
+replace-with = "vendored-sources"
+
+[source.vendored-sources]
+directory = "vendor"
+
+[target.x86_64-unknown-linux-musl]
+linker = "rust-lld"
+rustflags = [
+  "-C",
+  "link-self-contained=yes",
+  "-C",
+  "relocation-model=pic",
+  "-C",
+  "target-feature=+crt-static",
+]

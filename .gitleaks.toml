@@ -1,0 +1,17 @@
+title = "Prism Gitleaks configuration"
+minVersion = "8.30.0"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "OperationKeyV1 TypeScript declarations in adopted AGE contract documents"
+targetRules = ["generic-api-key"]
+condition = "AND"
+regexTarget = "match"
+paths = [
+  '''(?:^|/)docs/plans/provider-neutral-harness/2026-08-27-prism-harness-age-(?:2-run-coordination|3-effect-authority|5-human-decision-and-completion)-contract-spec\.md$''',
+]
+regexes = [
+  '''[A-Za-z]*[Oo]perationKey:\s*OperationKeyV1;?''',
+]

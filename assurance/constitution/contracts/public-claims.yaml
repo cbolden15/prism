@@ -1,0 +1,208 @@
+# Handwritten public-claim manifest.
+#
+# Every registered block in a public surface binds a claim ID, the sha256
+# digest of its deterministically normalized Markdown, the file it lives in,
+# its backing invariant IDs, a posture, the execution classes it applies to,
+# the environments its evidence comes from, and its release scope.
+#
+# Postures:
+#   supported  — the block asserts behavior the project stands behind. Every
+#                backing invariant must be ratified, proven, and non-deferred.
+#   planned    — the block describes a mechanism that exists or is intended
+#                but whose invariants are not yet proven. No support is claimed.
+#   limitation — the block states what the project does not provide, or bounds
+#                a mechanism's guarantee.
+#   deferred   — the block covers an invariant whose first-release disposition
+#                is `defer`. Its text must not present the behavior as available.
+#
+# Generated constitution blocks are checked by regeneration and are never
+# registered here.
+version: 1
+surfaces:
+  - README.md
+  - docs/assurance/README.md
+  - docs/developer-preview/command-reference.md
+  - docs/developer-preview/concepts.md
+  - docs/developer-preview/data-and-trust.md
+  - docs/developer-preview/diagnostics.md
+  - docs/developer-preview/getting-started.md
+  - docs/developer-preview/plugin-authoring.md
+  - docs/releases/developer-preview/README.md
+  - pnh/README.md
+claims:
+  - id: PNH-CLAIM-01
+    file: pnh/README.md
+    posture: limitation
+    text_digest: sha256:9dbb8661a2d5b7741bff4cee23252b1f95129daf2fb7f535337ff12ba2aecd27
+    invariants: [PNH-INV-17, PNH-INV-20]
+    execution_classes: []
+    evidence_environments: [none]
+    release_scope: public-release
+  - id: PNH-CLAIM-02
+    file: pnh/README.md
+    posture: supported
+    text_digest: sha256:e0795fffad687288fc76063e0b7eacdea96c062d7550c8cd0b83a50084deba9b
+    invariants: [PNH-INV-18]
+    execution_classes: []
+    evidence_environments: [developer-macos]
+    release_scope: public-release
+  - id: PNH-CLAIM-03
+    file: pnh/README.md
+    posture: supported
+    text_digest: sha256:2e0d18e50209c3a37616a06cedb06fcb54475f36d6989784865401ea0c1993b6
+    invariants: [PNH-INV-18]
+    execution_classes: []
+    evidence_environments: [developer-macos]
+    release_scope: public-release
+  - id: PNH-CLAIM-04
+    file: pnh/README.md
+    posture: limitation
+    text_digest: sha256:e479bb8a7319308f3c6b1db3d3b1984822639730a64876cc376a7a6e103b17a9
+    invariants: [PNH-INV-25]
+    execution_classes: []
+    evidence_environments: [none]
+    release_scope: public-release
+  - id: PNH-CLAIM-05
+    file: pnh/README.md
+    posture: planned
+    text_digest: sha256:ce13e1030c15c2f4ed41cb05e685a74854c250bcbbb15723431f3574016d3958
+    invariants: [PNH-INV-13, PNH-INV-14]
+    execution_classes: [trusted-subprocess-v1]
+    evidence_environments: [developer-macos]
+    release_scope: public-release
+  - id: PNH-CLAIM-06
+    file: pnh/README.md
+    posture: limitation
+    text_digest: sha256:9f60e27cf9bbd81eb4f874e7c6d30d058894e290da5a7ffa64963e5e25657e84
+    invariants: [PNH-INV-25, PNH-INV-27]
+    execution_classes: [trusted-subprocess-v1]
+    evidence_environments: [none]
+    release_scope: public-release
+  - id: PNH-CLAIM-07
+    file: pnh/README.md
+    posture: planned
+    text_digest: sha256:be1f7a429c83026d140c392e8c863756af5de6dd91ffd05dcca047093a1d0b41
+    invariants: [PNH-INV-25, PNH-INV-27]
+    execution_classes: [container-isolated-v1]
+    evidence_environments: [docker-linux-container]
+    release_scope: public-release
+  - id: PNH-CLAIM-08
+    file: pnh/README.md
+    posture: limitation
+    text_digest: sha256:0ec642bce81a528618aea23d06faf74be6f08c14b8a1ca98e605fc49adc8b363
+    invariants: [PNH-INV-25, PNH-INV-27]
+    execution_classes: [trusted-subprocess-v1]
+    evidence_environments: [developer-macos]
+    release_scope: public-release
+  - id: PNH-CLAIM-09
+    file: pnh/README.md
+    posture: planned
+    text_digest: sha256:75c2a9eef37d9d1b305233db394c75ed88586f223c37423692b6a2db8d7df952
+    invariants: [PNH-INV-29]
+    execution_classes: [container-isolated-v1, trusted-subprocess-v1]
+    evidence_environments: [developer-macos]
+    release_scope: public-release
+  - id: PNH-CLAIM-10
+    file: pnh/README.md
+    posture: limitation
+    text_digest: sha256:1536c8d98e6f136e011dda640b24cb0564849ed1e75a7c5d144f7f178a123965
+    invariants: [PNH-INV-29]
+    execution_classes: [container-isolated-v1, trusted-subprocess-v1]
+    evidence_environments: [developer-macos]
+    release_scope: public-release
+  - id: PNH-CLAIM-11
+    file: pnh/README.md
+    posture: limitation
+    text_digest: sha256:9124c0d23063232d22d72942903398d181f7cc96d2ea4192ab2811cb04076d63
+    invariants: [PNH-INV-12]
+    execution_classes: [trusted-subprocess-v1]
+    evidence_environments: [developer-macos]
+    release_scope: public-release
+  - id: PNH-CLAIM-12
+    file: pnh/README.md
+    posture: limitation
+    text_digest: sha256:87afcf14a11e4b3a43670006b7ec6e441dbeed53be8887b6fe0a5b52aa31a20b
+    invariants: [PNH-INV-29]
+    execution_classes: []
+    evidence_environments: [none]
+    release_scope: public-release
+  - id: PNH-CLAIM-13
+    file: pnh/README.md
+    posture: planned
+    text_digest: sha256:785393f45e8cb18c53a457da327de9255b461a7e5788005022bb4878076865e3
+    invariants: [PNH-INV-12, PNH-INV-25, PNH-INV-27]
+    execution_classes: []
+    evidence_environments: [developer-macos, docker-linux-container]
+    release_scope: public-release
+  - id: PNH-CLAIM-14
+    file: pnh/README.md
+    posture: limitation
+    text_digest: sha256:b21da2515abeea88d3f614f8db5c25013b3bad5f5df566f2ecf642d30dd69dd8
+    invariants: [PNH-INV-09, PNH-INV-13]
+    execution_classes: [trusted-subprocess-v1]
+    evidence_environments: [developer-macos]
+    release_scope: public-release
+  - id: PNH-CLAIM-15
+    file: pnh/README.md
+    posture: planned
+    text_digest: sha256:5760ceab720c6e536a0892f9d3316e984017a83cb6f415769e1f8cbc2dace329
+    invariants: [PNH-INV-29]
+    execution_classes: [trusted-subprocess-v1]
+    evidence_environments: [developer-macos]
+    release_scope: public-release
+  - id: PNH-CLAIM-16
+    file: pnh/README.md
+    posture: planned
+    text_digest: sha256:36d845d9f6164f4c76a7a12a8321507d878a527f72f35d317f620b0094fd6e66
+    invariants: []
+    execution_classes: [trusted-subprocess-v1]
+    evidence_environments: [developer-macos]
+    release_scope: public-release
+  - id: PNH-CLAIM-17
+    file: README.md
+    posture: limitation
+    text_digest: sha256:f2e55ecad86a9176ee808de661d0a4476c593e78d48ff29cf8edd3f41efb606d
+    invariants: [PNH-INV-17, PNH-INV-20]
+    execution_classes: []
+    evidence_environments: [none]
+    release_scope: public-release
+  - id: PNH-CLAIM-18
+    file: docs/developer-preview/data-and-trust.md
+    posture: limitation
+    text_digest: sha256:256be046b27dc4bbac522f2c7f93407832acf138497397a8fee1f14267fc580b
+    invariants: []
+    execution_classes: []
+    evidence_environments: [developer-macos]
+    release_scope: public-release
+  - id: PNH-CLAIM-19
+    file: docs/developer-preview/data-and-trust.md
+    posture: limitation
+    text_digest: sha256:d4065903472a62b125183831f203c3503c663125d5c5c37bc17f1c5264fb0ecc
+    invariants: [PNH-INV-09, PNH-INV-12, PNH-INV-25, PNH-INV-27, PNH-INV-29]
+    execution_classes: [trusted-subprocess-v1]
+    evidence_environments: [developer-macos]
+    release_scope: public-release
+  - id: PNH-CLAIM-20
+    file: docs/developer-preview/plugin-authoring.md
+    posture: limitation
+    text_digest: sha256:41291f9f40063575ad5bb56c751854fc50eb09664528d0601b802fb9e1dc9b1a
+    invariants: [PNH-INV-09, PNH-INV-12, PNH-INV-25, PNH-INV-27, PNH-INV-29]
+    execution_classes: [trusted-subprocess-v1]
+    evidence_environments: [developer-macos]
+    release_scope: public-release
+  - id: PNH-CLAIM-21
+    file: docs/assurance/README.md
+    posture: limitation
+    text_digest: sha256:fe95702ba6dc7554da8c7501e40321d7e1109bd5fb7a2f8e0c2f8b957dd2a08e
+    invariants: [PNH-INV-09, PNH-INV-24, PNH-INV-29]
+    execution_classes: []
+    evidence_environments: [none]
+    release_scope: public-release
+  - id: PNH-CLAIM-22
+    file: docs/releases/developer-preview/README.md
+    posture: limitation
+    text_digest: sha256:6b9a75e9719ea7d84ee7f8caa104158bf85894b11216c964ef5133ab89088b1f
+    invariants: [PNH-INV-17, PNH-INV-20]
+    execution_classes: []
+    evidence_environments: [none]
+    release_scope: public-release

@@ -1,0 +1,61 @@
+{
+  "name": "@useprism/cli",
+  "version": "0.1.0",
+  "private": false,
+  "description": "Command-line interface for the Prism developer preview.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cbolden15/prism.git",
+    "directory": "packages/cli"
+  },
+  "homepage": "https://github.com/cbolden15/prism#readme",
+  "bugs": {
+    "url": "https://github.com/cbolden15/prism/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true,
+    "registry": "https://registry.npmjs.org/"
+  },
+  "bin": {
+    "prism": "./dist/bin.js"
+  },
+  "files": [
+    "dist/",
+    "assets/",
+    "prebuilds/",
+    "native/prism_authoring.cc",
+    "README.md",
+    "LICENSE",
+    "NOTICE",
+    "THIRD_PARTY_NOTICES.md"
+  ],
+  "exports": {},
+  "imports": {
+    "#cli": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "npm run native:verify && node scripts/clean-dist.mjs && tsc -p tsconfig.json",
+    "native:build": "node native/build-prebuilds.mjs",
+    "native:test": "node native/run-native-tests.mjs",
+    "native:verify": "node native/verify-prebuilds.mjs",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@useprism/provider-ollama": "0.1.0",
+    "@useprism/runtime": "0.1.0",
+    "@useprism/sdk": "0.1.0",
+    "acorn": "8.18.0",
+    "acorn-walk": "8.3.5"
+  },
+  "bundleDependencies": [
+    "acorn",
+    "acorn-walk"
+  ],
+  "engines": {
+    "node": ">=26.8.1 <27",
+    "npm": ">=11.19.0"
+  }
+}

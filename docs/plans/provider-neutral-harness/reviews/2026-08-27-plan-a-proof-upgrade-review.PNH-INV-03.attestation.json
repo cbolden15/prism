@@ -1,0 +1,24 @@
+{
+  "schema_version": 1,
+  "artifact_type": "independent-proof-review-v1",
+  "reviewer": {
+    "principal": "pnh:independent-reviewer",
+    "role": "independent-reviewer"
+  },
+  "proof_producer_principal": "pnh:constitution-runner",
+  "target": {
+    "invariant_id": "PNH-INV-03",
+    "proof_target_digest": "sha256:2fc470019ff1fe8fa41a3c484a3c641f2dd3edd4f00473f61e144d6c3f33ae6d",
+    "proof_report_digest": "sha256:6f0098e1e0a0e70c4e585e8fc53b80b5cc912f93111e87973e15f02fa0a2c88a"
+  },
+  "verdict": "accepted",
+  "unresolved_findings": {
+    "critical": 0,
+    "important": 0
+  },
+  "authentication": {
+    "scheme": "ed25519",
+    "key_id": "pnh-reviewer-2026-08-28",
+    "signature": "RacOmOYo61Y+ygy8XDxkF0fKzOHmfxtD6sXAmMeIckcpfBjvuN8XUKmKljt9NuAG/jnBNsFuL/K/3HppLq5FCg=="
+  }
+}

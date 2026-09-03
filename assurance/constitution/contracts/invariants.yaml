@@ -1,0 +1,1280 @@
+version: 2
+ratification_baseline:
+  path: assurance/constitution/contracts/ratification-baselines/plan-a-v1.json
+  sha256: sha256:8e147530512fe946c811f7273ac644ae405e1d692d7f05cfef49865010cb525c
+  decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+invariants:
+  - id: PNH-INV-01
+    title: Ordinary plugin faults stay inside their fault cell
+    category: isolation
+    statement: |
+      An attributed ordinary failure of one plugin must not block, settle, or contaminate the work of any other plugin in the admitted set.
+    law_status: ratified
+    proof_status: unproven
+    proof_reason: Representative fault-cell tests do not prove every ordinary failure class under the ratified deterministic scheduler model.
+    enforcement_kind: runtime-adversarial
+    first_release:
+      disposition: activate
+      closing_gates:
+        - C
+        - F
+    conformance: []
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/2026-08-21-m3-plugin-isolation-architecture-options.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-invariant-amendments.md
+        from_hash: sha256:c36da6617d7b0a93bac6ae0a3c736c51d49d844785de9ff88d58633dd2e43ac3
+        kind: binding-change
+        reason: Removed the unsupported universal 50 ms cross-plugin wall-clock bound.
+  - id: PNH-INV-02
+    title: One versioned wire vocabulary across all boundaries
+    category: plugin
+    statement: |
+      Exactly one versioned serialized frame vocabulary crosses the runtime, adapter, broker, runner, and plugin SDK boundaries, and every such boundary is pinned in this registry by version and schema hash.
+    law_status: ratified
+    proof_status: proven
+    enforcement_kind: static-structure
+    first_release:
+      disposition: retain
+      detail: reverify every adapter and protocol pin
+      closing_gates:
+        - A
+        - F
+    conformance:
+      - pnh/tests/plugin-protocol.test.ts
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/2026-08-20-m2-hybrid-restart-plan.md
+      - docs/plans/provider-neutral-harness/2026-08-21-pnh-constitution-design.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+        from_hash: sha256:764237a2efcfa6064cdf6c8ec5478688fb25b8def8e48ef60eb7b9adf9b176a9
+        kind: law-transition
+        reason: Owner ratified the migrated invariant as constitutional law under the Plan A v1 baseline.
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/reviews/2026-08-27-plan-a-proof-upgrade-review.md
+        from_hash: sha256:5ce38627795424b5742ba47e6fb775a6dbaa3513469f5f43b9709e21951f0306
+        kind: binding-change
+        from_proof_status: partial
+        reason: Independent falsification review accepted the structured proof, upgrading proof status to proven and removing the proof_reason binding field.
+  - id: PNH-INV-03
+    title: Frames are bounded and fail closed
+    category: plugin
+    statement: |
+      Every frame carries enforced bounds on frame bytes, cumulative bytes, message count, nesting depth, string bytes, array length, and object keys, with the values held in this registry; a frame that fails text decoding or violates any bound fails its allocation closed and is never repaired, coerced, or partially interpreted.
+    law_status: ratified
+    proof_status: proven
+    enforcement_kind: runtime-adversarial
+    first_release:
+      disposition: retain
+      detail: rerun all parser boundaries
+      closing_gates:
+        - A
+        - F
+    bounds:
+      max_frame_bytes: 1000000
+      max_cumulative_bytes: 8000000
+      max_message_count: 256
+      max_json_depth: 16
+      max_string_bytes: 65536
+      max_array_length: 1024
+      max_object_keys: 128
+    conformance:
+      - pnh/tests/protocol-bounds.test.ts
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/2026-08-20-m2-hybrid-restart-plan.md
+      - docs/plans/provider-neutral-harness/2026-08-21-pnh-constitution-design.md
+      - docs/plans/provider-neutral-harness/2026-08-21-protocol-bounds-decision.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+        from_hash: sha256:7d24c4a46e1f2116faec32c5f398e324080e85e1f1cedc08ead1e13bd94b32aa
+        kind: law-transition
+        reason: Owner ratified the migrated invariant as constitutional law under the Plan A v1 baseline.
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/reviews/2026-08-27-plan-a-proof-upgrade-review.md
+        from_hash: sha256:704ab69326d7ce43f0ea1ab00648909ecc56a452d4b1d876275052eace575c5b
+        kind: binding-change
+        from_proof_status: partial
+        reason: Independent falsification review accepted the structured proof, upgrading proof status to proven and removing the proof_reason binding field.
+  - id: PNH-INV-04
+    title: One opaque admission ticket
+    category: authority
+    statement: |
+      Verified registry bytes produce exactly one opaque, deeply frozen admission ticket; the harness derives authority from that ticket alone and never accepts a second registry object or a caller-constructed substitute.
+    law_status: ratified
+    proof_status: proven
+    enforcement_kind: runtime-adversarial
+    first_release:
+      disposition: retain
+      detail: reprove the new authority root
+      closing_gates:
+        - B2
+        - F
+    conformance:
+      - pnh/tests/admission-ticket.test.ts
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/2026-08-20-m2-hybrid-restart-plan.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+        from_hash: sha256:85cf6c8e520af13b0b33e1ed834943265682993bf2b2a46ba0520163f0acd10a
+        kind: law-transition
+        reason: Owner ratified the migrated invariant as constitutional law under the Plan A v1 baseline.
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/reviews/2026-08-27-plan-a-proof-upgrade-review.md
+        from_hash: sha256:79224b3d61d8636ff5bb80ab9746ecfcbc479dd4230d73bc116537ed662c7dde
+        kind: binding-change
+        from_proof_status: partial
+        reason: Independent falsification review accepted the structured proof, upgrading proof status to proven and removing the proof_reason binding field.
+  - id: PNH-INV-05
+    title: Policy admission gates grant derivation
+    category: authority
+    statement: |
+      Policy admission must succeed before any non-Policy capability grant is derived, and explicit Policy denial, timeout, crash, malformed response, or protocol failure fails the task closed.
+    law_status: ratified
+    proof_status: unproven
+    proof_reason: No production-path suite injects every named Policy failure before grant derivation and proves that each path denies all non-Policy grants.
+    enforcement_kind: runtime-adversarial
+    first_release:
+      disposition: activate
+      closing_gates:
+        - B2
+        - F
+    conformance: []
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/2026-08-20-m2-hybrid-restart-plan.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+        from_hash: sha256:983989727cac50215719c36d8e4fa9ae5dbb9fc610f4907b6efebc82bb13a3be
+        kind: law-transition
+        reason: Owner ratified the migrated invariant as constitutional law under the Plan A v1 baseline.
+  - id: PNH-INV-06
+    title: A request settles once
+    category: evidence
+    statement: |
+      A request settles exactly once; duplicate or late observations arriving after settlement must never change the settled outcome.
+    law_status: ratified
+    proof_status: unproven
+    proof_reason: No fault-injection suite covers duplicate and late observations across every request settlement path with the settlement guard disabled.
+    enforcement_kind: runtime-adversarial
+    first_release:
+      disposition: activate
+      closing_gates:
+        - D
+        - F
+    conformance: []
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/2026-08-20-m2-hybrid-restart-plan.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+        from_hash: sha256:40c4370cce1600e0e251c5a2dfb74335eb4169d7628c9da49e281aabeac0ed5b
+        kind: law-transition
+        reason: Owner ratified the migrated invariant as constitutional law under the Plan A v1 baseline.
+  - id: PNH-INV-07
+    title: Post-dispatch uncertainty settles as ambiguous
+    category: evidence
+    statement: |
+      Uncertainty about whether a dispatched effect occurred is recorded as ambiguous and must never be settled as success or as an ordinary failure.
+    law_status: ratified
+    proof_status: unproven
+    proof_reason: No production-path test injects post-dispatch effect uncertainty and proves the outcome remains ambiguous rather than success or failure.
+    enforcement_kind: runtime-adversarial
+    first_release:
+      disposition: activate
+      closing_gates:
+        - D
+        - E
+        - F
+    conformance: []
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/2026-08-20-m2-hybrid-restart-plan.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+        from_hash: sha256:2bb75b74cf36be4116f3231b9dce5ec368ecd4eb4d4430ec9e0004e4a396a13c
+        kind: law-transition
+        reason: Owner ratified the migrated invariant as constitutional law under the Plan A v1 baseline.
+  - id: PNH-INV-08
+    title: Success requires complete positive evidence
+    category: evidence
+    statement: |
+      Success requires one valid response, a clean matching exit commitment, truthful out-of-memory state, and confirmed cleanup; an outcome missing any of these must never settle as success.
+    law_status: ratified
+    proof_status: unproven
+    proof_reason: No suite independently removes each required positive-evidence signal and proves that every incomplete combination fails closed.
+    enforcement_kind: runtime-adversarial
+    first_release:
+      disposition: activate
+      closing_gates:
+        - D
+        - E
+        - F
+    conformance: []
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/2026-08-20-m2-hybrid-restart-plan.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+        from_hash: sha256:9ee7b8043d657ac7ca2a27ddae30ee39a9ec4c22552dec12e3257d749f23a133
+        kind: law-transition
+        reason: Owner ratified the migrated invariant as constitutional law under the Plan A v1 baseline.
+  - id: PNH-INV-09
+    title: Proof runs production paths and injects the fault it names
+    category: doctrine
+    statement: |
+      Conformance proof must exercise production constructors and protocol paths and must inject the fault it claims to prove; fixture-only parity, label-only cases, and skipped required suites never count as proof.
+    law_status: ratified
+    proof_status: unproven
+    proof_reason: The gate verifies executed registrations, but it does not yet verify production-path use, fault injection, or failure when a control is disabled.
+    enforcement_kind: release-or-architecture-gate
+    first_release:
+      disposition: activate
+      closing_gates:
+        - A
+        - F
+    conformance: []
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/2026-08-20-m2-hybrid-restart-plan.md
+      - docs/plans/provider-neutral-harness/2026-08-21-m3-plugin-fault-isolation-threat-model.md
+      - docs/plans/provider-neutral-harness/2026-08-21-pnh-constitution-design.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+        from_hash: sha256:c2f0a67a1bd5b5d8263b339e2afd0c9e33ab9ae1206c365c79781c74c7975637
+        kind: law-transition
+        reason: Owner ratified the migrated invariant as constitutional law under the Plan A v1 baseline.
+  - id: PNH-INV-10
+    title: All inbound content is untrusted
+    category: authority
+    statement: |
+      Repository content, source, instructions, tests, diffs, model output, plugin output, tool output, and worker code are untrusted, and no component may treat them as authority.
+    law_status: ratified
+    proof_status: unproven
+    proof_reason: The statement spans multiple content classes and components without a complete authority-confusion suite for each inbound boundary.
+    enforcement_kind: runtime-adversarial
+    first_release:
+      disposition: activate
+      closing_gates:
+        - B2
+        - C
+        - E
+        - F
+    conformance: []
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/architecture.md
+      - docs/plans/provider-neutral-harness/2026-08-21-m3-plugin-isolation-architecture-options.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+        from_hash: sha256:3b341b615653379d1242947b14cb1f5178ad7e74ec3ec7fbc31dc6f5a791711e
+        kind: law-transition
+        reason: Owner ratified the migrated invariant as constitutional law under the Plan A v1 baseline.
+  - id: PNH-INV-11
+    title: Only a validated task and grant confer authority
+    category: authority
+    statement: |
+      Authority comes only from a validated task and a validated capability grant; ambient references, configuration, and prior state never confer authority.
+    law_status: ratified
+    proof_status: unproven
+    proof_reason: No adversarial suite attempts to derive authority from ambient references, configuration, and prior state across every admission path.
+    enforcement_kind: runtime-adversarial
+    first_release:
+      disposition: activate
+      closing_gates:
+        - B2
+        - F
+    conformance: []
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/architecture.md
+      - docs/plans/provider-neutral-harness/2026-08-21-pnh-constitution-design.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+        from_hash: sha256:6aacf590aded33537c9cc31409d9a7774ffa61682487c15f529f6ba2130cc48f
+        kind: law-transition
+        reason: Owner ratified the migrated invariant as constitutional law under the Plan A v1 baseline.
+  - id: PNH-INV-12
+    title: Plugins narrow authority and never widen it
+    category: plugin
+    statement: |
+      A plugin may narrow its authority or reject work, and must never expand, widen, or add authority for itself or for another plugin.
+    law_status: ratified
+    proof_status: unproven
+    proof_reason: No malicious-plugin suite attempts grant widening for itself and another plugin through every plugin-to-harness command path.
+    enforcement_kind: runtime-adversarial
+    first_release:
+      disposition: activate
+      closing_gates:
+        - B2
+        - F
+    conformance: []
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/architecture.md
+      - docs/plans/provider-neutral-harness/2026-08-21-m3-plugin-isolation-architecture-options.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+        from_hash: sha256:62632589bd5ebeed7a2c7433f20e22dac413bd58e5f896992cd327d6cc03adbd
+        kind: law-transition
+        reason: Owner ratified the migrated invariant as constitutional law under the Plan A v1 baseline.
+  - id: PNH-INV-13
+    title: Credentials live only in trusted brokers
+    category: broker
+    statement: |
+      Provider credentials, subscription sessions, publisher credentials, and provider endpoints are held only by trusted external brokers; no plugin, worker, harness core component, or runtime ever receives them or arbitrary broker access.
+    law_status: ratified
+    proof_status: unproven
+    proof_reason: Broker tests do not yet prove credential and arbitrary-endpoint absence from every plugin, worker, core, runtime, and publisher boundary.
+    enforcement_kind: runtime-adversarial
+    first_release:
+      disposition: activate
+      closing_gates:
+        - C
+        - E
+        - F
+    conformance: []
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/architecture.md
+      - docs/plans/provider-neutral-harness/2026-08-21-m3-plugin-isolation-architecture-options.md
+      - docs/plans/provider-neutral-harness/2026-08-21-pnh-constitution-design.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+        from_hash: sha256:f65891ba2b6b252dee2ad3911b5c80ec2c4b10768b6947670305822d7a9b6757
+        kind: law-transition
+        reason: Owner ratified the migrated invariant as constitutional law under the Plan A v1 baseline.
+  - id: PNH-INV-14
+    title: Provider and model identity are exact
+    category: broker
+    statement: |
+      Provider and model identity are exact after authorization; alias resolution, silent upgrade, substitution, and fallback are never permitted.
+    law_status: ratified
+    proof_status: unproven
+    proof_reason: No fault-injection suite attempts alias resolution, fallback, model substitution, and silent upgrade through every broker adapter.
+    enforcement_kind: runtime-adversarial
+    first_release:
+      disposition: activate
+      closing_gates:
+        - E
+        - F
+    conformance: []
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/architecture.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+        from_hash: sha256:b5233eacd1793fc77adb2787074d8e12644dffc41e9484ac9ec0ac3c56c2bf8b
+        kind: law-transition
+        reason: Owner ratified the migrated invariant as constitutional law under the Plan A v1 baseline.
+  - id: PNH-INV-15
+    title: Unsupported telemetry is null
+    category: evidence
+    statement: |
+      An unsupported telemetry field is recorded as null and must never be inferred, estimated, or backfilled.
+    law_status: ratified
+    proof_status: unproven
+    proof_reason: No cross-provider test removes each optional telemetry field and proves that adapters preserve null instead of inferring a value.
+    enforcement_kind: runtime-adversarial
+    first_release:
+      disposition: activate
+      closing_gates:
+        - E
+        - F
+    conformance: []
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/architecture.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+        from_hash: sha256:f1554e0a7e88b6dbe9701829efdd253be19917ad2a9ed5f7935ec4b0b96f5bde
+        kind: law-transition
+        reason: Owner ratified the migrated invariant as constitutional law under the Plan A v1 baseline.
+  - id: PNH-INV-16
+    title: Missing evidence fails the task closed
+    category: evidence
+    statement: |
+      Missing or unwritable evidence fails the task closed.
+    law_status: ratified
+    proof_status: unproven
+    proof_reason: No production-path suite injects missing and unwritable evidence sinks at each settlement stage and proves fail-closed behavior.
+    enforcement_kind: runtime-adversarial
+    first_release:
+      disposition: activate
+      closing_gates:
+        - D
+        - E
+        - F
+    conformance: []
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/architecture.md
+      - docs/plans/provider-neutral-harness/2026-08-21-m3-plugin-isolation-architecture-options.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+        from_hash: sha256:d1f9448ff402fde70aefe44e18527ccc617db7a7b0ad419deb031c132b47e546
+        kind: law-transition
+        reason: Owner ratified the migrated invariant as constitutional law under the Plan A v1 baseline.
+  - id: PNH-INV-17
+    title: Publication authority is the consumer's alone
+    category: authority
+    statement: |
+      Only the consumer control plane may authorize publication; no worker, plugin, model, repository content, harness core component, or runtime holds publication authority.
+    law_status: ratified
+    proof_status: unproven
+    proof_reason: Publication is not implemented as a public workflow, so unauthorized publication attempts from every named component cannot yet be tested.
+    enforcement_kind: release-or-architecture-gate
+    first_release:
+      disposition: activate
+      closing_gates:
+        - G
+    conformance: []
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/architecture.md
+      - docs/plans/provider-neutral-harness/2026-08-21-m3-plugin-isolation-architecture-options.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+        from_hash: sha256:0b5434cd517de8a73f96b3c02e3b786f4808eecfd6d72e294efe37a593822c1b
+        kind: law-transition
+        reason: Owner ratified the migrated invariant as constitutional law under the Plan A v1 baseline.
+  - id: PNH-INV-18
+    title: The public core carries no consumer specifics
+    category: extraction
+    statement: |
+      The public neutral core must never depend on consumer-specific types, policy, endpoints, or operational identities.
+    law_status: ratified
+    proof_status: proven
+    enforcement_kind: static-structure
+    first_release:
+      disposition: retain
+      detail: reverify the standalone graph
+      closing_gates:
+        - G
+    conformance:
+      - pnh/tests/module-graph.test.ts
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/architecture.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+        from_hash: sha256:d87795c6ce71b1b1dd4bc10d6efae19f1f8f978b0d862c705308a7d8ccfd0202
+        kind: law-transition
+        reason: Owner ratified the migrated invariant as constitutional law under the Plan A v1 baseline.
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/reviews/2026-08-27-plan-a-proof-upgrade-review.md
+        from_hash: sha256:d70b79729bffbc4460a2031fc4546caf6a5abc4bbe40b2c13ae37450150bbdb4
+        kind: binding-change
+        from_proof_status: partial
+        reason: Independent falsification review accepted the structured proof, upgrading proof status to proven and removing the proof_reason binding field.
+  - id: PNH-INV-19
+    title: Consumer adapters depend only on public contracts
+    category: extraction
+    statement: |
+      A consumer adapter depends only on published public contracts, never on core internals or on another consumer's private material.
+    law_status: ratified
+    proof_status: unproven
+    proof_reason: The standalone package and consumer-adapter boundary do not exist yet, so no extraction-time dependency gate can prove this claim.
+    enforcement_kind: static-structure
+    first_release:
+      disposition: activate
+      closing_gates:
+        - G
+    conformance: []
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/architecture.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+        from_hash: sha256:010e23f0f5b8964513329cc6ac01aaa867966274118f1dd35da76659b0344434
+        kind: law-transition
+        reason: Owner ratified the migrated invariant as constitutional law under the Plan A v1 baseline.
+  - id: PNH-INV-20
+    title: Private material never ships in a public release
+    category: extraction
+    statement: |
+      A public release must never contain consumer adapters or policies, live credentials or endpoints, private infrastructure or evidence, publisher controls, production repository content, or model artifacts without verified redistribution rights; a provider broker or adapter becomes publishable only after its own security, license, and sanitization review.
+    law_status: ratified
+    proof_status: unproven
+    proof_reason: The isolated export, license inventory, provenance review, and secret scan are later readiness gates and have not been completed.
+    enforcement_kind: release-or-architecture-gate
+    first_release:
+      disposition: activate
+      closing_gates:
+        - G
+    conformance: []
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/architecture.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+        from_hash: sha256:e1324499506d6a3efa0e9c665986cc272948f43847e053b2b2e848676eb2790f
+        kind: law-transition
+        reason: Owner ratified the migrated invariant as constitutional law under the Plan A v1 baseline.
+  - id: PNH-INV-21
+    title: Attribution comes from outside plugin bytes
+    category: isolation
+    statement: |
+      Allocation identity is established outside plugin-controlled bytes before any output or failure is routed into a cell; attribution must never be derived from plugin payload content.
+    law_status: ratified
+    proof_status: unproven
+    proof_reason: M3 rejects representative forged identities, but it does not yet cover every output and failure route or prove failure with attribution disabled.
+    enforcement_kind: runtime-adversarial
+    first_release:
+      disposition: activate
+      closing_gates:
+        - C
+        - D
+        - F
+    conformance: []
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/2026-08-21-m3-plugin-fault-isolation-threat-model.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+        from_hash: sha256:72d3c7443edb1dab974319580c702f6dc1ad8d2244e6fd4fd7e122359f014590
+        kind: law-transition
+        reason: Owner ratified the migrated invariant as constitutional law under the Plan A v1 baseline.
+  - id: PNH-INV-22
+    title: Work, limits, cleanup, and evidence are allocation-scoped
+    category: isolation
+    statement: |
+      Each plugin allocation's queue, timers, and cleanup path are scoped to its own fault cell; in ordinary operation a blocked or failing cell, including a second allocation of the same plugin, never stalls another allocation's queued work or the evidence it produces, and cleanup once accepted cannot be cancelled by a concurrent shutdown or dispose. Supervisor shutdown is the bounded exception: it reaps cells in fixed-width batches to cap concurrent container teardown, so a cell that hangs during shutdown can delay the reaping of cells in later batches.
+    law_status: ratified
+    proof_status: partial
+    proof_reason: Existing evidence does not cover every admitted execution class through its production constructor.
+    enforcement_kind: runtime-adversarial
+    first_release:
+      disposition: activate
+      detail: for every production class; partial until then
+      closing_gates:
+        - A
+        - B2
+        - C
+        - F
+    conformance:
+      - pnh/tests/m3-plugin-fault-isolation.test.ts
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/2026-08-21-m3-plugin-fault-isolation-threat-model.md
+    amendments:
+      - date: 2026-08-21
+        decision: docs/plans/provider-neutral-harness/2026-08-21-pnh-inv-22-activation-amendment.md
+        from_hash: sha256:77ced1ccf042f4a3008af83c6949f5fe4ee1f7c32eae331b1c438955f1a65af9
+      - date: 2026-08-21
+        decision: docs/plans/provider-neutral-harness/2026-08-21-pnh-inv-22-activation-amendment.md
+        from_hash: sha256:08f2ef018a9aeeec876cd3314c4388180bf912fd3522ff18392009df25a3146c
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-27-plan-a-proof-status-decision.md
+        from_hash: sha256:7098adc4024207100962cce6e39f850f9b440ee6709c0d0ac7828edab6f01cbe
+        kind: proof-invalidation
+        reason: Existing evidence does not cover every admitted execution class through its production constructor.
+        from_proof_status: proven
+  - id: PNH-INV-23
+    title: Uncancellable deadline and cleanup path
+    category: lifecycle
+    statement: |
+      Every allocation has an independent hard deadline and a confirmed cleanup path that plugin, runtime, and broker failure cannot cancel.
+    law_status: ratified
+    proof_status: partial
+    proof_reason: Cleanup truth is not yet scoped by execution class and stronger containment is not established.
+    enforcement_kind: runtime-adversarial
+    first_release:
+      disposition: activate
+      detail: by execution class; partial until then
+      closing_gates:
+        - A
+        - C
+        - D
+        - F
+    conformance:
+      - pnh/tests/plugin-container-supervisor.test.ts
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/2026-08-21-m3-plugin-fault-isolation-threat-model.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-27-plan-a-proof-status-decision.md
+        from_hash: sha256:64f1a019051f17943ac13d10070d536538584e9d2f59051beebacabb69d63a75
+        kind: proof-invalidation
+        reason: Cleanup truth is not yet scoped by execution class and stronger containment is not established.
+        from_proof_status: proven
+  - id: PNH-INV-24
+    title: Physical splitting requires defeated-control evidence
+    category: isolation
+    statement: |
+      Moving fault cells out of the shared trusted process is never legal without evidence that a specific attributed failure defeated a specific in-process control and that no smaller correction restores the bound.
+    law_status: ratified
+    proof_status: unproven
+    proof_reason: M3 used a smaller correction successfully, but no enforceable review gate yet validates this evidence standard when a physical split is proposed.
+    enforcement_kind: release-or-architecture-gate
+    first_release:
+      disposition: activate
+      closing_gates:
+        - A
+        - F
+    conformance: []
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/2026-08-21-m3-plugin-fault-isolation-threat-model.md
+      - docs/plans/provider-neutral-harness/2026-08-21-m3-plugin-isolation-architecture-options.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+        from_hash: sha256:958e28dc3929acae508e848ba68663918bde1bd0ca33148112b21779870ce924
+        kind: law-transition
+        reason: Owner ratified the migrated invariant as constitutional law under the Plan A v1 baseline.
+  - id: PNH-INV-25
+    title: Plugin code is assumed fully malicious
+    category: isolation
+    statement: Every admitted plugin executes under the execution class bound at admission. Code treated as hostile uses a separately constrained isolation class with production proof for its named boundary. Owner-reviewed subprocess code runs only under the restricted Prism execution principal, is never described as sandboxed, and receives no user, broker, operator, or publisher authority. Development code cannot produce production evidence or privileged effects.
+    law_status: ratified
+    proof_status: unproven
+    proof_reason: No production proof covers every admitted execution class, including hostile container isolation, restricted trusted subprocess authority, and development-mode exclusion.
+    enforcement_kind: runtime-adversarial
+    first_release:
+      disposition: activate
+      detail: after exact amendment
+      closing_gates:
+        - A
+        - B2
+        - F
+    conformance: []
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/2026-08-21-m3-plugin-isolation-architecture-options.md
+      - docs/plans/provider-neutral-harness/2026-08-21-m3-plugin-fault-isolation-threat-model.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-invariant-amendments.md
+        from_hash: sha256:ce0e01587c00f6de2f111523982b4f64f6495d0ecaa27384ba05effd9d5a021d
+        kind: binding-change
+        reason: Replaced the container-only statement with the ratified execution-class statement.
+  - id: PNH-INV-26
+    title: Fault cells are not security boundaries
+    category: isolation
+    statement: |
+      Fault cells are availability and correctness mechanisms and must never be relied on as security boundaries.
+    law_status: ratified
+    proof_status: unproven
+    proof_reason: Documentation states this boundary, but no public-surface labeling gate yet prevents fault-cell isolation from being presented as sandboxing.
+    enforcement_kind: generated-document-consistency
+    first_release:
+      disposition: activate
+      closing_gates:
+        - A
+        - F
+        - G
+    conformance: []
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/2026-08-21-m3-plugin-isolation-architecture-options.md
+      - docs/plans/provider-neutral-harness/2026-08-21-m3-plugin-fault-isolation-threat-model.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+        from_hash: sha256:3df172c3a2f22f2b1bb6dd9a4eee70031b5eab08f21bdc8b5a80c35f126f59c2
+        kind: law-transition
+        reason: Owner ratified the migrated invariant as constitutional law under the Plan A v1 baseline.
+  - id: PNH-INV-27
+    title: Fixed boundary designation
+    category: isolation
+    statement: Every production execution class has one admission-bound authority boundary and one custody principal. `container-isolated-v1` uses the plugin container as its hostile-code boundary. `trusted-subprocess-v1` uses a dedicated restricted OS principal as its ambient-authority boundary but makes no hostile-code sandbox claim. The host custody daemon remains the sole lifecycle principal for both. `development-v1` is non-production.
+    law_status: ratified
+    proof_status: unproven
+    proof_reason: No production proof establishes the exact authority boundary and custody principal for every execution class.
+    enforcement_kind: runtime-adversarial
+    first_release:
+      disposition: activate
+      detail: after exact amendment
+      closing_gates:
+        - A
+        - B2
+        - C
+        - F
+    conformance: []
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/2026-08-21-m3-plugin-isolation-architecture-options.md
+      - docs/plans/provider-neutral-harness/2026-08-21-m3-plugin-fault-isolation-threat-model.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-invariant-amendments.md
+        from_hash: sha256:435a72ee006354c9a9e2467f7f13a9d7bc900bf02f64de9ed648de1a846ad008
+        kind: binding-change
+        reason: Replaced the container-only authority model with execution-class-specific authority and custody boundaries.
+  - id: PNH-INV-28
+    title: Contract meaning is fixed at admission
+    category: authority
+    statement: |
+      No consumer control plane may rewrite the meaning of a generic harness contract after admission.
+    law_status: ratified
+    proof_status: unproven
+    proof_reason: No conformance suite mutates admitted contract meaning through a consumer adapter and proves that every rewrite attempt is rejected.
+    enforcement_kind: runtime-adversarial
+    first_release:
+      disposition: activate
+      closing_gates:
+        - B2
+        - F
+    conformance: []
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/2026-08-21-m3-plugin-isolation-architecture-options.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+        from_hash: sha256:1b25a0004909547f3834b1a9c05c519a8e37b3f391a43d41a480b90b1baf6661
+        kind: law-transition
+        reason: Owner ratified the migrated invariant as constitutional law under the Plan A v1 baseline.
+  - id: PNH-INV-29
+    title: Static owner-approved digest-bound plugin sets
+    category: plugin
+    statement: |
+      An admitted plugin set is static, owner-approved, digest-bound, and fully resolved before a task starts; mutable, ambient, model-authored, or repository-supplied plugins are never admissible.
+    law_status: ratified
+    proof_status: partial
+    proof_reason: The supported production entrypoint does not yet make owner-approved digest pins technically unavoidable.
+    enforcement_kind: runtime-adversarial
+    first_release:
+      disposition: activate
+      detail: partial until the production entrypoint enforces owner pins
+      closing_gates:
+        - A
+        - B2
+        - F
+    conformance:
+      - pnh/tests/admission-ticket.test.ts
+      - pnh/tests/pinned-admission.test.ts
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/2026-08-21-m3-plugin-isolation-architecture-options.md
+      - docs/plans/provider-neutral-harness/2026-08-21-pnh-constitution-design.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-27-plan-a-proof-status-decision.md
+        from_hash: sha256:27c9a1b4b1901506a3b7ec581921d011271db9d9286c7d6849a8f2264f209c4e
+        kind: proof-invalidation
+        reason: The supported production entrypoint does not yet make owner-approved digest pins technically unavoidable.
+        from_proof_status: proven
+  - id: PNH-INV-30
+    title: Plugins never install or schedule
+    category: authority
+    statement: |
+      A plugin or worker must never install a plugin, schedule work, or authorize completion.
+    law_status: ratified
+    proof_status: unproven
+    proof_reason: No malicious-plugin and malicious-worker suite attempts all three authority classes through production command paths.
+    enforcement_kind: runtime-adversarial
+    first_release:
+      disposition: activate
+      closing_gates:
+        - B2
+        - F
+    conformance: []
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/2026-08-21-m3-plugin-isolation-architecture-options.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+        from_hash: sha256:12a3403d67072dbebb879f4950e78bca7f42d93ab6f0b9001312fee1e13d4275
+        kind: law-transition
+        reason: Owner ratified the migrated invariant as constitutional law under the Plan A v1 baseline.
+  - id: PNH-INV-31
+    title: No plugin-selected routing or identity
+    category: broker
+    statement: |
+      No broker or lifecycle principal may accept a plugin-selected endpoint, identity, or route.
+    law_status: ratified
+    proof_status: unproven
+    proof_reason: Forged identity cases exist, but endpoint and route injection are not covered across both broker and lifecycle-principal paths.
+    enforcement_kind: runtime-adversarial
+    first_release:
+      disposition: activate
+      closing_gates:
+        - B2
+        - C
+        - D
+        - E
+        - F
+    conformance: []
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/2026-08-21-m3-plugin-isolation-architecture-options.md
+      - docs/plans/provider-neutral-harness/2026-08-21-pnh-constitution-design.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+        from_hash: sha256:a6914b0e636f1865dc07abd28804449010a993c0981b6f6fe2d623eb99750309
+        kind: law-transition
+        reason: Owner ratified the migrated invariant as constitutional law under the Plan A v1 baseline.
+  - id: PNH-INV-32
+    title: One admitted task at a time
+    category: task
+    statement: |
+      The harness admits exactly one task; scheduling, queueing, and concurrency belong to the consumer control plane above the adapter.
+    law_status: ratified
+    proof_status: unproven
+    proof_reason: No admission test submits a second task through the production entrypoint and proves that scheduling authority remains outside the harness.
+    enforcement_kind: runtime-adversarial
+    first_release:
+      disposition: activate
+      closing_gates:
+        - B2
+        - F
+    conformance: []
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/2026-08-21-pnh-constitution-design.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+        from_hash: sha256:c3f9695e9426dc3aa02b2051014b578e4cc7dba5f4e0860644f3b99825d6ea6c
+        kind: law-transition
+        reason: Owner ratified the migrated invariant as constitutional law under the Plan A v1 baseline.
+  - id: PNH-INV-33
+    title: Single host-scoped lifecycle principal
+    category: lifecycle
+    statement: |
+      Exactly one lifecycle principal per host may create or destroy plugin containers; all harness instances on the host share it, every command carries per-instance identity, and its confirmations are the sole source of cleanup evidence.
+    law_status: ratified
+    proof_status: unproven
+    proof_reason: The supervisor tests cover one lifecycle principal instance, but the implementation does not provide one shared principal across all host instances.
+    enforcement_kind: runtime-adversarial
+    first_release:
+      disposition: activate
+      closing_gates:
+        - C
+        - F
+    conformance:
+      - pnh/tests/plugin-container-supervisor.test.ts
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/2026-08-21-pnh-constitution-design.md
+      - docs/plans/provider-neutral-harness/2026-08-20-m2-hybrid-restart-plan.md
+      - docs/plans/provider-neutral-harness/2026-08-21-m3-plugin-fault-isolation-threat-model.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+        from_hash: sha256:156d880b90dbaa9e6c26f7bc13f886a6843746db9cdb445aba44a080a5d20a80
+        kind: law-transition
+        reason: Owner ratified the migrated invariant as constitutional law under the Plan A v1 baseline.
+  - id: PNH-INV-34
+    title: Payload-blind lifecycle authority
+    category: lifecycle
+    statement: |
+      The lifecycle principal accepts only ticket-resolved authenticated lifecycle commands and never interprets plugin payloads, plugin-selected identities, or raw container-runtime arguments.
+    law_status: ratified
+    proof_status: unproven
+    proof_reason: No complete negative suite injects payloads, identities, and raw runtime arguments into every authenticated lifecycle command path.
+    enforcement_kind: runtime-adversarial
+    first_release:
+      disposition: activate
+      closing_gates:
+        - B2
+        - C
+        - F
+    conformance: []
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/2026-08-21-pnh-constitution-design.md
+      - docs/plans/provider-neutral-harness/2026-08-21-m3-plugin-fault-isolation-threat-model.md
+      - docs/plans/provider-neutral-harness/2026-08-21-m3-plugin-isolation-architecture-options.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+        from_hash: sha256:9ce710772975f4cbbfe6bc4fd9ee3727e96846daec79b6692152ef9e0a2d2450
+        kind: law-transition
+        reason: Owner ratified the migrated invariant as constitutional law under the Plan A v1 baseline.
+  - id: PNH-INV-35
+    title: Host-scoped aggregate arbiter
+    category: resource
+    statement: |
+      One payload-blind arbiter per host reserves and releases aggregate capacity for all harness instances with per-instance quotas; it never owns plugin settlement and never interprets plugin payloads.
+    law_status: ratified
+    proof_status: unproven
+    proof_reason: The aggregate arbiter is supervisor scoped, not a single host-shared service covering all harness instances as this statement requires.
+    enforcement_kind: runtime-adversarial
+    first_release:
+      disposition: activate
+      closing_gates:
+        - C
+        - F
+    conformance: []
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/2026-08-21-pnh-constitution-design.md
+      - docs/plans/provider-neutral-harness/2026-08-21-m3-plugin-fault-isolation-threat-model.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+        from_hash: sha256:27a6f726539170a3a257506b3ac549731aa8a2acc78040f9991f61e938ba408b
+        kind: law-transition
+        reason: Owner ratified the migrated invariant as constitutional law under the Plan A v1 baseline.
+  - id: PNH-INV-36
+    title: Fair-share ceilings
+    category: resource
+    statement: |
+      No plugin may reserve aggregate capacity beyond its fair-share ceiling; a plugin acting within its grants must never be able to starve unrelated plugins through legal reservations.
+    law_status: ratified
+    proof_status: unproven
+    proof_reason: Aggregate tests cover representative ceilings, but do not yet prove all legal reservation patterns with the fair-share control disabled.
+    enforcement_kind: runtime-adversarial
+    first_release:
+      disposition: activate
+      closing_gates:
+        - C
+        - F
+    conformance: []
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/2026-08-21-pnh-constitution-design.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+        from_hash: sha256:cdb5762b667b5dab26d2fa823965014c2ba42c1e3faa815ab731186d20390959
+        kind: law-transition
+        reason: Owner ratified the migrated invariant as constitutional law under the Plan A v1 baseline.
+  - id: PNH-INV-37
+    title: Reservations are leases
+    category: resource
+    statement: |
+      Aggregate reservations are leases that expire when the owning cell dies; a crashed or wedged plugin must never permanently retain aggregate capacity.
+    law_status: ratified
+    proof_status: unproven
+    proof_reason: Cleanup paths release reservations, but no lease-expiry mechanism or fault-injection proof covers a wedged owner that never cleans up.
+    enforcement_kind: runtime-adversarial
+    first_release:
+      disposition: activate
+      closing_gates:
+        - C
+        - F
+    conformance: []
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/2026-08-21-pnh-constitution-design.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+        from_hash: sha256:f070dde44851a7d20f4d855bcddd77d0fe5c8b94ba0fa5a23c41658b12aed3e0
+        kind: law-transition
+        reason: Owner ratified the migrated invariant as constitutional law under the Plan A v1 baseline.
+  - id: PNH-INV-38
+    title: Bounded cross-plugin interference
+    category: isolation
+    statement: Under legal registry-bounded load, every ready allocation receives one scheduler quantum before any ready allocation receives a second. One full rotation contains at most `max_live_allocations` turns, and each turn admits at most `max_commands_per_event_loop_turn` commands. All bounds live in this registry and tests import them. Wall-clock latency is not a universal invariant; any wall-clock claim requires a separately approved controlled performance qualification on a named environment.
+    law_status: ratified
+    proof_status: unproven
+    proof_reason: Deterministic full-rotation fairness is not yet proven under every legal registry-bounded load.
+    enforcement_kind: runtime-adversarial
+    first_release:
+      disposition: activate
+      detail: after exact amendment
+      closing_gates:
+        - A
+        - C
+        - F
+    bounds:
+      max_live_allocations: 32
+      max_live_allocations_per_plugin: 8
+      max_concurrent_docker_invocations: 4
+      max_command_bytes_per_allocation: 8000000
+      max_command_ids_per_allocation: 4096
+      max_tracked_command_allocations: 64
+      max_recent_command_ids: 4096
+      max_recent_acknowledged_allocations: 4096
+      max_commands_per_event_loop_turn: 8
+      max_wire_frame_bytes: 1000000
+      max_wire_buffer_bytes: 8000000
+    conformance:
+      - pnh/tests/m3-aggregate-arbiter.test.ts
+      - pnh/tests/m3-adversarial-isolation.test.ts
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/2026-08-21-pnh-constitution-design.md
+      - docs/plans/provider-neutral-harness/2026-08-21-m3-plugin-isolation-architecture-options.md
+      - docs/plans/provider-neutral-harness/2026-08-26-aggregate-arbiter-protocol-amendment.md
+      - docs/plans/provider-neutral-harness/2026-08-26-command-scheduler-fairness-amendment.md
+      - docs/plans/provider-neutral-harness/2026-08-26-m3-adversarial-isolation-decision.md
+    amendments:
+      - date: 2026-08-26
+        decision: docs/plans/provider-neutral-harness/2026-08-26-aggregate-arbiter-protocol-amendment.md
+        from_hash: sha256:aa82ab563994c2c75e334b8d7c9bab00fb37dc0dd421d062000712872511bc2e
+      - date: 2026-08-26
+        decision: docs/plans/provider-neutral-harness/2026-08-26-command-scheduler-fairness-amendment.md
+        from_hash: sha256:6599d8db6fb867f0df1d27483912105d83d5ca2a77894204850be22765513ccc
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-invariant-amendments.md
+        from_hash: sha256:0345b3e245b753bf5a1ad69ecccf7ceea7c6e8fec818b7e87a86cd03d25d5619
+        kind: binding-change
+        reason: Replaced the wall-clock interference claim with deterministic scheduler fairness and removed the unsupported 50 ms bound.
+  - id: PNH-INV-39
+    title: Cell port is a message protocol
+    category: plugin
+    statement: |
+      The plugin cell boundary is a versioned serialized message protocol pinned in this registry at introduction; moving cells out of process must not change admission tickets, capability grants, lifecycle receipts, or event semantics.
+    law_status: ratified
+    proof_status: unproven
+    proof_reason: The current pins cover existing wire surfaces, but no out-of-process cell implementation proves semantic compatibility across a topology change.
+    enforcement_kind: runtime-adversarial
+    first_release:
+      disposition: defer
+      detail: no first-release conformance claim
+      closing_gates:
+        - H
+    conformance: []
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/2026-08-21-pnh-constitution-design.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+        from_hash: sha256:4ff577b6b1266f09023e0e9c17e0ae23b8f6217893699b0f7679df4a3efeeb4f
+        kind: law-transition
+        reason: Owner ratified the migrated invariant as constitutional law under the Plan A v1 baseline.
+  - id: PNH-INV-40
+    title: Bridges are ordinary admitted plugins
+    category: bridge
+    statement: |
+      A foreign-capability bridge is an ordinary admitted plugin: containerized, capability-scoped, credential-free, and digest-bound by packaging the bridged server inside the plugin image.
+    law_status: ratified
+    proof_status: unproven
+    proof_reason: No foreign-capability bridge implementation or production conformance path exists yet.
+    enforcement_kind: runtime-adversarial
+    first_release:
+      disposition: defer
+      detail: with D5
+      closing_gates:
+        - H
+    conformance: []
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/2026-08-21-pnh-constitution-design.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+        from_hash: sha256:16a50703d733ebff21ea60d9d66237341439de9bf9605a15891f9582bd63f133
+        kind: law-transition
+        reason: Owner ratified the migrated invariant as constitutional law under the Plan A v1 baseline.
+  - id: PNH-INV-41
+    title: Frozen foreign surface, default deny
+    category: bridge
+    statement: |
+      The bridged foreign surface is enumerated at admission with schema hashes across every method family; any family or member not explicitly admitted is denied.
+    law_status: ratified
+    proof_status: unproven
+    proof_reason: No bridge admission registry or fault-injection suite currently proves complete surface enumeration and default denial.
+    enforcement_kind: runtime-adversarial
+    first_release:
+      disposition: defer
+      detail: with D5
+      closing_gates:
+        - H
+    conformance: []
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/2026-08-21-pnh-constitution-design.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+        from_hash: sha256:1b87d7a9f284ca4cae2480fff7e9305de047e76a345dc22dabc292c33a1ee173
+        kind: law-transition
+        reason: Owner ratified the migrated invariant as constitutional law under the Plan A v1 baseline.
+  - id: PNH-INV-42
+    title: Trusted mediation and attribution
+    category: bridge
+    statement: |
+      Foreign-method dispatch is compared against the admitted surface and evidenced by a trusted harness-side mediator outside the plugin container; foreign-method evidence is never taken from the bridge's own claim, and a surface mismatch fails the plugin allocation closed with post-dispatch drift settling as ambiguous.
+    law_status: ratified
+    proof_status: unproven
+    proof_reason: The trusted bridge mediator and its mismatch and post-dispatch ambiguity paths have not been implemented or adversarially tested.
+    enforcement_kind: runtime-adversarial
+    first_release:
+      disposition: defer
+      detail: with D5
+      closing_gates:
+        - H
+    conformance: []
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/2026-08-21-pnh-constitution-design.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+        from_hash: sha256:71e0d83409b7d989d12cf68d93adf8c42bd0116f8e2e32986885481f07372027
+        kind: law-transition
+        reason: Owner ratified the migrated invariant as constitutional law under the Plan A v1 baseline.
+  - id: PNH-INV-43
+    title: Hostile-plugin gate
+    category: gate
+    statement: |
+      Admitting any plugin that is not owner-approved and digest-bound requires a stronger isolation class before admission is legal; development-mode loading is non-admitted execution that cannot produce production evidence and cannot invoke bridges or privileged effects.
+    law_status: ratified
+    proof_status: unproven
+    proof_reason: Owner-pinned admission exists, but no stronger hostile-plugin class or complete development-mode evidence and effect gate exists.
+    enforcement_kind: runtime-adversarial
+    first_release:
+      disposition: activate
+      closing_gates:
+        - B2
+        - F
+    conformance: []
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/2026-08-21-pnh-constitution-design.md
+      - docs/plans/provider-neutral-harness/2026-08-21-m3-plugin-isolation-architecture-options.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+        from_hash: sha256:e65d4794610df6869a082df5e62fa73c04e439a5f5abf62e7d27ad07a978a6b4
+        kind: law-transition
+        reason: Owner ratified the migrated invariant as constitutional law under the Plan A v1 baseline.
+  - id: PNH-INV-44
+    title: Narrative prose is non-normative
+    category: doctrine
+    statement: |
+      The constitution's narrative prose is explanatory and non-normative; on any conflict between narrative prose and a registered invariant statement, the registered statement binds.
+    law_status: ratified
+    proof_status: unproven
+    proof_reason: Generated sections come from the registry, but no gate detects or resolves conflicting hand-written narrative prose.
+    enforcement_kind: generated-document-consistency
+    first_release:
+      disposition: activate
+      closing_gates:
+        - A
+        - G
+    conformance: []
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/2026-08-21-pnh-constitution-design.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+        from_hash: sha256:38f1da9445a9fa54557064fff21f6e84cdfb2c26192e2cb488dae884d1106499
+        kind: law-transition
+        reason: Owner ratified the migrated invariant as constitutional law under the Plan A v1 baseline.
+  - id: PNH-INV-45
+    title: Authenticated exchanges are replay-resistant
+    category: evidence
+    statement: |
+      Every authenticated command, response, and receipt is replay-resistant; a replayed frame or receipt must never settle work, confer authority, or produce evidence.
+    law_status: ratified
+    proof_status: unproven
+    proof_reason: Replay defenses are not proven across every authenticated command, response, and receipt path with the replay control disabled.
+    enforcement_kind: runtime-adversarial
+    first_release:
+      disposition: activate
+      closing_gates:
+        - C
+        - D
+        - E
+        - F
+    conformance: []
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/architecture.md
+      - docs/plans/provider-neutral-harness/2026-08-21-pnh-constitution-design.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+        from_hash: sha256:d7ec35cfb5d0d4ab504a9828f29ee4a33f795d2cab649cdaa6c4622e122876fd
+        kind: law-transition
+        reason: Owner ratified the migrated invariant as constitutional law under the Plan A v1 baseline.
+  - id: PNH-INV-46
+    title: Escalation review content
+    category: isolation
+    statement: |
+      An escalation review that proposes moving fault cells out of process must identify the defeated control, show why a smaller correction is insufficient, and account for the resulting process, channel, key-management, receipt-reconciliation, and lifecycle-authority changes.
+    law_status: ratified
+    proof_status: unproven
+    proof_reason: The M3 decision did not escalate topology, and no enforceable review template or gate validates all required content for a future escalation.
+    enforcement_kind: release-or-architecture-gate
+    first_release:
+      disposition: activate
+      closing_gates:
+        - A
+        - F
+    conformance: []
+    since: 2026-08-21
+    decisions:
+      - docs/plans/provider-neutral-harness/2026-08-21-m3-plugin-fault-isolation-threat-model.md
+      - docs/plans/provider-neutral-harness/2026-08-21-m3-plugin-isolation-architecture-options.md
+    amendments:
+      - date: 2026-08-28
+        decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+        from_hash: sha256:46dcc512d764d0c3754a64702a70c37f00bebd081dbee143b5ab2f614c3931e8
+        kind: law-transition
+        reason: Owner ratified the migrated invariant as constitutional law under the Plan A v1 baseline.
+protocols:
+  - id: PNH-PROTO-01
+    name: plugin-protocol
+    spec: docs/plans/provider-neutral-harness/specs/plugin-protocol.md
+    version: 1
+    schema_source:
+      - packages/sdk/src/protocol.ts
+      - packages/sdk/src/protocol/resource-bounds.ts
+    schema_hash: sha256:849f3945430069b48ea46c70b57704aa819d2971c14faa5467abea9a806696c3
+    conformance:
+      - pnh/tests/plugin-protocol.test.ts
+    amendments:
+      - date: 2026-08-26
+        decision: docs/plans/provider-neutral-harness/2026-08-26-aggregate-arbiter-protocol-amendment.md
+        from_hash: sha256:2f07b517f9598b77a162931e629baf7e45fe2759d6f1caa584d7ebde403d7978
+      - date: 2026-08-26
+        decision: docs/plans/provider-neutral-harness/2026-08-26-command-scheduler-fairness-amendment.md
+        from_hash: sha256:135d8c535b289c9e3ea3f0547666d0fead2ba29f28d20d8d96d9674e33df684a
+  - id: PNH-PROTO-02
+    name: supervisor-command-channel
+    spec: docs/plans/provider-neutral-harness/specs/supervisor-command-channel.md
+    version: 1
+    schema_source:
+      - packages/runtime/src/harness/plugin-container-supervisor.mjs
+      - packages/runtime/src/harness/plugin-container-supervisor.d.mts
+      - packages/runtime/src/harness/plugin-fault-cell.mjs
+      - packages/runtime/src/harness/plugin-fault-cell.d.mts
+      - packages/runtime/src/harness/plugin-resource-arbiter.mjs
+      - packages/runtime/src/harness/plugin-resource-arbiter.d.mts
+      - packages/sdk/src/protocol/resource-bounds.ts
+    schema_hash: sha256:32843d51695f556cdd8192de8824ba6aef60459188b151b872df0220d9ebb719
+    conformance:
+      - pnh/tests/plugin-container-supervisor.test.ts
+    amendments:
+      - date: 2026-08-21
+        decision: docs/plans/provider-neutral-harness/2026-08-21-supervisor-fault-cell-amendment.md
+        from_hash: sha256:6566f8e88df81546c63fa3f1e1e3b8b7cd4d5164a50f0d28fdce1e463f471c08
+      - date: 2026-08-26
+        decision: docs/plans/provider-neutral-harness/2026-08-26-aggregate-arbiter-protocol-amendment.md
+        from_hash: sha256:5dfee0d3c62c629d01a7ec7db64925d09e4e66c5c7f3492bbe8d18b5ad1c0b1c
+      - date: 2026-08-26
+        decision: docs/plans/provider-neutral-harness/2026-08-26-command-scheduler-fairness-amendment.md
+        from_hash: sha256:2e4699acbd449a2df14da6a282c497f21d40469a7a7dc684e61b60a8b2adbebe
+      - date: 2026-09-03
+        decision: docs/plans/provider-neutral-harness/2026-09-03-oss-release-package-scope-protocol-amendment.md
+        from_hash: sha256:3e8049fb8a51f371e1abe99406ecc23e225a37140875aa597e9f07fe64a41f67
+        kind: binding-change
+        reason: Repin implementation-source bytes for the source-only @prism-harness/sdk to @useprism/sdk package-coordinate change; accepted wire fields, encoding, authentication, and semantics remain unchanged.

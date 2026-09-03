@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "targets": [
+    {
+      "invariant_id": "PNH-INV-02",
+      "test_file": "pnh/tests/plugin-protocol.test.ts",
+      "test_name": "validatePluginFrame is the only fail-closed checker for the pinned wire vocabulary",
+      "review_artifact": "docs/plans/provider-neutral-harness/reviews/2026-09-03-oss-release-proof-rotation-review.md",
+      "review_attestation": "docs/plans/provider-neutral-harness/reviews/2026-09-03-oss-release-proof-rotation-review.PNH-INV-02.attestation.json",
+      "production_entrypoint": "packages/sdk/src/protocol.ts",
+      "checker": "validatePluginFrame"
+    },
+    {
+      "invariant_id": "PNH-INV-03",
+      "test_file": "pnh/tests/protocol-bounds.test.ts",
+      "test_name": "max_frame_bytes: a line at the bound decodes, one byte over fails closed",
+      "review_artifact": "docs/plans/provider-neutral-harness/reviews/2026-09-03-oss-release-proof-rotation-review.md",
+      "review_attestation": "docs/plans/provider-neutral-harness/reviews/2026-09-03-oss-release-proof-rotation-review.PNH-INV-03.attestation.json",
+      "production_entrypoint": "packages/sdk/src/protocol.ts",
+      "control": {
+        "kind": "fault-injection",
+        "name": "NdjsonFrameDecoder.push receives a frame line one byte over max_frame_bytes"
+      }
+    },
+    {
+      "invariant_id": "PNH-INV-04",
+      "test_file": "pnh/tests/admission-ticket.test.ts",
+      "test_name": "caller-crafted objects cannot impersonate admission tickets",
+      "review_artifact": "docs/plans/provider-neutral-harness/reviews/2026-09-03-oss-release-proof-rotation-review.md",
+      "review_attestation": "docs/plans/provider-neutral-harness/reviews/2026-09-03-oss-release-proof-rotation-review.PNH-INV-04.attestation.json",
+      "production_entrypoint": "packages/runtime/src/runtime/admission-ticket.ts",
+      "control": {
+        "kind": "fault-injection",
+        "name": "caller-constructed substitute admission ticket presented to the verifier"
+      }
+    },
+    {
+      "invariant_id": "PNH-INV-18",
+      "test_file": "pnh/tests/module-graph.test.ts",
+      "test_name": "checkModuleGraph fails closed on the public core and on consumer-specific dependencies",
+      "review_artifact": "docs/plans/provider-neutral-harness/reviews/2026-09-03-oss-release-proof-rotation-review.md",
+      "review_attestation": "docs/plans/provider-neutral-harness/reviews/2026-09-03-oss-release-proof-rotation-review.PNH-INV-18.attestation.json",
+      "production_entrypoint": "packages/runtime/src/core/plugin-grant.ts",
+      "checker": "checkModuleGraph",
+      "limitations": [
+        "Gate G reproof obligation: the fail-closed checker packages/runtime/scripts/check-module-graph.ts is not digest-bound by this registration, because collectDependencyClosure rejects it for loading typescript through createRequire from node:module. A future edit that weakens the checker invalidates no proof target digest.",
+        "The registered production entrypoint packages/runtime/src/core/plugin-grant.ts pins a dependency closure of 4 of the 11 public-core modules, so the bound scope is narrower than the invariant statement about the public core.",
+        "Discharge by binding the checker itself: either classify a node:module createRequire loader in collectDependencyClosure instead of rejecting it, or restructure the checker's typescript load so the closure scanner accepts it. A passing test does not discharge this."
+      ]
+    }
+  ]
+}

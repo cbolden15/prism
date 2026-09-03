@@ -1,0 +1,22 @@
+{
+  "version": "pnh-plugin-launch-profile-v1",
+  "pull": "never",
+  "logDriver": "none",
+  "interactive": true,
+  "ipc": "private",
+  "network": "none",
+  "readOnly": true,
+  "capDrop": ["ALL"],
+  "securityOptions": ["no-new-privileges:true"],
+  "seccomp": "seccomp.json",
+  "pidsLimit": 64,
+  "memory": "128m",
+  "cpus": "0.5",
+  "user": "10101:10101",
+  "workdir": "/pnh/kernel/plugin-runner",
+  "tmpfs": ["/tmp:rw,noexec,nosuid,nodev,size=16m,mode=1777"],
+  "environment": {
+    "HOME": "/tmp",
+    "NODE_OPTIONS": "--disable-proto=throw"
+  }
+}

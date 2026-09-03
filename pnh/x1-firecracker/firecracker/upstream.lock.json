@@ -1,0 +1,159 @@
+{
+  "buildrootCandidates": [
+    {
+      "commit": "72d9d4fa636a371ef9eb99c92a735ce9f6d829d5",
+      "id": "buildroot-2026.05.2",
+      "license": {
+        "files": [
+          {
+            "path": "licenses/buildroot-COPYING",
+            "sha256": "9755181e27175cb3510b4da8629caa406fb355a19aa8e7d55f06bf8ab33323c4",
+            "sourceUrl": "https://gitlab.com/buildroot.org/buildroot/-/raw/72d9d4fa636a371ef9eb99c92a735ce9f6d829d5/COPYING"
+          }
+        ],
+        "spdx": "GPL-2.0-or-later"
+      },
+      "sha256": "7cd0b79e657b8a1760cef0a68d083265726efe96a17f7f0cb9c10dd6d29b7107",
+      "sourceUrl": "https://buildroot.org/downloads/buildroot-2026.05.2.tar.xz",
+      "status": "candidate",
+      "verification": {
+        "kind": "openpgp-clearsigned-sha256",
+        "keySourceUrl": "https://gitlab.com/-/snippets/4836881/raw/main/arnout@rnout.be.asc",
+        "signatureUrl": "https://buildroot.org/downloads/buildroot-2026.05.2.tar.xz.sign",
+        "signerFingerprint": "18C7DF2819C1733D822D599EA500D6EE9CB0E540"
+      },
+      "version": "2026.05.2"
+    }
+  ],
+  "firecrackerCandidates": [
+    {
+      "archiveContains": [
+        "firecracker",
+        "jailer"
+      ],
+      "commit": "97e119947a728c2712fa6c0fe22fe5062f7447f4",
+      "id": "firecracker-1.14.4",
+      "license": {
+        "files": [
+          {
+            "path": "licenses/firecracker-LICENSE",
+            "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+            "sourceUrl": "https://raw.githubusercontent.com/firecracker-microvm/firecracker/97e119947a728c2712fa6c0fe22fe5062f7447f4/LICENSE"
+          },
+          {
+            "path": "licenses/firecracker-NOTICE",
+            "sha256": "0f443af83ca8226c7ec44e2ade3a09fa3eed8c9b923b6c014b6d439816b6f1c2",
+            "sourceUrl": "https://raw.githubusercontent.com/firecracker-microvm/firecracker/97e119947a728c2712fa6c0fe22fe5062f7447f4/NOTICE"
+          }
+        ],
+        "spdx": "Apache-2.0"
+      },
+      "sha256": "ca8ffc4ae778cdbd5de8a598a246d611542cf2bdbc3b22879eab928b653a5d1a",
+      "sourceUrl": "https://github.com/firecracker-microvm/firecracker/releases/download/v1.14.4/firecracker-v1.14.4-x86_64.tgz",
+      "status": "candidate-not-selected",
+      "verification": {
+        "kind": "official-sha256-file",
+        "sourceUrl": "https://github.com/firecracker-microvm/firecracker/releases/download/v1.14.4/firecracker-v1.14.4-x86_64.tgz.sha256.txt"
+      },
+      "version": "1.14.4"
+    },
+    {
+      "archiveContains": [
+        "firecracker",
+        "jailer"
+      ],
+      "commit": "f82c0bd0f0a74015642a0d452880f3ad10147b14",
+      "id": "firecracker-1.15.1",
+      "license": {
+        "files": [
+          {
+            "path": "licenses/firecracker-LICENSE",
+            "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+            "sourceUrl": "https://raw.githubusercontent.com/firecracker-microvm/firecracker/f82c0bd0f0a74015642a0d452880f3ad10147b14/LICENSE"
+          },
+          {
+            "path": "licenses/firecracker-NOTICE",
+            "sha256": "0f443af83ca8226c7ec44e2ade3a09fa3eed8c9b923b6c014b6d439816b6f1c2",
+            "sourceUrl": "https://raw.githubusercontent.com/firecracker-microvm/firecracker/f82c0bd0f0a74015642a0d452880f3ad10147b14/NOTICE"
+          }
+        ],
+        "spdx": "Apache-2.0"
+      },
+      "sha256": "d4a32ab2322d887ca1bc4a4e7afa9cc35393e6362dfc2b3becb389d362e4275a",
+      "sourceUrl": "https://github.com/firecracker-microvm/firecracker/releases/download/v1.15.1/firecracker-v1.15.1-x86_64.tgz",
+      "status": "candidate-not-selected",
+      "verification": {
+        "kind": "official-sha256-file",
+        "sourceUrl": "https://github.com/firecracker-microvm/firecracker/releases/download/v1.15.1/firecracker-v1.15.1-x86_64.tgz.sha256.txt"
+      },
+      "version": "1.15.1"
+    },
+    {
+      "archiveContains": [
+        "firecracker",
+        "jailer"
+      ],
+      "commit": "2038188f145fb81b8d098147a10e9d9f392fd22f",
+      "id": "firecracker-1.16.1",
+      "license": {
+        "files": [
+          {
+            "path": "licenses/firecracker-LICENSE",
+            "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30",
+            "sourceUrl": "https://raw.githubusercontent.com/firecracker-microvm/firecracker/2038188f145fb81b8d098147a10e9d9f392fd22f/LICENSE"
+          },
+          {
+            "path": "licenses/firecracker-NOTICE",
+            "sha256": "0f443af83ca8226c7ec44e2ade3a09fa3eed8c9b923b6c014b6d439816b6f1c2",
+            "sourceUrl": "https://raw.githubusercontent.com/firecracker-microvm/firecracker/2038188f145fb81b8d098147a10e9d9f392fd22f/NOTICE"
+          }
+        ],
+        "spdx": "Apache-2.0"
+      },
+      "sha256": "382a02a869e4d6d5cb14c40577f9545e8458021ea8b0b2d3fc10ec14d9c242e6",
+      "sourceUrl": "https://github.com/firecracker-microvm/firecracker/releases/download/v1.16.1/firecracker-v1.16.1-x86_64.tgz",
+      "status": "candidate-not-selected",
+      "verification": {
+        "kind": "official-sha256-file",
+        "sourceUrl": "https://github.com/firecracker-microvm/firecracker/releases/download/v1.16.1/firecracker-v1.16.1-x86_64.tgz.sha256.txt"
+      },
+      "version": "1.16.1"
+    }
+  ],
+  "kernelCandidates": [
+    {
+      "commit": "5bbb9c9f8f808710e2123f2b30f0d61d7d698f52",
+      "id": "linux-6.18.48",
+      "license": {
+        "files": [
+          {
+            "path": "licenses/linux-COPYING",
+            "sha256": "fb5a425bd3b3cd6071a3a9aff9909a859e7c1158d54d32e07658398cd67eb6a0",
+            "sourceUrl": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/plain/COPYING?id=5bbb9c9f8f808710e2123f2b30f0d61d7d698f52"
+          },
+          {
+            "path": "licenses/linux-GPL-2.0",
+            "sha256": "8780e78a1a737e127f25a65f6d95269bffd36158dc261114de7859b490bfc5aa",
+            "sourceUrl": "https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/plain/LICENSES/preferred/GPL-2.0?id=5bbb9c9f8f808710e2123f2b30f0d61d7d698f52"
+          }
+        ],
+        "spdx": "GPL-2.0-only"
+      },
+      "sha256": "5ebdadb10a4b5708fc6b1c457764a110bc49f8150cc3502c59b921ead8c6fc8c",
+      "sourceUrl": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.18.48.tar.xz",
+      "status": "candidate",
+      "verification": {
+        "checksumManifestUrl": "https://cdn.kernel.org/pub/linux/kernel/v6.x/sha256sums.asc",
+        "keyringUrl": "https://www.kernel.org/pub/site/keyring.gpg",
+        "kind": "openpgp-clearsigned-sha256",
+        "signerFingerprint": "B8868C80BA62A1FFFAF5FDA9632D3A06589DA6B1"
+      },
+      "version": "6.18.48"
+    }
+  ],
+  "schemaVersion": 1,
+  "selection": {
+    "firecracker": "UNSELECTED_UNTIL_MILESTONE_5"
+  },
+  "verifiedAt": "2026-08-29"
+}

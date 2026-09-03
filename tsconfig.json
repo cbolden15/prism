@@ -1,0 +1,10 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./packages/sdk" },
+    { "path": "./packages/runtime" },
+    { "path": "./packages/provider-codex" },
+    { "path": "./packages/provider-ollama" },
+    { "path": "./packages/cli" }
+  ]
+}

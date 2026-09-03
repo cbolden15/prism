@@ -1,0 +1,14 @@
+# Default review ownership for the public repository.
+* @cbolden15
+/.github/ @cbolden15
+/packages/runtime/src/core/ @cbolden15
+/packages/runtime/src/kernel/ @cbolden15
+/packages/sdk/ @cbolden15
+/packages/cli/native/ @cbolden15
+/packages/cli/prebuilds/ @cbolden15
+/scripts/release/ @cbolden15
+/assurance/ @cbolden15
+/pnh/ @cbolden15
+/package.json @cbolden15
+/package-lock.json @cbolden15
+/packages/*/package.json @cbolden15

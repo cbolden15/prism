@@ -1,0 +1,42 @@
+version: 2
+ratification_baseline:
+  path: assurance/constitution/contracts/ratification-baselines/plan-a-v1.json
+  sha256: sha256:8e147530512fe946c811f7273ac644ae405e1d692d7f05cfef49865010cb525c
+  decision: docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md
+invariants:
+  - id: PNH-INV-01
+    title: Ordinary plugin faults stay inside their fault cell
+    category: isolation
+    statement: >
+      An attributed ordinary failure of one plugin must not block, settle,
+      or contaminate the work of any other plugin in the admitted set.
+    law_status: ratified
+    proof_status: partial
+    proof_reason: >
+      The fixture has partial evidence only.
+    enforcement_kind: runtime-adversarial
+    first_release:
+      disposition: activate
+      closing_gates: [C, F]
+    conformance:
+      - pnh/tests/m3-plugin-fault-isolation.test.ts
+    since: "2026-08-21"
+    decisions:
+      - docs/plans/provider-neutral-harness/2026-08-21-m3-plugin-isolation-architecture-options.md
+  - id: PNH-INV-02
+    title: The fixture invariant carries structured proof
+    category: isolation
+    statement: >
+      The fixture invariant is proven by an executed structured proof.
+    law_status: ratified
+    proof_status: proven
+    enforcement_kind: static-structure
+    first_release:
+      disposition: activate
+      closing_gates: [F]
+    conformance:
+      - pnh/tests/plugin-protocol.test.ts
+    since: "2026-08-21"
+    decisions:
+      - docs/plans/provider-neutral-harness/2026-08-21-m3-plugin-isolation-architecture-options.md
+protocols: []

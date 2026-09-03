@@ -1,0 +1,77 @@
+{
+  "schema_version": 1,
+  "baseline_id": "plan-a-v1",
+  "owner": "Vora Technologies, LLC",
+  "ratified_on": "2026-08-28",
+  "sources": [
+    {
+      "path": "docs/plans/provider-neutral-harness/2026-08-26-prism-harness-architecture-design-spec.md",
+      "git_blob": "04e8e79a8cb89186da7032b696e832e1cf2d994d",
+      "ratified_on": "2026-08-27"
+    },
+    {
+      "path": "docs/plans/provider-neutral-harness/2026-08-27-invariant-law-proof-status-amendment.md",
+      "git_blob": "87b3e10b6dedeeec8cc9e95d524ca890fd2d3b7a",
+      "ratified_on": "2026-08-27"
+    },
+    {
+      "path": "docs/plans/provider-neutral-harness/2026-08-26-prism-harness-plan-a-constitutional-proof-and-corrections.md",
+      "git_blob": "1c33a814f1324e67cf53a6fe860bdbdd175031ed",
+      "ratified_on": "2026-08-27"
+    }
+  ],
+  "decisions": {
+    "enforcement_baseline": "docs/plans/provider-neutral-harness/2026-08-26-plan-a-enforcement-baseline-decision.md",
+    "proof_status": "docs/plans/provider-neutral-harness/2026-08-27-plan-a-proof-status-decision.md",
+    "invariant_amendments": "docs/plans/provider-neutral-harness/2026-08-26-plan-a-invariant-amendments.md"
+  },
+  "supersedes": null,
+  "invariants": [
+    {"id":"PNH-INV-01","law_status":"ratified","enforcement_kind":"runtime-adversarial","first_release":{"disposition":"activate","closing_gates":["C","F"]}},
+    {"id":"PNH-INV-02","law_status":"ratified","enforcement_kind":"static-structure","first_release":{"disposition":"retain","detail":"reverify every adapter and protocol pin","closing_gates":["A","F"]}},
+    {"id":"PNH-INV-03","law_status":"ratified","enforcement_kind":"runtime-adversarial","first_release":{"disposition":"retain","detail":"rerun all parser boundaries","closing_gates":["A","F"]}},
+    {"id":"PNH-INV-04","law_status":"ratified","enforcement_kind":"runtime-adversarial","first_release":{"disposition":"retain","detail":"reprove the new authority root","closing_gates":["B2","F"]}},
+    {"id":"PNH-INV-05","law_status":"ratified","enforcement_kind":"runtime-adversarial","first_release":{"disposition":"activate","closing_gates":["B2","F"]}},
+    {"id":"PNH-INV-06","law_status":"ratified","enforcement_kind":"runtime-adversarial","first_release":{"disposition":"activate","closing_gates":["D","F"]}},
+    {"id":"PNH-INV-07","law_status":"ratified","enforcement_kind":"runtime-adversarial","first_release":{"disposition":"activate","closing_gates":["D","E","F"]}},
+    {"id":"PNH-INV-08","law_status":"ratified","enforcement_kind":"runtime-adversarial","first_release":{"disposition":"activate","closing_gates":["D","E","F"]}},
+    {"id":"PNH-INV-09","law_status":"ratified","enforcement_kind":"release-or-architecture-gate","first_release":{"disposition":"activate","closing_gates":["A","F"]}},
+    {"id":"PNH-INV-10","law_status":"ratified","enforcement_kind":"runtime-adversarial","first_release":{"disposition":"activate","closing_gates":["B2","C","E","F"]}},
+    {"id":"PNH-INV-11","law_status":"ratified","enforcement_kind":"runtime-adversarial","first_release":{"disposition":"activate","closing_gates":["B2","F"]}},
+    {"id":"PNH-INV-12","law_status":"ratified","enforcement_kind":"runtime-adversarial","first_release":{"disposition":"activate","closing_gates":["B2","F"]}},
+    {"id":"PNH-INV-13","law_status":"ratified","enforcement_kind":"runtime-adversarial","first_release":{"disposition":"activate","closing_gates":["C","E","F"]}},
+    {"id":"PNH-INV-14","law_status":"ratified","enforcement_kind":"runtime-adversarial","first_release":{"disposition":"activate","closing_gates":["E","F"]}},
+    {"id":"PNH-INV-15","law_status":"ratified","enforcement_kind":"runtime-adversarial","first_release":{"disposition":"activate","closing_gates":["E","F"]}},
+    {"id":"PNH-INV-16","law_status":"ratified","enforcement_kind":"runtime-adversarial","first_release":{"disposition":"activate","closing_gates":["D","E","F"]}},
+    {"id":"PNH-INV-17","law_status":"ratified","enforcement_kind":"release-or-architecture-gate","first_release":{"disposition":"activate","closing_gates":["G"]}},
+    {"id":"PNH-INV-18","law_status":"ratified","enforcement_kind":"static-structure","first_release":{"disposition":"retain","detail":"reverify the standalone graph","closing_gates":["G"]}},
+    {"id":"PNH-INV-19","law_status":"ratified","enforcement_kind":"static-structure","first_release":{"disposition":"activate","closing_gates":["G"]}},
+    {"id":"PNH-INV-20","law_status":"ratified","enforcement_kind":"release-or-architecture-gate","first_release":{"disposition":"activate","closing_gates":["G"]}},
+    {"id":"PNH-INV-21","law_status":"ratified","enforcement_kind":"runtime-adversarial","first_release":{"disposition":"activate","closing_gates":["C","D","F"]}},
+    {"id":"PNH-INV-22","law_status":"ratified","enforcement_kind":"runtime-adversarial","first_release":{"disposition":"activate","detail":"for every production class; partial until then","closing_gates":["A","B2","C","F"]}},
+    {"id":"PNH-INV-23","law_status":"ratified","enforcement_kind":"runtime-adversarial","first_release":{"disposition":"activate","detail":"by execution class; partial until then","closing_gates":["A","C","D","F"]}},
+    {"id":"PNH-INV-24","law_status":"ratified","enforcement_kind":"release-or-architecture-gate","first_release":{"disposition":"activate","closing_gates":["A","F"]}},
+    {"id":"PNH-INV-25","law_status":"ratified","enforcement_kind":"runtime-adversarial","first_release":{"disposition":"activate","detail":"after exact amendment","closing_gates":["A","B2","F"]}},
+    {"id":"PNH-INV-26","law_status":"ratified","enforcement_kind":"generated-document-consistency","first_release":{"disposition":"activate","closing_gates":["A","F","G"]}},
+    {"id":"PNH-INV-27","law_status":"ratified","enforcement_kind":"runtime-adversarial","first_release":{"disposition":"activate","detail":"after exact amendment","closing_gates":["A","B2","C","F"]}},
+    {"id":"PNH-INV-28","law_status":"ratified","enforcement_kind":"runtime-adversarial","first_release":{"disposition":"activate","closing_gates":["B2","F"]}},
+    {"id":"PNH-INV-29","law_status":"ratified","enforcement_kind":"runtime-adversarial","first_release":{"disposition":"activate","detail":"partial until the production entrypoint enforces owner pins","closing_gates":["A","B2","F"]}},
+    {"id":"PNH-INV-30","law_status":"ratified","enforcement_kind":"runtime-adversarial","first_release":{"disposition":"activate","closing_gates":["B2","F"]}},
+    {"id":"PNH-INV-31","law_status":"ratified","enforcement_kind":"runtime-adversarial","first_release":{"disposition":"activate","closing_gates":["B2","C","D","E","F"]}},
+    {"id":"PNH-INV-32","law_status":"ratified","enforcement_kind":"runtime-adversarial","first_release":{"disposition":"activate","closing_gates":["B2","F"]}},
+    {"id":"PNH-INV-33","law_status":"ratified","enforcement_kind":"runtime-adversarial","first_release":{"disposition":"activate","closing_gates":["C","F"]}},
+    {"id":"PNH-INV-34","law_status":"ratified","enforcement_kind":"runtime-adversarial","first_release":{"disposition":"activate","closing_gates":["B2","C","F"]}},
+    {"id":"PNH-INV-35","law_status":"ratified","enforcement_kind":"runtime-adversarial","first_release":{"disposition":"activate","closing_gates":["C","F"]}},
+    {"id":"PNH-INV-36","law_status":"ratified","enforcement_kind":"runtime-adversarial","first_release":{"disposition":"activate","closing_gates":["C","F"]}},
+    {"id":"PNH-INV-37","law_status":"ratified","enforcement_kind":"runtime-adversarial","first_release":{"disposition":"activate","closing_gates":["C","F"]}},
+    {"id":"PNH-INV-38","law_status":"ratified","enforcement_kind":"runtime-adversarial","first_release":{"disposition":"activate","detail":"after exact amendment","closing_gates":["A","C","F"]}},
+    {"id":"PNH-INV-39","law_status":"ratified","enforcement_kind":"runtime-adversarial","first_release":{"disposition":"defer","detail":"no first-release conformance claim","closing_gates":["H"]}},
+    {"id":"PNH-INV-40","law_status":"ratified","enforcement_kind":"runtime-adversarial","first_release":{"disposition":"defer","detail":"with D5","closing_gates":["H"]}},
+    {"id":"PNH-INV-41","law_status":"ratified","enforcement_kind":"runtime-adversarial","first_release":{"disposition":"defer","detail":"with D5","closing_gates":["H"]}},
+    {"id":"PNH-INV-42","law_status":"ratified","enforcement_kind":"runtime-adversarial","first_release":{"disposition":"defer","detail":"with D5","closing_gates":["H"]}},
+    {"id":"PNH-INV-43","law_status":"ratified","enforcement_kind":"runtime-adversarial","first_release":{"disposition":"activate","closing_gates":["B2","F"]}},
+    {"id":"PNH-INV-44","law_status":"ratified","enforcement_kind":"generated-document-consistency","first_release":{"disposition":"activate","closing_gates":["A","G"]}},
+    {"id":"PNH-INV-45","law_status":"ratified","enforcement_kind":"runtime-adversarial","first_release":{"disposition":"activate","closing_gates":["C","D","E","F"]}},
+    {"id":"PNH-INV-46","law_status":"ratified","enforcement_kind":"release-or-architecture-gate","first_release":{"disposition":"activate","closing_gates":["A","F"]}}
+  ]
+}

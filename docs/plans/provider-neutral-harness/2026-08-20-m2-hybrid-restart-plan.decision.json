@@ -1,0 +1,266 @@
+{
+  "id": "2026-08-20-m2-hybrid-restart-plan-notes",
+  "title": "Implementation notes — PNH M2 hybrid restart plan",
+  "subtitle": "Milestones 1–2 complete · M3 security boundary recorded · updated 2026-08-21 11:09 CDT",
+  "introTitle": "How to use",
+  "intro": "<p>Each item is a decision, deviation, or tradeoff made during implementation. <strong>Acknowledge</strong> if fine. <strong>Discuss</strong> to write what should change (free-text). <strong>Revert</strong> to flag for undo.</p>",
+  "actions": [
+    "acknowledge",
+    "discuss",
+    "revert"
+  ],
+  "groups": [
+    {
+      "id": "milestone-1",
+      "label": "Milestone 1 — Golden Tool vertical slice",
+      "badge": "M1"
+    },
+    {
+      "id": "milestone-2",
+      "label": "Milestone 2 — Authority-complete kernel",
+      "badge": "M2"
+    },
+    {
+      "id": "milestone-3",
+      "label": "Milestone 3 — Deterministic Runtime and evidence custody",
+      "badge": "M3"
+    },
+    {
+      "id": "milestone-4",
+      "label": "Milestone 4 — Artifact and sandbox hardening",
+      "badge": "M4"
+    },
+    {
+      "id": "milestone-5",
+      "label": "Milestone 5 — Adversarial conformance and closure",
+      "badge": "M5"
+    }
+  ],
+  "items": [
+    {
+      "id": "N1",
+      "group": "milestone-1",
+      "title": "Use a closed flat source tree with explicit artifact commitments",
+      "where": "pnh/scripts/generate-plugin-registry.ts",
+      "default": "acknowledge",
+      "body": {
+        "Spec said": "Add normalized manifest and deterministic registry generation for the golden Tool slice.",
+        "What I did": "The generator accepts one flat directory per plugin, rejects undeclared sidecars and symlinks, hashes every declared source file, and requires explicit runner, image, and profile digests before producing registry bytes.",
+        "Why": "A closed flat tree makes source custody exact for the first slice, while explicit commitments bind version identity before the real runner and image build path exists.",
+        "Followup": "Milestone 2 extends the manifest identity with compatibility, license, and dependency-version metadata; Milestone 4 replaces provisional commitments with verified artifact commitments."
+      }
+    },
+    {
+      "id": "N2",
+      "group": "milestone-1",
+      "title": "Keep the ESM runner bootstrap compatible with the CJS test transform",
+      "where": "pnh/kernel/plugin-runner/entrypoint.mjs",
+      "default": "acknowledge",
+      "body": {
+        "Spec said": "The owner-controlled runner must process each complete protocol line immediately.",
+        "What I did": "The direct-entry bootstrap starts main() with a terminal catch instead of top-level await; the request loop itself remains async and the production plugin path remains fixed.",
+        "Why": "The PNH harness transforms imported .mjs modules to CommonJS for tests, where top-level await fails before the runner tests execute.",
+        "Risk": "Future runner bootstrap edits must pass both native ESM execution and the harness transform."
+      }
+    },
+    {
+      "id": "N3",
+      "group": "milestone-1",
+      "title": "Give the supervisor independent process custody through fixed descriptors",
+      "where": "pnh/harness/plugin-container-supervisor.mjs",
+      "default": "acknowledge",
+      "body": {
+        "Spec said": "The supervisor runs outside the broker, owns every Docker lifecycle write, survives broker death, and retains one terminal receipt until Runtime acknowledgement.",
+        "What I did": "The supervisor is directly spawnable. Canonical startup specs arrive only on fixed FD 3; authenticated canonical commands use bounded stdio; an internal serialized queue owns launch, deadline, cleanup, acknowledgement, and shutdown; only this process contains the Docker CLI adapter.",
+        "Why": "The gateway can own the supervisor process and its descriptors independently of the broker, so broker death cannot remove the hard-deadline timer or gain raw Docker arguments at request time.",
+        "Risk": "The upcoming gateway must remain the descriptor owner. Wiring supervisor stdio directly to the broker would collapse the intended failure boundary.",
+        "Followup": "The broker/gateway slice must derive fixed-FD launch specs from verified registry commitments and accept broker success only from a receipt with daemon-confirmed absence."
+      }
+    },
+    {
+      "id": "N4",
+      "group": "milestone-1",
+      "title": "Keep lifecycle authority in gateway-owned, independently authenticated children",
+      "where": "pnh/harness/plugin-container-broker.mjs; pnh/harness/sandbox/broker-gateway.mjs",
+      "default": "acknowledge",
+      "body": {
+        "Spec said": "The broker never calls Docker, broker death cannot cancel supervisor deadlines, transport loss rejects pending requests, and broker success requires daemon-confirmed cleanup.",
+        "What I did": "The gateway spawns the supervisor and broker as independent children, generates a distinct token for each fixed-FD channel, validates every broker command against the admitted Runtime request, and binds a broker success payload to the exact supervisor result it routed. Broker close rejects callers without closing the supervisor channel. The broker imports no process-spawn API and can reach lifecycle operations only through gateway-mediated supervisor RPC.",
+        "Why": "Owning both pipes in the gateway preserves supervisor custody when the broker exits and prevents the broker from fabricating lifecycle state or widening a request before it reaches the sole Docker writer.",
+        "Risk": "This slice routes lifecycle RPC only. Plugin application stdin/stdout still needs a supervisor-owned attachment path before the adapter can complete the real Tool vertical slice.",
+        "Followup": "Add the Docker broker adapter and application-byte routing without granting the broker Docker or supervisor-token access."
+      }
+    },
+    {
+      "id": "N5",
+      "group": "milestone-1",
+      "title": "Keep application streams under supervisor custody",
+      "where": "pnh/harness/plugin-container-supervisor.mjs; pnh/adapters/docker-broker-plugin-container.ts",
+      "default": "acknowledge",
+      "body": {
+        "Spec said": "The production adapter must carry bounded plugin application bytes without granting Docker authority to the broker, reject transport uncertainty, and settle success only from daemon-confirmed cleanup evidence.",
+        "What I did": "The supervisor now owns the attached docker start process, stdin backpressure, stdout and stderr sequencing, stream limits, natural-exit cleanup, and terminal event emission. Broker and gateway carry authenticated stream commands and events. The adapter requires the opaque admission ticket, decodes fatal bounded NDJSON, serializes writes, buffers early output, rejects duplicate and late frames, and exposes receipt acknowledgement after confirmed absence.",
+        "Why": "Application I/O and lifecycle observation now share the same serialized Docker owner while Runtime-facing code receives only bytes and evidence through a narrow port.",
+        "Risk": "The adapter is proven against the production constructors and in-memory transports, but the real Tool image and Runtime one-shot path are not wired through it yet.",
+        "Followup": "Build the committed Tool image/profile launch specification and add the narrow Runtime registration-plus-operation path through this adapter."
+      }
+    },
+    {
+      "id": "N6",
+      "group": "milestone-1",
+      "title": "Bind the real Tool launch to committed runner and profile bytes",
+      "where": "pnh/kernel/plugin-runner; pnh/runtime/plugin-launch-spec.ts; pnh/runtime/run-task.ts",
+      "default": "acknowledge",
+      "body": {
+        "Spec said": "Runtime must use one verified registry ticket to launch the real Tool container, register it, run one operation through the production protocol, and accept success only after daemon-confirmed absence.",
+        "What I did": "The Tool image recipe pins the existing Node base digest and copies the owner runner, canonical codec, and golden Tool into a dependency-free image. A committed launch profile fixes interactive stdin, no network, read-only rootfs, dropped capabilities, no-new-privileges, resource ceilings, allow-listed environment, and exact seccomp bytes. The builder disables provenance variance, captures the actual image ID, and feeds image, runner, and profile commitments into registry admission. Runtime performs registration before one declared operation, rejects unmatched or duplicate output, closes input, validates exit/OOM/cleanup evidence, and acknowledges the retained receipt. The authoritative PNH gate now runs a host-side real-Docker slice before the socket-free sandbox suite.",
+        "Why": "The image ID proves what Docker launched, while separate runner and profile digests prevent a valid ticket from being reused with changed execution bytes or launch authority. Keeping the one-operation Runtime path narrow proves composition without importing Milestone 2 plugin-kind policy early.",
+        "Risk": "The Milestone 1 seccomp profile is an exact deny overlay with a default-allow action. Milestone 4 must replace it with the reviewed deny-by-default hardened profile and syscall gate.",
+        "Followup": "Add real-Docker failure fixtures for timeout, malformed output, and extra output, each asserting one Runtime settlement and daemon-confirmed container absence."
+      }
+    },
+    {
+      "id": "N7",
+      "group": "milestone-1",
+      "title": "Close Tool failure paths through real Docker",
+      "where": "pnh/host-tests/m1-tool-failure-paths.test.ts; pnh/host-tests/fixtures/plugins; pnh/scripts/build-plugin-image.ts",
+      "default": "acknowledge",
+      "body": {
+        "Spec said": "Timeout, duplicate response, invalid UTF-8, and extra output must fail closed; every success and failure must end with one Runtime settlement and daemon-confirmed container absence.",
+        "What I did": "The image builder now accepts one explicit closed Tool source tree while preserving the golden default and rejects undeclared entries, symlinks, non-Tool manifests, and entrypoint collisions before Docker build. Three committed malicious images cover an operation that never settles, a complete NDJSON line with invalid UTF-8 bytes, and a plugin-written success frame followed by the runner's duplicate frame. The host gate admits each image through its own one-plugin registry, runs it through Runtime and production gateway/supervisor routing, checks the exact failure class, clean receipt fields, one Runtime promise settlement, and an empty Docker label query after both Runtime and gateway shutdown.",
+        "Why": "Unit codecs prove local rejection rules, but these tests prove that rejection composes with real Docker attachment, cleanup, receipt retention, acknowledgement, and process shutdown without leaking a container.",
+        "Gotcha": "Invalid UTF-8 is evaluated only at a complete NDJSON boundary. The malicious fixture must include a newline; unterminated invalid bytes correctly remain buffered until EOF or deadline.",
+        "Followup": "Begin Milestone 2 by extending manifest identity with compatibility and license metadata, then resolve dependency order and plugin-set identity exclusively from the admission ticket."
+      }
+    },
+    {
+      "id": "N8",
+      "group": "milestone-2",
+      "title": "Make the verified ticket the sole plugin-set identity source",
+      "where": "pnh/registry/schema.ts; pnh/scripts/generate-plugin-registry.ts; pnh/runtime/admission-ticket.ts",
+      "default": "acknowledge",
+      "body": {
+        "Spec said": "Canonicalize compatibility, license, exact dependencies, capabilities, source, runner, image, and profile commitments into version identity, then resolve dependency order and plugin-set identity from the verified admission ticket.",
+        "What I did": "Registry v3 requires exact-version dependency objects, one supported kernel API compatibility value, and bounded SPDX license metadata. Manifest and version digest domains moved to v2. Registry verification rejects unknown dependencies, version drift, cycles, and noncanonical plugin order. Ticket issuance applies a deterministic topological order with plugin ID as the tie-breaker, freezes that order, and hashes only those ticket-owned descriptors into the plugin-set digest.",
+        "Why": "Runtime consumers now need only the opaque ticket. They cannot supply a second registry or choose an order that changes plugin-set identity after admission.",
+        "Risk": "Compatibility currently admits only pnh-kernel-v1. Supporting a later kernel contract requires an explicit schema and registry version decision rather than silently widening this field.",
+        "Followup": "Implement Policy, Memory, Tool, Provider, and Renderer registration through the production codec without adding Policy execution yet."
+      }
+    },
+    {
+      "id": "N9",
+      "group": "milestone-2",
+      "title": "Use one registration path for every admitted plugin kind",
+      "where": "pnh/sdk/registration.ts; pnh/runtime/run-task.ts; pnh/runtime/plugin-launch-spec.ts; pnh/scripts/build-plugin-image.ts",
+      "default": "acknowledge",
+      "body": {
+        "Spec said": "Policy, Memory, Tool, Provider, and Renderer must register through real containers using the same production codec.",
+        "What I did": "The SDK now validates exact kind-specific registrations. Policy, Memory, Provider, and Renderer declare only kind and plugin identity; Tool also declares a sorted non-empty operation set. Runtime uses one admitted session for registration and the existing Tool operation path. Packaging, launch commitments, and the committed profile are now plugin-kind-neutral. Five fixtures that accept only registration pass through one real gateway and five real containers, each ending with clean daemon-confirmed absence.",
+        "Why": "A single framing and lifecycle path prevents kind-specific transports from drifting before Policy and capability enforcement are added.",
+        "Risk": "A successful Policy registration is not Policy approval. This slice does not execute Policy output, derive grants, or narrow the catalog.",
+        "Followup": "Implement fail-closed Policy admission and enforce the admission ticket catalog as the immutable authority ceiling before any non-Policy grant exists."
+      }
+    },
+    {
+      "id": "N10",
+      "group": "milestone-2",
+      "title": "Derive grants only after every Policy admits",
+      "where": "pnh/kernel/plugin-kernel.ts; pnh/runtime/run-task.ts; pnh/sdk/policy-admission.ts",
+      "default": "acknowledge",
+      "body": {
+        "Spec said": "Policy denial or failure must stop admission before non-Policy grants exist, and a protocol-valid Policy response must never widen authority beyond the admission ticket catalog.",
+        "What I did": "The production protocol now has an explicit admit phase after Policy registration. Policy output is an exact deny-or-restrict schema. The kernel runs every Policy before deriving any persistent plugin grant, checks each restriction against both the ticket-owned ceiling and the current effective catalog, then derives and deep-freezes all grants against the final catalog. Timeout, crash, malformed output, sequence failure, explicit denial, ceiling widening, and later-Policy re-widening all fail with zero grant derivations. The golden Policy also completes register and admit through a real container with daemon-confirmed cleanup.",
+        "Why": "Admission sessions are authorized by the verified ticket itself. Deferring all grants until every Policy approves removes partial authority state and makes the ticket catalog an independent ceiling even if monotonic-state checks regress.",
+        "Gotcha": "A pending Policy deadline timer must remain referenced. Unref'ing it lets Node end with an unresolved admission promise when no other handle keeps the event loop alive.",
+        "Risk": "This slice derives frozen grants but does not yet accept live capability requests or execute ordinary Policy operations.",
+        "Followup": "Implement one exact capability-request schema per limit type and reject widened operation input before intent append or dispatch."
+      }
+    },
+    {
+      "id": "N11",
+      "group": "milestone-2",
+      "title": "Brand frozen authority before capability dispatch",
+      "where": "pnh/kernel/capability-rpc.ts; pnh/kernel/plugin-kernel.ts",
+      "default": "acknowledge",
+      "body": {
+        "Spec said": "Define one capability-request schema per integer maximum, string set, and boolean gate, then validate normalized requested values against grants before intent append and dispatch.",
+        "What I did": "Capability requests now use an exact envelope with one versioned discriminated value shape per limit type. Integer values must be safe nonnegative integers within max; string sets reject duplicates, normalize order, and remain a subset; boolean gates cannot enable a disabled grant. The kernel records each issued frozen authority and its exact admission ticket in a private WeakMap. The execution gate rejects forged authority, unknown plugins, undeclared capabilities, malformed shapes, schema drift, and widening before either injected port runs. Valid requests create one deeply frozen intent bound to plugin, task, plugin set, catalog, and grant identity, append it, and only then dispatch it.",
+        "Why": "A frozen object alone is forgeable by callers. The private map proves provenance from the admission kernel and exact-ticket ownership, while separate append and dispatch ports make the security ordering testable without pulling Milestone 3 storage or effect-custody behavior into this slice.",
+        "Risk": "The ports remain abstract seams, and post-dispatch uncertainty remains a Milestone 3 evidence-custody concern.",
+        "Followup": "Milestone 3 must persist exact registry identity with durable intent and event custody."
+      }
+    },
+    {
+      "id": "N12",
+      "group": "milestone-2",
+      "title": "Gate Tool operation input before container launch",
+      "where": "pnh/runtime/run-task.ts; pnh/runtime/internal/plugin-session.ts; pnh/host-tests/m2-plugin-registration.test.ts; pnh/tests/run-authorized-tool-task.test.ts",
+      "default": "acknowledge",
+      "body": {
+        "Spec said": "Bind Tool operation input to executeCapabilityRequest in the production Runtime path and reject ungranted or widened input before container operation dispatch without adding ordinary Policy execution.",
+        "What I did": "The sole public Tool Runtime entry point requires one verified admission ticket, one kernel-issued authority bound to that exact ticket, and an intent port. It passes raw operation input through executeCapabilityRequest, appends the frozen grant-bound intent first, and dispatches only the normalized capability request through the internal Tool registration and operation codec. Forged authority, exact-ticket mismatch, ungranted capabilities, widened values, malformed input, and intent append failure all return before container launch. The real M2 Tool fixture requests a non-empty string-set capability; a widened request launches nothing, while an allowed unsorted request is normalized and echoed through the real container.",
+        "Why": "The checked value and dispatched value are the same object shape, and the raw codec seam has no public Runtime re-export. Exact ticket object identity prevents authority from one registry snapshot authorizing another snapshot with the same plugin-set digest.",
+        "Risk": "Durable intent custody, exact registry identity in event evidence, and post-dispatch ambiguity remain Milestone 3 concerns.",
+        "Followup": "Define the Milestone 3 Runtime state table and append-before-dispatch transition API."
+      }
+    },
+    {
+      "id": "N13",
+      "group": "milestone-2",
+      "title": "Block M2 closure on two authority-binding gaps",
+      "where": "docs/audits/2026-08-21-m2-hybrid-restart-plan-audit.md; pnh/runtime/run-task.ts; pnh/runtime/run-authorized-tool-task.ts; pnh/kernel/plugin-kernel.ts",
+      "default": "acknowledge",
+      "body": {
+        "Spec said": "Milestone 2 is complete only when operation input cannot bypass grant validation and one owner-approved registry snapshot remains the sole source of identity and authority.",
+        "What I found": "The strict closure audit classifies 13 of 15 requirements complete. The exported runToolTask path still launches a Tool with arbitrary JsonValue and no admitted authority or intent append, so callers can bypass the gated wrapper. The wrapper also compares only pluginSetDigest. A diagnostic paired authority from one verified registry with another ticket whose registry digest and aggregate catalog differed but whose plugin-set digest matched; the request reached intent append and launch.",
+        "Why": "The new gate is additive rather than exclusive, and issued authority drops the exact ticket identity. Passing tests prove the intended path but do not make it mandatory or distinguish same-plugin-set registry snapshots.",
+        "Risk": "Starting Milestone 3 now would build evidence custody on an authority boundary that can still be bypassed or cross-paired. The official PNH and X1 suites remain green, so regression status alone does not expose either gap.",
+        "Followup": "Make the authority-gated Tool path exclusive, bind authority to the exact admission ticket, add both adversarial regressions, rerun the M2 closure audit, and do not start Milestone 3 before READY."
+      }
+    },
+    {
+      "id": "N14",
+      "group": "milestone-2",
+      "title": "Close Tool authority on one exact-ticket public path",
+      "where": "pnh/kernel/plugin-kernel.ts; pnh/runtime/run-task.ts; pnh/runtime/internal/plugin-session.ts; pnh/tests/run-authorized-tool-task.test.ts; docs/audits/2026-08-21-m2-hybrid-restart-plan-audit.md",
+      "default": "acknowledge",
+      "body": {
+        "Spec said": "Milestone 2 must make capability validation mandatory at the production Tool boundary and preserve one verified registry snapshot as the authority source before Milestone 3 begins.",
+        "What I did": "The public runToolTask API now requires exact-ticket-bound admitted authority and an intent port, validates and normalizes input, appends the frozen intent, and only then calls the internal production codec. The former authorized wrapper was removed, and the raw Tool operation seam moved under runtime/internal with no public re-export. The kernel's private WeakMap binds each authority to the exact branded ticket object. Adversarial tests prove that missing authority and a different registry ticket with an equal plugin-set digest reach neither append nor launch.",
+        "Why": "There is now one production Tool entry point and one unforgeable in-process ownership relation between registry admission and effect authority. Callers cannot select an ungated function or substitute a second verified ticket that happens to describe the same plugin set.",
+        "Gotcha": "Duplicate plugin output can reject the exchange promise while Runtime is still awaiting stdin backpressure. Attaching an immediate rejection observer prevents an unhandled-rejection race without changing settlement through the original awaited promise.",
+        "Verification": "Focused authority 5/5; combined real-container host 5/5; PNH host 5/5, boundary 5/5, TypeScript 172/172, zero skips, 100% core coverage; X1 202/202, zero skips; diff clean; no PNH Docker residue; strict audit READY at 15/15.",
+        "Followup": "Start Milestone 3 by defining the Runtime state table and append-before-dispatch transition API."
+      }
+    },
+    {
+      "id": "N15",
+      "group": "milestone-3",
+      "title": "Contain ordinary plugin faults without multiplying Docker authority",
+      "where": "docs/plans/provider-neutral-harness/2026-08-20-m2-hybrid-restart-plan.md; docs/plans/provider-neutral-harness/2026-08-21-m3-plugin-fault-isolation-threat-model.md",
+      "default": "acknowledge",
+      "body": {
+        "Spec said": "An ordinary plugin failure must not disrupt unrelated plugins. Compare shared-supervisor logical cells with per-plugin control-plane processes, including Docker-authority expansion, and do not split processes unless the threat model proves logical isolation insufficient.",
+        "What I decided": "Logical fault cells are explicitly not security boundaries; the plugin container is the untrusted-code boundary and the privileged lifecycle daemon is the Docker-authority boundary. M3 keeps one shared supervisor and defines each plugin allocation as a logical fault cell with plugin-keyed lifecycle, queue, timer, accounting, cleanup, and evidence state. Timeout, crash, protocol failure, malformed or excessive output, nonzero or OOM exit, and cleanup failure must settle only the failing plugin. Concurrent tests must prove unrelated requests continue without shared-channel closure, cross-plugin cancellation, accounting drift, or event-chain mutation. The focused threat model is linked from the M3 design gate.",
+        "Why": "Per-plugin control-plane processes provide a stronger boundary against shared control-plane failure or compromise, but they multiply Docker-capable supervisors, authenticated channels, process custody, retained-receipt reconciliation, and operational state. Ordinary plugin faults should first be contained without expanding privileged authority.",
+        "Risk": "A shared supervisor crash or compromise remains a shared-fate threat and is intentionally distinct from the ordinary-plugin-failure invariant. If threat modeling or fault-injection evidence shows logical cells cannot meet the invariant, physical splitting becomes a separately reviewed architecture change rather than an implicit M3 refactor.",
+        "Followup": "Define the Runtime state table with explicit plugin fault-cell ownership, then write failing concurrent isolation tests before implementing M3 transitions."
+      }
+    },
+    {
+      "id": "N16",
+      "group": "milestone-3",
+      "title": "Expose shared-supervisor head-of-line fault propagation before transitions",
+      "where": "pnh/tests/m3-plugin-fault-isolation.test.ts; pnh/harness/plugin-container-supervisor.mjs",
+      "default": "acknowledge",
+      "body": {
+        "Spec said": "Write failing concurrent isolation tests before implementing M3 transitions, covering every ordinary plugin failure class without physically splitting the control plane.",
+        "What I did": "A focused synthetic-Docker suite launches one failing and one unrelated allocation through the same production supervisor. For timeout, crash, protocol failure, malformed output, excessive output, nonzero exit, OOM, and cleanup failure, it holds the failing allocation's removal open and requires the unrelated allocation's status and input write to settle before cleanup is released. All eight tests compile and fail at that exact progress assertion because the supervisor currently serializes every allocation through one global promise queue.",
+        "Why": "The test detects logical fault propagation directly. It does not require more Docker-capable processes, and it gives the next implementation slice one narrow target: plugin-keyed scheduling that preserves the existing single supervisor authority boundary.",
+        "Risk": "Protocol and malformed application failures reach this supervisor seam as broker-stop cleanup. Later Runtime tests must prove decoder and protocol failures map into the same scoped cleanup path and must add cross-plugin resource-accounting and event-chain assertions once those M3 transitions exist.",
+        "Verification": "npm run typecheck:pnh passes. The focused isolation suite is intentionally red at 0/8, with every failure reporting cleanup head-of-line blocking and no setup, timeout, or unrelated assertion failure.",
+        "Followup": "Implement the smallest logical-cell scheduler change that lets unrelated supervisor operations progress while one plugin cleanup is pending; do not split processes."
+      }
+    }
+  ]
+}

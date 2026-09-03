@@ -1,0 +1,10 @@
+{
+  "version": "prism-live-ollama-evidence-v1",
+  "fixtureSha256": "91e806baddb204cd40efbefcd2cb8db33f87fdd37675ec7a59bcb1c4a1be2a8b",
+  "expectedFactSha256": "2e2025e1b79ad81cd76bc7b4a553a844b0869855acebf76f746c45c5859e1856",
+  "acceptanceScriptSha256": "aa23eb3914f06e1ecdd882cc4d044d85b0a3c64dbdf370626b959dea7cac8040",
+  "acceptanceInputSha256": "bf14cca6e303e88827ba7b6f4ca6a2eb06cf5af9c8b4ccb72f168b2985c71b87",
+  "model": "qwen2.5:14b",
+  "result": "passed",
+  "recordedAt": "2026-08-31T05:06:55.972Z"
+}

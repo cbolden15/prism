@@ -1,0 +1,264 @@
+{
+  "artifacts": [
+    {
+      "artifactType": "archive",
+      "commit": "88d9e12ae178fab0fb5cc050a94da85685d449ea",
+      "id": "cargo-1.98.0",
+      "license": {
+        "files": [
+          {
+            "path": "licenses/rust-LICENSE-APACHE",
+            "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+            "sourceUrl": "https://raw.githubusercontent.com/rust-lang/rust/88d9e12ae178fab0fb5cc050a94da85685d449ea/LICENSE-APACHE"
+          },
+          {
+            "path": "licenses/rust-LICENSE-MIT",
+            "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+            "sourceUrl": "https://raw.githubusercontent.com/rust-lang/rust/88d9e12ae178fab0fb5cc050a94da85685d449ea/LICENSE-MIT"
+          }
+        ],
+        "spdx": "Apache-2.0 OR MIT"
+      },
+      "platform": "x86_64-unknown-linux-gnu",
+      "sha256": "2f512d170d3dd23e16ababcda32ee2e6d5172d861a7af1f504e0b1e270cafab9",
+      "sourceUrl": "https://static.rust-lang.org/dist/2026-08-20/cargo-1.98.0-x86_64-unknown-linux-gnu.tar.xz",
+      "verification": {
+        "kind": "official-sha256-file",
+        "sourceUrl": "https://static.rust-lang.org/dist/2026-08-20/cargo-1.98.0-x86_64-unknown-linux-gnu.tar.xz.sha256"
+      },
+      "version": "1.98.0"
+    },
+    {
+      "artifactType": "archive",
+      "commit": "bca0dde53651ee946720e4540b5ce2610bec8f06",
+      "id": "cargo-deny-0.20.2",
+      "license": {
+        "files": [
+          {
+            "path": "licenses/cargo-deny-LICENSE-APACHE",
+            "sha256": "8173d5c29b4f956d532781d2b86e4e30f83e6b7878dce18c919451d6ba707c90",
+            "sourceUrl": "https://raw.githubusercontent.com/EmbarkStudios/cargo-deny/bca0dde53651ee946720e4540b5ce2610bec8f06/LICENSE-APACHE"
+          },
+          {
+            "path": "licenses/cargo-deny-LICENSE-MIT",
+            "sha256": "090a294a492ab2f41388252312a65cf2f0e423330b721a68c6665ac64766753b",
+            "sourceUrl": "https://raw.githubusercontent.com/EmbarkStudios/cargo-deny/bca0dde53651ee946720e4540b5ce2610bec8f06/LICENSE-MIT"
+          }
+        ],
+        "spdx": "Apache-2.0 OR MIT"
+      },
+      "platform": "x86_64-unknown-linux-musl",
+      "sha256": "9f12ed4c49936e09b48bf862b595cde2fe64fcbd9d74dfacac6131ca824c8d5f",
+      "sourceUrl": "https://github.com/EmbarkStudios/cargo-deny/releases/download/0.20.2/cargo-deny-0.20.2-x86_64-unknown-linux-musl.tar.gz",
+      "verification": {
+        "kind": "official-sha256-file",
+        "sourceUrl": "https://github.com/EmbarkStudios/cargo-deny/releases/download/0.20.2/cargo-deny-0.20.2-x86_64-unknown-linux-musl.tar.gz.sha256"
+      },
+      "version": "0.20.2"
+    },
+    {
+      "artifactType": "oci-image",
+      "commit": "c4eb0858f5c522521768d5b6dc1d9f1631d4854d",
+      "configDigest": "sha256:cf29686709c0bbe09620640e5275825c6f435f69f7665ef8e8f6603d11feae51",
+      "id": "node-b0-image",
+      "indexDigest": "sha256:367679cf9792759492a486e4aa4b421764d71a9546a6dae8aab81a99eb797b3e",
+      "license": {
+        "files": [
+          {
+            "path": "licenses/docker-node-LICENSE",
+            "sha256": "782e17d54343aa3f6db60430015692b6540089b3ec5b78274981ada2d3c3c423",
+            "sourceUrl": "https://raw.githubusercontent.com/nodejs/docker-node/c4eb0858f5c522521768d5b6dc1d9f1631d4854d/LICENSE"
+          }
+        ],
+        "spdx": "MIT"
+      },
+      "manifestDigest": "sha256:27f5e13512830beb5d9a574108daa6701a0a0b91528aeaf1ee84ecdcddaeeaae",
+      "platform": "linux/amd64",
+      "sourceUrl": "docker.io/library/node@sha256:27f5e13512830beb5d9a574108daa6701a0a0b91528aeaf1ee84ecdcddaeeaae",
+      "verification": {
+        "kind": "oci-distribution-content-digest",
+        "sourceUrl": "https://raw.githubusercontent.com/docker-library/official-images/71339450f57fcc378af73eb026b52ca39be94bd0/library/node"
+      },
+      "version": "26.8.1-bookworm-slim"
+    },
+    {
+      "artifactType": "oci-image",
+      "commit": "7e8ce3f02e3f0292a54b9212ccad6204bde54289",
+      "configDigest": "sha256:638b399c881b3035633d81b118935b97979e9deccacb3925efd4d23ff44ced8b",
+      "id": "rust-b0-image",
+      "indexDigest": "sha256:1469a27c125cb5a3aebfa4f4e4665d935b02fb72cc093b2c974b3d740e43f157",
+      "license": {
+        "files": [
+          {
+            "path": "licenses/docker-rust-LICENSE-APACHE",
+            "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
+            "sourceUrl": "https://raw.githubusercontent.com/rust-lang/docker-rust/7e8ce3f02e3f0292a54b9212ccad6204bde54289/LICENSE-APACHE"
+          },
+          {
+            "path": "licenses/rust-LICENSE-MIT",
+            "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+            "sourceUrl": "https://raw.githubusercontent.com/rust-lang/docker-rust/7e8ce3f02e3f0292a54b9212ccad6204bde54289/LICENSE-MIT"
+          }
+        ],
+        "spdx": "Apache-2.0 OR MIT"
+      },
+      "manifestDigest": "sha256:af0579d28b9a7ec5251aaafcb0c0a23dcde5c97065112aae0cc3abeda42d5394",
+      "platform": "linux/amd64",
+      "sourceUrl": "docker.io/library/rust@sha256:af0579d28b9a7ec5251aaafcb0c0a23dcde5c97065112aae0cc3abeda42d5394",
+      "verification": {
+        "kind": "oci-distribution-content-digest",
+        "sourceUrl": "https://raw.githubusercontent.com/docker-library/official-images/bd57a36eddc2a99da1291c8f7d1bd8bcb90b2a68/library/rust"
+      },
+      "version": "1.98.0-slim-bookworm"
+    },
+    {
+      "artifactPath": "rustc-1.98.0-x86_64-unknown-linux-gnu/rustc/lib/rustlib/x86_64-unknown-linux-gnu/bin/rust-lld",
+      "artifactType": "extracted-binary",
+      "commit": "52ed14fcd56afc30f9cccd8ca8ce237c2eef7e04",
+      "id": "rust-lld-1.98.0",
+      "license": {
+        "files": [
+          {
+            "path": "licenses/rust-lld-LLVM-LICENSE.txt",
+            "sha256": "3340babe8ac7bc6ae294d93aa01c310a250d43d5b760e5c12954882d4e5c83c7",
+            "sourceUrl": "https://raw.githubusercontent.com/rust-lang/llvm-project/52ed14fcd56afc30f9cccd8ca8ce237c2eef7e04/llvm/LICENSE.TXT"
+          }
+        ],
+        "spdx": "Apache-2.0 WITH LLVM-exception"
+      },
+      "parentArtifactId": "rustc-1.98.0",
+      "platform": "x86_64-unknown-linux-gnu",
+      "sha256": "9d8fba0d687fec562dc316ce65cbf580c184c9586fcab03a2f722bb1748c4fca",
+      "sourceUrl": "https://github.com/rust-lang/llvm-project/tree/52ed14fcd56afc30f9cccd8ca8ce237c2eef7e04/lld",
+      "verification": {
+        "kind": "extracted-from-verified-parent",
+        "parentSha256": "0e37cb339f447fc44d6d781073bacacebfdc5612f2600e4c7e84c266f5f3aced"
+      },
+      "version": "1.98.0"
+    },
+    {
+      "artifactType": "archive",
+      "commit": "88d9e12ae178fab0fb5cc050a94da85685d449ea",
+      "derivedUncompressedSha256": "0ad5385c3f64ec3cdc01bc5d4843a698494b92a44e634f8b69784588885adb53",
+      "id": "rust-std-musl-1.98.0",
+      "license": {
+        "files": [
+          {
+            "path": "licenses/rust-LICENSE-APACHE",
+            "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+            "sourceUrl": "https://raw.githubusercontent.com/rust-lang/rust/88d9e12ae178fab0fb5cc050a94da85685d449ea/LICENSE-APACHE"
+          },
+          {
+            "path": "licenses/rust-LICENSE-MIT",
+            "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+            "sourceUrl": "https://raw.githubusercontent.com/rust-lang/rust/88d9e12ae178fab0fb5cc050a94da85685d449ea/LICENSE-MIT"
+          }
+        ],
+        "spdx": "Apache-2.0 OR MIT"
+      },
+      "platform": "x86_64-unknown-linux-musl",
+      "sha256": "1a76f782db2d540e1cd16ea47829b323f4a8f4dda64bca4b23be189109c510f8",
+      "sourceUrl": "https://static.rust-lang.org/dist/2026-08-20/rust-std-1.98.0-x86_64-unknown-linux-musl.tar.xz",
+      "verification": {
+        "derivation": "xz --decompress --stdout",
+        "kind": "official-sha256-file",
+        "sourceUrl": "https://static.rust-lang.org/dist/2026-08-20/rust-std-1.98.0-x86_64-unknown-linux-musl.tar.xz.sha256"
+      },
+      "version": "1.98.0"
+    },
+    {
+      "artifactType": "archive",
+      "commit": "88d9e12ae178fab0fb5cc050a94da85685d449ea",
+      "id": "rustc-1.98.0",
+      "license": {
+        "files": [
+          {
+            "path": "licenses/rust-LICENSE-APACHE",
+            "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a",
+            "sourceUrl": "https://raw.githubusercontent.com/rust-lang/rust/88d9e12ae178fab0fb5cc050a94da85685d449ea/LICENSE-APACHE"
+          },
+          {
+            "path": "licenses/rust-LICENSE-MIT",
+            "sha256": "b71bd43a069ca0641a9ecfe585ca7b3c53b5cc1608f8b68321168698e28b5ea1",
+            "sourceUrl": "https://raw.githubusercontent.com/rust-lang/rust/88d9e12ae178fab0fb5cc050a94da85685d449ea/LICENSE-MIT"
+          }
+        ],
+        "spdx": "Apache-2.0 OR MIT"
+      },
+      "platform": "x86_64-unknown-linux-gnu",
+      "sha256": "0e37cb339f447fc44d6d781073bacacebfdc5612f2600e4c7e84c266f5f3aced",
+      "sourceUrl": "https://static.rust-lang.org/dist/2026-08-20/rustc-1.98.0-x86_64-unknown-linux-gnu.tar.xz",
+      "verification": {
+        "kind": "official-sha256-file",
+        "sourceUrl": "https://static.rust-lang.org/dist/2026-08-20/rustc-1.98.0-x86_64-unknown-linux-gnu.tar.xz.sha256"
+      },
+      "version": "1.98.0"
+    },
+    {
+      "artifactType": "archive",
+      "commit": "91a0032987d91b7411b52f6f5c185c5e7f775495",
+      "id": "syft-1.51.1",
+      "license": {
+        "files": [
+          {
+            "path": "licenses/syft-trivy-LICENSE",
+            "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+            "sourceUrl": "https://raw.githubusercontent.com/anchore/syft/91a0032987d91b7411b52f6f5c185c5e7f775495/LICENSE"
+          }
+        ],
+        "spdx": "Apache-2.0"
+      },
+      "platform": "linux/amd64",
+      "sha256": "8fcb33017a0dc1058298c923c436d19dfa68ae93968e0b423248542e3afb9fc3",
+      "sourceUrl": "https://github.com/anchore/syft/releases/download/v1.51.1/syft_1.51.1_linux_amd64.tar.gz",
+      "verification": {
+        "certificateUrl": "https://github.com/anchore/syft/releases/download/v1.51.1/syft_1.51.1_checksums.txt.pem",
+        "kind": "official-checksum-manifest",
+        "signatureUrl": "https://github.com/anchore/syft/releases/download/v1.51.1/syft_1.51.1_checksums.txt.sig",
+        "sourceUrl": "https://github.com/anchore/syft/releases/download/v1.51.1/syft_1.51.1_checksums.txt"
+      },
+      "version": "1.51.1"
+    },
+    {
+      "artifactType": "archive",
+      "commit": "e1fd17a0ea4a8cf24bc4b4dd7e2cfbf4bb31b994",
+      "id": "trivy-0.74.0",
+      "license": {
+        "files": [
+          {
+            "path": "licenses/syft-trivy-LICENSE",
+            "sha256": "c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4",
+            "sourceUrl": "https://raw.githubusercontent.com/aquasecurity/trivy/e1fd17a0ea4a8cf24bc4b4dd7e2cfbf4bb31b994/LICENSE"
+          },
+          {
+            "path": "licenses/trivy-NOTICE",
+            "sha256": "84e8f0ea27cf66c8329ee30a95e7ce02c24cd4e395201c511cf23e02e5310a02",
+            "sourceUrl": "https://raw.githubusercontent.com/aquasecurity/trivy/e1fd17a0ea4a8cf24bc4b4dd7e2cfbf4bb31b994/NOTICE"
+          }
+        ],
+        "spdx": "Apache-2.0"
+      },
+      "platform": "linux/amd64",
+      "sha256": "2ae6fe3ee734b7fdf11335663e18c75ea12dccc76062f09f164a3b0f8be4371a",
+      "sourceUrl": "https://github.com/aquasecurity/trivy/releases/download/v0.74.0/trivy_0.74.0_Linux-64bit.tar.gz",
+      "verification": {
+        "kind": "official-checksum-manifest",
+        "signatureUrl": "https://github.com/aquasecurity/trivy/releases/download/v0.74.0/trivy_0.74.0_checksums.txt.sigstore.json",
+        "sourceUrl": "https://github.com/aquasecurity/trivy/releases/download/v0.74.0/trivy_0.74.0_checksums.txt"
+      },
+      "version": "0.74.0"
+    }
+  ],
+  "cargoClosure": {
+    "dependencyCount": 0,
+    "lockfile": "Cargo.lock",
+    "lockfileSha256": "cab3c319a062072cd280df54ff4786200bf6cfe548a2c8674c0289dfa35ae214",
+    "vendorManifest": "vendor/MANIFEST.json"
+  },
+  "schemaVersion": 1,
+  "target": {
+    "linkerArtifactId": "rust-lld-1.98.0",
+    "triple": "x86_64-unknown-linux-musl"
+  },
+  "verifiedAt": "2026-08-29"
+}

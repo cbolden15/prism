@@ -1,0 +1,17 @@
+.env
+.env.*
+!.env.example
+node_modules/
+__pycache__/
+*.pyc
+.venv/
+dist/
+build/
+coverage/
+artifacts/
+*.tgz
+*.log
+*.tsbuildinfo
+.DS_Store
+
+/docs/ai/workstreams/

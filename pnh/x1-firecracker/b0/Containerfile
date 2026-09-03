@@ -1,0 +1,30 @@
+FROM docker.io/library/node@sha256:27f5e13512830beb5d9a574108daa6701a0a0b91528aeaf1ee84ecdcddaeeaae AS node
+FROM docker.io/library/rust@sha256:af0579d28b9a7ec5251aaafcb0c0a23dcde5c97065112aae0cc3abeda42d5394
+
+COPY --from=node /usr/local/bin/node /usr/local/bin/node
+COPY --from=node /usr/local/include/node /usr/local/include/node
+COPY --from=node /usr/local/lib/node_modules /usr/local/lib/node_modules
+COPY .b0-inputs/rust-std-1.98.0-x86_64-unknown-linux-musl.tar /tmp/rust-std.tar
+
+RUN printf '%s  %s\n' \
+      '0ad5385c3f64ec3cdc01bc5d4843a698494b92a44e634f8b69784588885adb53' \
+      '/tmp/rust-std.tar' \
+      | sha256sum --check --strict - \
+    && mkdir /tmp/rust-std \
+    && tar --extract --file /tmp/rust-std.tar --directory /tmp/rust-std --strip-components 1 \
+    && /tmp/rust-std/install.sh \
+      --prefix=/usr/local/rustup/toolchains/1.98.0-x86_64-unknown-linux-gnu \
+    && test "$(rustc --version)" = 'rustc 1.98.0 (88d9e12ae 2026-08-20)' \
+    && test "$(node --version)" = 'v26.8.1' \
+    && rustup target list --installed | grep -Fxq x86_64-unknown-linux-musl \
+    && rm -rf /tmp/rust-std /tmp/rust-std.tar \
+    && ln -s /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm \
+    && ln -s /usr/local/lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx
+
+ENV CARGO_HOME=/usr/local/cargo \
+    RUSTUP_HOME=/usr/local/rustup
+
+WORKDIR /src
+USER 65532:65532
+ENTRYPOINT []
+CMD ["node", "--version"]

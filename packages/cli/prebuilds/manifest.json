@@ -1,0 +1,32 @@
+{
+  "version": "prism-native-authoring-prebuilds-v1",
+  "nodeApi": 8,
+  "source": "native/prism_authoring.cc",
+  "sourceSha256": "9a4f333e7ea9077e5e0f43f8a000649b6268e02abb27b5881610fd97321ceeae",
+  "targets": {
+    "darwin-arm64": {
+      "file": "darwin-arm64/prism_authoring.node",
+      "sha256": "1bb94e3937da2d4a05b5e105c2bc2fc482a47ebbe8b2c64befd469b638cd9c0f"
+    },
+    "darwin-x64": {
+      "file": "darwin-x64/prism_authoring.node",
+      "sha256": "d22eab8aa3640bffe41b903a683d8c3acb0b54956a4ec4d74b90b8df070ea8e3"
+    },
+    "linux-arm64-gnu": {
+      "file": "linux-arm64-gnu/prism_authoring.node",
+      "sha256": "dec47d46e95cc09aa53d78ac67e972ac20209e8f386a0f16332a1f1edcaab342"
+    },
+    "linux-arm64-musl": {
+      "file": "linux-arm64-musl/prism_authoring.node",
+      "sha256": "680363fe613ed635086ee57bbfa5aeddb031c77ea5d8dbfa3cdc512dfc3f1ba7"
+    },
+    "linux-x64-gnu": {
+      "file": "linux-x64-gnu/prism_authoring.node",
+      "sha256": "5576e2d02ec1f715b675920b50a5a485ae3388fddae75756d551d7db5fa7a366"
+    },
+    "linux-x64-musl": {
+      "file": "linux-x64-musl/prism_authoring.node",
+      "sha256": "3cc4ad0ce627d0105026831306a794b1d81883f9988f18aebf71e61d436e975f"
+    }
+  }
+}

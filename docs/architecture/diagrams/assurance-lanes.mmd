@@ -1,0 +1,17 @@
+flowchart LR
+  normal["Normal developer-preview path<br/>deterministic CLI or Runtime API"] --> local["Local bounded run<br/>no Docker, KVM, or Firecracker required"]
+
+  docker["Optional Docker assurance"] --> dockerEvidence["Constitution and executor checks<br/>Docker environment required"]
+  b4["Optional B4 lane"] --> b0["Qualified disposable<br/>Linux x86_64 B0 environment"]
+  b0 --> kvm["Imported KVM evidence<br/>and QEMU profile"]
+  kvm --> firecracker["Firecracker and acceptance profiles<br/>when applicable"]
+  x1["Optional physical X1 lane"] --> x1Read["Separately authorized<br/>read-only qualification"]
+
+  local -. does not prove .-> dockerEvidence
+  dockerEvidence -. does not qualify .-> b0
+  b0 -. does not qualify .-> x1Read
+
+  status["Current exact-source status<br/>qualified Linux, KVM, QEMU,<br/>Firecracker, and X1 evidence unverified"] -. applies to .-> b0
+  status -. applies to .-> kvm
+  status -. applies to .-> firecracker
+  status -. applies to .-> x1Read

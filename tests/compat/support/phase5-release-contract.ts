@@ -9,14 +9,47 @@ export const PHASE5_SOURCE_COMMIT = "a".repeat(40);
 
 export const PHASE5_MARKDOWN_DOCUMENTS = Object.freeze([
   "README.md",
+  "CHANGELOG.md",
+  "CODE_OF_CONDUCT.md",
+  "CONTRIBUTING.md",
+  "GOVERNANCE.md",
+  "SECURITY.md",
+  "SUPPORT.md",
+  "docs/README.md",
+  "docs/architecture/README.md",
   "docs/assurance/README.md",
   "docs/developer-preview/command-reference.md",
+  "docs/developer-preview/compatibility.md",
   "docs/developer-preview/concepts.md",
   "docs/developer-preview/data-and-trust.md",
   "docs/developer-preview/diagnostics.md",
   "docs/developer-preview/getting-started.md",
   "docs/developer-preview/plugin-authoring.md",
   "docs/releases/developer-preview/README.md",
+  "examples/README.md",
+  "examples/deterministic/README.md",
+  "examples/failures/README.md",
+  "examples/ollama/README.md",
+  "examples/project-plugin/README.md",
+  "examples/project-plugin/release-slug/README.md",
+  "examples/runtime-api/README.md",
+  "packages/cli/README.md",
+  "packages/provider-ollama/README.md",
+  "packages/runtime/README.md",
+  "packages/sdk/README.md",
+] as const);
+
+export const PHASE5_CANDIDATE_ASSETS = Object.freeze([
+  "docs/architecture/diagrams/assurance-lanes.mmd",
+  "docs/architecture/diagrams/bounded-run.mmd",
+  "docs/architecture/diagrams/local-data-and-evidence.mmd",
+  "docs/architecture/diagrams/plugin-admission.mmd",
+  "docs/architecture/diagrams/system-and-packages.mmd",
+  "examples/failures/policy-denied.mjs",
+  "examples/project-plugin/release-slug/index.mjs",
+  "examples/project-plugin/release-slug/index.test.mjs",
+  "examples/project-plugin/release-slug/manifest.json",
+  "examples/runtime-api/run.mjs",
 ] as const);
 
 export const PHASE5_LIVE_EVIDENCE_PATH =
@@ -31,7 +64,15 @@ export const PHASE5_LIVE_ACCEPTANCE_SCRIPT = "scripts/test-live-ollama.mjs";
 export const PHASE5_PACKED_ACCEPTANCE_SCRIPT = "scripts/test-packed-install.mjs";
 
 export const PHASE5_PUBLIC_CLAIM_SURFACES = Object.freeze([
-  ...PHASE5_MARKDOWN_DOCUMENTS,
+  "README.md",
+  "docs/assurance/README.md",
+  "docs/developer-preview/command-reference.md",
+  "docs/developer-preview/concepts.md",
+  "docs/developer-preview/data-and-trust.md",
+  "docs/developer-preview/diagnostics.md",
+  "docs/developer-preview/getting-started.md",
+  "docs/developer-preview/plugin-authoring.md",
+  "docs/releases/developer-preview/README.md",
   "pnh/README.md",
 ].sort());
 
@@ -39,6 +80,7 @@ export const PHASE5_CANDIDATE_DOCUMENTS = Object.freeze([
   "LICENSE",
   "NOTICE",
   ...PHASE5_MARKDOWN_DOCUMENTS,
+  ...PHASE5_CANDIDATE_ASSETS,
   "THIRD_PARTY_NOTICES.md",
 ].sort());
 

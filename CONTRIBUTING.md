@@ -26,7 +26,8 @@ provider output to a commit.
 For documentation and public-claim changes, run:
 
 ```sh
-npm run test:compat:run
+npm run docs:check
+npm run test:compat
 npm run check:public-claims
 ```
 
@@ -42,4 +43,6 @@ request. Report suspected vulnerabilities through the private process in
 `SECURITY.md`, not a public issue.
 
 Contributions are accepted under the repository's Apache-2.0 license. See
-`LICENSE` and `NOTICE`.
+`LICENSE` and `NOTICE`. Participation is also covered by
+[`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md), and project decisions follow
+[`GOVERNANCE.md`](GOVERNANCE.md).

@@ -1,0 +1,18 @@
+flowchart LR
+  operator["Developer or operator"] --> cli["@useprism/cli<br/>published"]
+  integrator["Runtime integrator"] --> runtime["@useprism/runtime<br/>published"]
+  cli --> runtime
+
+  sdk["@useprism/sdk contracts<br/>published"] --> runtime
+  sdk --> cli
+  ollama["@useprism/provider-ollama<br/>published, optional local service"] --> runtime
+  deterministic["Deterministic provider<br/>CLI asset, no network"] --> runtime
+  codex["@useprism/provider-codex<br/>source-only, unpublished"] -. optional source path .-> runtime
+
+  runtime --> provider["Selected provider"]
+  runtime --> policy["Policy admission"]
+  runtime --> tools["Explicit tools"]
+  tools --> projectPlugin["Approved project plugin<br/>ambient subprocess authority"]
+  cli --> localState["Local config, approvals,<br/>artifacts, and run records"]
+
+  assurance["Optional assurance lanes<br/>Docker, B4, and X1"] -. separate from normal execution .-> runtime

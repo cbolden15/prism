@@ -96,6 +96,7 @@ On macOS or Linux with Node.js 26.8.1 installed, run:
 
 ```sh
 npm ci
+npm run build:packages
 npm run prism:example -- "one two three"
 ```
 

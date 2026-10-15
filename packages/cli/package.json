@@ -47,7 +47,7 @@
     "@useprism/provider-ollama": "0.1.0",
     "@useprism/runtime": "0.1.0",
     "@useprism/sdk": "0.1.0",
-    "acorn": "8.18.0",
+    "acorn": "8.19.0",
     "acorn-walk": "8.3.5"
   },
   "bundleDependencies": [
